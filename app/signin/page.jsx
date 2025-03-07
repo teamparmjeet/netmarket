@@ -6,7 +6,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { Mail, Lock } from "lucide-react";
-
+import Link from "next/link";
 export default function Signin() {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
@@ -81,12 +81,12 @@ export default function Signin() {
       <Toaster />
 
       <div className="w-full max-w-4xl flex flex-col md:flex-row bg-white shadow-lg rounded-lg overflow-hidden">
-        
+
         <div className="w-full order-2 md:order-1  md:w-1/2 p-8">
           <h2 className="text-center text-3xl font-semibold text-gray-700">Sign In</h2>
           <form onSubmit={handleSubmit} className="mt-6">
             <div className="relative mb-4">
-             
+
               <Input
                 id="email"
                 type="email"
@@ -117,15 +117,18 @@ export default function Signin() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-[#161950] text-white py-2 rounded-lg hover:bg-green-600 transition disabled:bg-gray-400"
+              className="w-full cursor-pointer bg-[#161950]/80 text-white py-2 rounded-lg hover:bg-[#161950] transition disabled:bg-gray-400"
             >
               {loading ? "Signing in..." : "Sign In"}
             </button>
+            <Link href="/signup">
+              <p className="text-xs hover:underline hover:text-[#161950] font-semibold text-gray-600 mt-2">Not a user? Sign up</p>
+            </Link>
           </form>
         </div>
 
-       
-        <div className="w-full order-1 md:order-2 md:w-1/2 bg-[#161950] text-white flex flex-col items-center justify-center p-8">
+
+        <div className="w-full hidden md:block order-1 md:order-2 md:w-1/2 bg-[#161950] text-white  items-center justify-center p-8">
           <h2 className="text-2xl font-semibold">Welcome to Our Platform</h2>
           <p className="mt-4 text-center">Manage your properties and inquiries effortlessly with our intuitive platform.</p>
         </div>

@@ -1,4 +1,4 @@
-import AdminModel from "@/model/Admin";
+import UserModel from "@/model/User";
 import dbConnect from "@/lib/dbConnect";
 import bcrypt from "bcryptjs";
 
@@ -6,42 +6,50 @@ export async function POST(req) {
     await dbConnect();
 
     try {
-        const { name, email, mobile, password, usertype } = await req.json();
+        const data = await req.json();
 
-       
-        const alreadyUser = await AdminModel.findOne({ email });
-        if (alreadyUser) {
-            return Response.json(
-                {
-                    message: "User already exists with the provided email address!",
-                    success: false,
-                },
+        if (!data.name || !data.email || !data.password || !data.mobileNo) {
+            return new Response(
+                JSON.stringify({ success: false, message: "All fields are required!" }),
                 { status: 400 }
             );
         }
 
-       
-       
-        const hashedPassword = await bcrypt.hash(password, 10);
+        const alreadyUser = await UserModel.findOne({ email: data.email }).lean();
+        if (alreadyUser) {
+            return new Response(
+                JSON.stringify({ success: false, message: "User already exists with this email!" }),
+                { status: 400 }
+            );
+        }
 
-        const createAdmin = await AdminModel.create({
-            name,
-            mobile,
-            email,
+        const hashedPassword = await bcrypt.hash(data.password, 10);
+
+        const newUser = new UserModel({
+            ...data,
             password: hashedPassword,
-            usertype
         });
 
-        return Response.json({
-            message: "User registered successfully",
-            success: true,
-        }, { status: 201 });
+        await newUser.save();
+
+        return new Response(
+            JSON.stringify({ success: true, message: "User registered successfully" }),
+            { status: 201 }
+        );
 
     } catch (error) {
-        console.log(error);
-        return Response.json({
-            message: "Error registering User",
-            success: false
-        }, { status: 500 });
+        console.error("User registration error:", error);
+
+        if (error.name === "ValidationError") {
+            return new Response(
+                JSON.stringify({ success: false, message: "Invalid input data!" }),
+                { status: 400 }
+            );
+        }
+
+        return new Response(
+            JSON.stringify({ success: false, message: "Internal server error. Try again later." }),
+            { status: 500 }
+        );
     }
 }

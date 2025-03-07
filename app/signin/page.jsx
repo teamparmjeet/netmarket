@@ -79,6 +79,7 @@ export default function Signin() {
   return (
     <section className="min-h-screen flex flex-col md:flex-row items-center justify-center px-4 bg-[#161950]/10">
       <Toaster />
+      
       <div className="w-full max-w-4xl flex flex-col md:flex-row bg-white shadow-lg rounded-lg overflow-hidden">
         
         <div className="w-full order-2 md:order-1  md:w-1/2 p-8">

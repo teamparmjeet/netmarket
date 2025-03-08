@@ -127,10 +127,11 @@ export default function Signin() {
           </form>
         </div>
 
-
-        <div className="w-full hidden md:block order-1 md:order-2 md:w-1/2 bg-[#161950] text-white  items-center justify-center p-8">
-          <h2 className="text-2xl font-semibold">Welcome to Our Platform</h2>
-          <p className="mt-4 text-center">Manage your properties and inquiries effortlessly with our intuitive platform.</p>
+        <div className=" hidden md:block w-full  order-1  md:order-2 md:w-1/2 bg-[#161950] text-white  items-center justify-center p-8">
+          <div className=" flex justify-center items-center flex-col h-full">
+            <h2 className="text-2xl font-semibold text-center">Welcome to Our Platform</h2>
+            <p className="mt-4 text-center">Manage your properties and inquiries effortlessly with our intuitive platform.</p>
+          </div>
         </div>
       </div>
     </section>

@@ -16,9 +16,11 @@
     "mongoose": "^8.11.0",
     "next": "15.2.0",
     "next-auth": "^4.24.11",
+    "nodemailer": "^6.10.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hot-toast": "^2.5.2",
+    "react-phone-input-2": "^2.15.1",
     "react-tabs": "^6.1.0"
   },
   "devDependencies": {

@@ -14,11 +14,10 @@ export default function UserMetaCard() {
     const handleImageUpload = async (file) => {
         const formData = new FormData();
         formData.append("file", file);
-        formData.append("upload_preset", "your_upload_preset"); // Replace with Cloudinary preset
 
         try {
             const response = await axios.post(
-                "https://api.cloudinary.com/v1_1/your_cloud_name/image/upload", // Replace with your Cloudinary API URL
+                "/api/upload", // Replace with your Cloudinary API URL
                 formData
             );
             return response.data.secure_url; // Returns the uploaded image URL
@@ -32,21 +31,21 @@ export default function UserMetaCard() {
         e.preventDefault();
         setLoading(true);
 
-        let imageUrl = session?.user?.image || ""; // Keep old image if not changed
+        let imageUrl = ""; // Start with an empty URL
+
         if (image) {
-            const uploadedImageUrl = await handleImageUpload(image);
-            if (uploadedImageUrl) imageUrl = uploadedImageUrl;
+            imageUrl = await handleImageUpload(image); // Upload and get the URL
         }
 
         try {
-            const response = await axios.put("/api/update-user", {
-                userId: session?.user?.id,
+            const response = await axios.patch("/api/user/update-user", {
+                id: session?.user?.id,
                 name,
-                image: imageUrl,
+                image: imageUrl || undefined, // Only update if a new URL is available
             });
 
             if (response.data.success) {
-                await update({ ...session, user: { ...session.user, name, image: imageUrl } });
+                await update({ ...session, user: { ...session.user, name, image: imageUrl || session?.user?.image } });
                 setIsModalOpen(false);
             }
         } catch (error) {
@@ -55,6 +54,7 @@ export default function UserMetaCard() {
             setLoading(false);
         }
     };
+
 
     return (
         <div>

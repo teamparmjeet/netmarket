@@ -1,7 +1,7 @@
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
 import dbConnect from "@/lib/dbConnect";
-import AdminModel from "@/model/Admin";
+import UserModel from "@/model/User";
 import bcrypt from "bcryptjs";
 
 export const authOptions = {
@@ -14,7 +14,7 @@ export const authOptions = {
         const { email, password } = credentials;
         try {
           await dbConnect();
-          const admin = await AdminModel.findOne({ email });
+          const admin = await UserModel.findOne({ email });
 
           if (!admin) {
             return null;
@@ -27,7 +27,7 @@ export const authOptions = {
           }
 
           return {
-            id: admin._id,
+            id: admin._id.toString(), // Convert to string for JWT storage
             email: admin.email,
             name: admin.name,
             usertype: admin.usertype,
@@ -46,11 +46,13 @@ export const authOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
+        token.id = user.id;  // Include user id
         token.usertype = user.usertype;
       }
       return token;
     },
     async session({ session, token }) {
+      session.user.id = token.id;  // Pass user id to session
       session.user.usertype = token.usertype;
       return session;
     },

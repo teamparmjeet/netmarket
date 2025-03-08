@@ -1,5 +1,5 @@
 import dbConnect from "@/lib/dbConnect";
-import AdminModel from "@/model/Admin";
+import UserModel from "@/model/User";
 
 export async function GET(request, { params }) {
   await dbConnect();
@@ -9,8 +9,7 @@ export async function GET(request, { params }) {
     const { emailid } = await params;
 
 
-    const user = await AdminModel.findOne({ email: emailid });
-    console.log("user")
+    const user = await UserModel.findOne({ email: emailid });
     if (!user) {
       return Response.json(
         {

@@ -5,6 +5,7 @@ const UserSchema = new Schema(
     {
        
         name: { type: String, required: true, },
+        image: { type: String},
         relationTitle: { type: String, enum: ["S/o", "D/o", "W/o"], },
         fatherOrHusbandName: { type: String, },
         gender: { type: String, enum: ["Male", "Female", "Other"], required: true, },
@@ -54,6 +55,6 @@ const UserSchema = new Schema(
 );
 
 const UserModel =
-    mongoose.models.usertest4 || mongoose.model("usertest4", UserSchema);
+    mongoose.models.usertest5 || mongoose.model("usertest5", UserSchema);
 
 export default UserModel

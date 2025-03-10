@@ -1,164 +1,205 @@
-"use client"
-import React, { useState } from "react";
-import Image from "next/image";
+"use client";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { useSession } from "next-auth/react";
 
 export default function UserAddressCard() {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const { data: session, update } = useSession();
+    const [data, setData] = useState(null);
+    const [fetching, setFetching] = useState(true);
+    const [loading, setLoading] = useState(false);
+    const [formData, setFormData] = useState({
+        addressLine1: "",
+        addressLine2: "",
+        city: "",
+        landmark: "",
+        pinCode: "",
+        state: "",
+    });
 
+    useEffect(() => {
+        const fetchUserData = async () => {
+            setLoading(true);
+            if (!session?.user?.email) return;
+            try {
+                const response = await axios.get(`/api/user/find-admin-byemail/${session.user.email}`);
+                if (response.data?._id) {
+                    setData(response.data); // Store full user data
+                    const address = response.data.address || {};
+                    setFormData({
+                        addressLine1: address.addressLine1 || "",
+                        addressLine2: address.addressLine2 || "",
+                        city: address.city || "",
+                        landmark: address.landmark || "",
+                        pinCode: address.pinCode || "",
+                        state: address.state || "",
+                    });
+                }
+            } catch (error) {
+                console.error("Failed to fetch user data:", error);
+            } finally {
+                setFetching(false);
+                setLoading(false);
+
+            }
+        };
+        fetchUserData();
+    }, [session?.user?.email]);
+
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    const handleUpdate = async (e) => {
+        e.preventDefault();
+        if (!data?._id) return;
+        setLoading(true);
+
+        try {
+            const response = await axios.patch("/api/user/update-user", {
+                id: data._id, // Use user ID
+                address: formData, // Ensure correct format
+            });
+
+            if (response.data.success) {
+                alert("User updated successfully");
+                setIsModalOpen(false);
+                update(); // Refresh session manually if needed
+            }
+        } catch (error) {
+            console.error("Failed to update user:", error);
+            alert("Failed to update user");
+        } finally {
+            setLoading(false);
+        }
+    };
+    if (loading) {
+        return (
+            <>
+                <div className="text-center text-gray-500 h-8 rounded bg-gray-200 border animate-pulse"></div>
+                <div className="text-center text-gray-500 h-8 rounded bg-gray-200 border animate-pulse"></div>
+                <div className="text-center text-gray-500 h-8 rounded bg-gray-200 border animate-pulse"></div>
+                <div className="text-center text-gray-500 h-8 rounded bg-gray-200 border animate-pulse"></div>
+            </>
+        );
+    }
     return (
         <div>
-            <div className="p-5 border  border-gray-200 bg-white  rounded-2xl dark:bg-gray-800 dark:border-gray-200 lg:p-6">
-                <div className="flex flex-col gap-5 xl:flex-row xl:items-start xl:justify-between">
-                    <div>
-                        <h4 className="text-lg font-semibold text-gray-800 dark:text-white/90 lg:mb-6">
+            <div className="p-6 border border-gray-200 bg-white rounded-2xl dark:bg-gray-800 dark:border-gray-700 lg:p-8">
+                <div className="flex flex-col gap-6 xl:flex-row xl:items-start xl:justify-between">
+                    <div className="w-full">
+                        <h4 className="text-xl font-semibold text-gray-800 dark:text-white/90">
                             Address
                         </h4>
 
-                        <div className="grid grid-cols-1 gap-4  lg:grid-cols-2 lg:gap-7  my-5  lg:my-10">
-                            <div className="p-5 border border-gray-200 rounded-2xl dark:border-gray-800 lg:p-6">
-                                <p className="mb-2 text-md leading-normal text-gray-500 dark:text-gray-400">
-                                    Address
+                        <div className="grid grid-cols-1 gap-6 my-6 lg:grid-cols-2">
+                            <div className="p-6 border border-gray-200 rounded-2xl dark:border-gray-700">
+                                <p className="mb-2 text-sm font-medium text-gray-500 dark:text-gray-400">
+                                    Address 1
                                 </p>
-                                <p className="text-md font-medium text-gray-800 dark:text-white/90">
-                                    GRAM DANTARDA KALAN,SHEOPUR
-                                </p>
-                            </div>
-                            <div className="p-5 border border-gray-200 rounded-2xl dark:border-gray-800 lg:p-6">
-                                <p className="mb-2 text-md leading-normal text-gray-500 dark:text-gray-400">
-                                    Permanent Address
-                                </p>
-                                <p className="text-md font-medium text-gray-800 dark:text-white/90">
-                                    GRAM DANTARDA KALAN,SHEOPUR
+                                <p className="text-md font-semibold text-gray-800 dark:text-white/90">
+                                    {data?.address.addressLine1}
                                 </p>
                             </div>
-                        </div>
-
-                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3  lg:gap-7 2xl:gap-x-14">
-                            <div>
-                                <p className="mb-2 text-md leading-normal text-gray-500 dark:text-gray-400">
+                            <div className="p-6 border border-gray-200 rounded-2xl dark:border-gray-700">
+                                <p className="mb-2 text-sm font-medium text-gray-500 dark:text-gray-400">
                                     Address 2
                                 </p>
-                                <p className="text-md font-medium text-gray-800 dark:text-white/90 me-2">
-                                    GRAM DANTARDA KALAN,SHEOPUR
-                                </p>
-                            </div>
-                            <div>
-                                <p className="mb-2 text-md leading-normal text-gray-500 dark:text-gray-400">
-                                    Post Office
-                                </p>
-                                <p className="text-md font-medium text-gray-800 dark:text-white/90">
-                                    Murlipura                </p>
-                            </div>
-                            <div>
-                                <p className="mb-2 text-md leading-normal text-gray-500 dark:text-gray-400">
-                                    Land Mark
-                                </p>
-                                <p className="text-md font-medium text-gray-800 dark:text-white/90">
-                                    S.N.M. Hospital
-                                </p>
-                            </div>
-                            <div>
-                                <p className="mb-2 text-md leading-normal text-gray-500 dark:text-gray-400">
-                                    State
-                                </p>
-                                <p className="text-md font-medium text-gray-800 dark:text-white/90">
-                                    Rajasthan
-                                </p>
-                            </div>
-                            <div>
-                                <p className="mb-2 text-md leading-normal text-gray-500 dark:text-gray-400">
-                                    City
-                                </p>
-                                <p className="text-md font-medium text-gray-800 dark:text-white/90">
-                                    Jaipur
-                                </p>
-
-                            </div>
-                            <div>
-                                <p className="mb-2 text-md leading-normal text-gray-500 dark:text-gray-400">
-                                    Pin Code
-                                </p>
-                                <p className="text-md font-medium text-gray-800 dark:text-white/90">
-                                    302013
+                                <p className="text-md font-semibold text-gray-800 dark:text-white/90">
+                                    {data?.address.addressLine2}
                                 </p>
                             </div>
                         </div>
+
+                        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                            {[
+                                { label: "City", value: data?.address.city },
+                                { label: "Landmark", value: data?.address.landmark },
+                                { label: "Pin Code", value: data?.address.pinCode },
+                                { label: "State", value: data?.address.state },
+                            ].map((item, index) => (
+                                <div key={index}>
+                                    <p className="mb-2 text-sm font-medium text-gray-500 dark:text-gray-400">
+                                        {item.label}
+                                    </p>
+                                    <p className="text-md font-semibold text-gray-800 dark:text-white/90">
+                                        {item.value}
+                                    </p>
+                                </div>
+                            ))}
+                        </div>
                     </div>
+
                     <button
                         onClick={() => setIsModalOpen(true)}
-                        className="flex w-full items-center justify-center gap-2 rounded-full border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200 lg:inline-flex lg:w-auto"
+                        className="flex w-full items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-5 py-2 text-sm font-medium text-gray-700 shadow-sm transition-all hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 lg:w-auto"
                     >
                         Edit
                     </button>
                 </div>
             </div>
 
-            {/* Modal */}
             {isModalOpen && (
                 <div
-                    className="fixed inset-0 w-full h-full  bg-gray-300 dark:bg-gray-800 z-50 flex items-center justify-center"
-                    onClick={() => setIsModalOpen(false)} // Close modal on background click
+                    className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm z-50"
+                    onClick={() => setIsModalOpen(false)}
                 >
                     <div
-                        className="relative max-w-[700px]  w-full mx-auto overflow-y-auto rounded-3xl bg-white p-4 dark:bg-gray-900 lg:p-11"
-                        onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside modal
+                        className="relative max-w-xl w-full bg-white dark:bg-gray-900 shadow-2xl rounded-3xl p-6 lg:p-10"
+                        onClick={(e) => e.stopPropagation()}
                     >
-                        <div className="px-2 pr-14">
-                            <h4 className="mb-2 text-2xl font-semibold text-gray-800 dark:text-white/90">
-                                Edit Address 
-                            </h4>
-                            <p className="mb-6 text-sm text-gray-500 dark:text-gray-400 lg:mb-7">
-                                Update your details to keep your profile up-to-date.
-                            </p>
-                        </div>
-                        <form className="flex flex-col">
-                            <div className="h-[450px] overflow-y-auto px-2 pb-3">
+                        <button
+                            className="absolute top-4 right-4 text-gray-500 dark:text-gray-300 hover:text-red-500"
+                            onClick={() => setIsModalOpen(false)}
+                        >
+                            ✕
+                        </button>
+                        <h4 className="mb-5 text-2xl font-semibold text-gray-800 dark:text-white text-center">
+                            Edit Personal Information
+                        </h4>
+                        <form className="flex flex-col" onSubmit={handleUpdate}>
+                            <div className="overflow-y-auto px-2 pb-3">
                                 <div className="grid grid-cols-1 gap-x-6 gap-y-5 lg:grid-cols-2 text-gray-800 dark:text-white/90">
-                                    <div>
-                                        <label className="block text-gray-700 dark:text-gray-300">Address</label>
-                                        <input className="border  rounded w-full p-2" type="text" placeholder="Enter Address" />
-                                    </div>
-                                    <div>
-                                        <label className="block text-gray-700 dark:text-gray-300">Address 2</label>
-                                        <input className="border  rounded w-full p-2" type="text" placeholder="Enter Address 2" />
-                                    </div>
-                                    <div>
-                                        <label className="block text-gray-700 dark:text-gray-300">Permanent Address</label>
-                                        <input className="border  rounded w-full p-2" type="text" placeholder="Enter Permanent Address" />
-                                    </div>
-                                    <div>
-                                        <label className="block text-gray-700 dark:text-gray-300">Post Office</label>
-                                        <input className="border  rounded w-full p-2" type="text" placeholder="Enter Post Office" />
-                                    </div>
-                                    <div>
-                                        <label className="block text-gray-700 dark:text-gray-300">Land Mark</label>
-                                        <input className="border  rounded w-full p-2" type="text" placeholder="Enter Land Mark " />
-                                    </div>
-                                    <div>
-                                        <label className="block text-gray-700 dark:text-gray-300">State</label>
-                                        <input className="border  rounded w-full p-2" type="text" placeholder="Enter State  " />
-                                    </div>
-                                    <div>
-                                        <label className="block text-gray-700 dark:text-gray-300">City</label>
-                                        <input className="border  rounded w-full p-2" type="text" placeholder="Enter City " />
-                                    </div>
-                                    <div>
-                                        <label className="block text-gray-700 dark:text-gray-300">Pin Code </label>
-                                        <input className="border  rounded w-full p-2" type="text" placeholder="Enter Pin Code" />
-                                    </div>
+                                    {[
+                                        { label: "Address 1", name: "addressLine1", type: "text" },
+                                        { label: "Address 2", name: "addressLine2", type: "text" },
+                                        { label: "City", name: "city", type: "text" },
+                                        { label: "Landmark", name: "landmark", type: "text" },
+                                        { label: "PinCode", name: "pinCode", type: "number" },
+                                        { label: "State", name: "state", type: "text" },
+                                    ].map((field) => (
+                                        <div key={field.name}>
+                                            <label className="block text-gray-700 dark:text-gray-300 font-medium">
+                                                {field.label}
+                                            </label>
+                                            <input
+                                                name={field.name}
+                                                value={formData[field.name]}
+                                                onChange={handleChange}
+                                                className="block w-full px-4 py-3 text-gray-500 bg-white border border-gray-200 rounded-md focus:border-[#161950] focus:outline-none focus:ring-[#161950] sm:text-sm"
+                                                type={field.type}
+                                                placeholder={field.label}
+                                            />
+                                        </div>
+                                    ))}
                                 </div>
-
                             </div>
-                            <div className="flex items-center gap-3 px-2 mt-6 lg:justify-end">
+
+                            <div className="flex justify-end gap-3 mt-4">
                                 <button
                                     type="button"
-                                    className="border px-4 py-2 rounded text-gray-700 hover:bg-gray-100"
+                                    className="border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-100 transition"
                                     onClick={() => setIsModalOpen(false)}
                                 >
                                     Close
                                 </button>
-                                <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-                                    Save Changes
+                                <button
+                                    type="submit"
+                                    className="bg-[#161950]/80 text-white px-4 py-2 rounded-lg hover:bg-[#161950] transition disabled:bg-gray-400"
+                                    disabled={loading}
+                                >
+                                    {loading ? "Saving..." : "Save Changes"}
                                 </button>
                             </div>
                         </form>

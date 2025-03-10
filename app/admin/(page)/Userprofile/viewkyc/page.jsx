@@ -1,12 +1,13 @@
 "use client";
 import React from 'react';
-import PanCardDetails from '../../component/viewkyc-card/PanCardDetails';
-import AadharcardDetails from '../../component/viewkyc-card/AadharcardDetails';
-import AddressProof from '../../component/viewkyc-card/AddressProof';
-import AgeProof from '../../component/viewkyc-card/AgeProof';
-import PhotoIdentity from '../../component/viewkyc-card/PhotoIdentity';
-import BankDetails from '../../component/viewkyc-card/BankDetails';
-import PhotoGraph from '../../component/viewkyc-card/PhotoGraph';
+import PanCardDetails from '@/app/admin/component/viewkyc-card/PanCardDetails';
+import AadharcardDetails from '@/app/admin/component/viewkyc-card/AadharcardDetails';
+import AddressProof from '@/app/admin/component/viewkyc-card/AddressProof';
+import AgeProof from '@/app/admin/component/viewkyc-card/AgeProof';
+import PhotoIdentity from '@/app/admin/component/viewkyc-card/PhotoIdentity';
+import PhotoGraph from '@/app/admin/component/viewkyc-card/PhotoGraph';
+import BankDetails from '@/app/admin/component/viewkyc-card/BankDetails';
+
 
 export default function page() {
     return (

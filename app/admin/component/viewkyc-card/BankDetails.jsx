@@ -8,7 +8,7 @@ export default function BankDetails() {
                 <div className="grid grid-cols-2 gap-4">
                     <div>
                         <p className="mb-2 text-md leading-normal text-gray-500 dark:text-gray-400">
-                            Bank :
+                            Bank 
                         </p>
                         <input
                             type="text"
@@ -18,7 +18,7 @@ export default function BankDetails() {
                     </div>
                     <div>
                         <p className="mb-2 text-md leading-normal text-gray-500 dark:text-gray-400">
-                            Ac. No.
+                            Ac No
                         </p>
                         <input
                             type="text"

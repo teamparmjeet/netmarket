@@ -15,23 +15,23 @@ const navItems = [
         icon: <UserCircle />,
         name: "User Profile",
         subItems: [
-            { name: "My Profile", path: "/admin/profile", pro: false },
-            { name: "I-Card", path: "/admin/i-card", pro: false },
-            // { name: "Upload Photos (I-Card)", path: "/admin/uploadIdcard", pro: false },
-            // { name: "Agreement", path: "/admin/agreement", pro: false },
-            // { name: "Addendum", path: "/admin/addendum", pro: false },
-            { name: "Reupload KYC", path: "/admin/uploadId", pro: false },
-            { name: "View KYC", path: "/admin/viewkyc", pro: false },
+            { name: "My Profile", path: "/admin/Userprofile/profile", pro: false },
+            { name: "I-Card", path: "/admin/Userprofile/i-card", pro: false },
+            { name: "Upload Photos (I-Card)", path: "/admin/Userprofile/uploadId", pro: false },
+            { name: "Agreement", path: "/admin/Userprofile/agreement", pro: false },
+            { name: "Addendum", path: "/admin/Userprofile/addendum", pro: false },
+            { name: "Reupload KYC", path: "/admin/Userprofile/reuploadkyc", pro: false },
+            { name: "View KYC", path: "/admin/Userprofile/viewkyc", pro: false },
         ],
     },
     {
         icon: <UserCircle />,
         name: "Genealogy",
         subItems: [
-            { name: "Sales Team", path: "/admin/salesteam", pro: false },
-            { name: "Direct DS Code", path: "/admin/directds", pro: false },
-            // { name: "Downline Printing", path: "/admin/downlineprinting", pro: false },
-            { name: "Depth Downline", path: "/admin/depthdownline", pro: false },
+            { name: "Sales Team", path: "/admin/Genealogy/salesteam", pro: false },
+            { name: "Direct DS Code", path: "/admin/Genealogy/directds", pro: false },
+            { name: "Downline Printing", path: "/admin/Genealogy/downlineprinting", pro: false },
+            { name: "Depth Downline", path: "/admin/Genealogy/depthdownline", pro: false },
         ],
     },
     {
@@ -61,35 +61,71 @@ const navItems = [
             { name: "Pending Orders", path: "/admin/OrderForm/pendingorder", pro: false },
             { name: "My Approved Orders", path: "/admin/OrderForm/approvedorder", pro: false },
             { name: "Product List", path: "/admin/OrderForm/productlist", pro: false },
-            { name: "Statement", path: "/admin/OrderForm/statement", pro: false },
-        ],
-    },
-    
-];
-
-const othersItems = [
-    {
-        icon: <ChartArea />,
-        name: "Charts",
-        subItems: [
-            { name: "Line Chart", path: "/line-chart", pro: false },
-            { name: "Bar Chart", path: "/bar-chart", pro: false },
         ],
     },
     {
-        icon: <BoxIcon />,
-        name: "UI Elements",
+        icon: <UserCircle />,
+        name: "Statement",
+        path: "/admin/Statement",
+    },
+    {
+        icon: <UserCircle />,
+        name: "Grievance",
         subItems: [
-            { name: "Alerts", path: "/alerts", pro: false },
-            { name: "Avatar", path: "/avatars", pro: false },
-            { name: "Badge", path: "/badge", pro: false },
-            { name: "Buttons", path: "/buttons", pro: false },
-            { name: "Images", path: "/images", pro: false },
-            { name: "Videos", path: "/videos", pro: false },
+            { name: "Add", path: "/admin/Grievance/Add", pro: false },
+            { name: "View", path: "/admin/Grievance/View", pro: false },
+            { name: "Call/Mail Us", path: "/admin/Grievance/Callus", pro: false },
+        ],
+    },
+    {
+        icon: <UserCircle />,
+        name: "Change Password",
+        path: "/admin/ChangePassword",
+    },
+    {
+        icon: <UserCircle />,
+        name: "Company Achievers",
+        subItems: [
+            { name: "Rank Achievers", path: "/admin/CompanyAchivers/Rank", pro: false },
+            { name: "Trip Achievers", path: "/admin/CompanyAchivers/Trip", pro: false },
+            { name: "Car Achievers", path: "/admin/CompanyAchivers/Car", pro: false },
+            { name: "Marketing Plan", path: "/admin/CompanyAchivers/Marketing", pro: false },
+        ],
+    },
+    {
+        icon: <UserCircle />,
+        name: "Public Notice",
+        subItems: [
+            { name: "Times of India", path: "/admin/PublicNotice/TimesIndia", pro: false },
+            { name: "Rashtriya Saharas", path: "/admin/PublicNotice/RashtriyaSaharas", pro: false },
         ],
     },
 
 ];
+
+// const othersItems = [
+//     {
+//         icon: <ChartArea />,
+//         name: "Charts",
+//         subItems: [
+//             { name: "Line Chart", path: "/line-chart", pro: false },
+//             { name: "Bar Chart", path: "/bar-chart", pro: false },
+//         ],
+//     },
+//     {
+//         icon: <BoxIcon />,
+//         name: "UI Elements",
+//         subItems: [
+//             { name: "Alerts", path: "/alerts", pro: false },
+//             { name: "Avatar", path: "/avatars", pro: false },
+//             { name: "Badge", path: "/badge", pro: false },
+//             { name: "Buttons", path: "/buttons", pro: false },
+//             { name: "Images", path: "/images", pro: false },
+//             { name: "Videos", path: "/videos", pro: false },
+//         ],
+//     },
+
+// ];
 const AppSidebar = () => {
     const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
     const pathname = usePathname();
@@ -185,25 +221,25 @@ const AppSidebar = () => {
 
     const isActive = useCallback((path) => path === pathname, [pathname]);
 
-    useEffect(() => {
-        let submenuMatched = false;
-        ["main", "others"].forEach((menuType) => {
-            const items = menuType === "main" ? navItems : othersItems;
-            items.forEach((nav, index) => {
-                if (nav.subItems) {
-                    nav.subItems.forEach((subItem) => {
-                        if (isActive(subItem.path)) {
-                            setOpenSubmenu({ type: menuType, index });
-                            submenuMatched = true;
-                        }
-                    });
-                }
-            });
-        });
-        if (!submenuMatched) {
-            setOpenSubmenu(null);
-        }
-    }, [pathname, isActive]);
+    // useEffect(() => {
+    //     let submenuMatched = false;
+    //     ["main", "others"].forEach((menuType) => {
+    //         const items = menuType === "main" ? navItems : othersItems;
+    //         items.forEach((nav, index) => {
+    //             if (nav.subItems) {
+    //                 nav.subItems.forEach((subItem) => {
+    //                     if (isActive(subItem.path)) {
+    //                         setOpenSubmenu({ type: menuType, index });
+    //                         submenuMatched = true;
+    //                     }
+    //                 });
+    //             }
+    //         });
+    //     });
+    //     if (!submenuMatched) {
+    //         setOpenSubmenu(null);
+    //     }
+    // }, [pathname, isActive]);
 
 
     useEffect(() => {
@@ -255,10 +291,10 @@ const AppSidebar = () => {
                             <h2 className="mb-4 text-xs uppercase flex leading-[20px] text-gray-400">Menu</h2>
                             {renderMenuItems(navItems, "main")}
                         </div>
-                        <div>
+                        {/* <div>
                             <h2 className="mb-4 text-xs uppercase flex leading-[20px] text-gray-400">Others</h2>
                             {renderMenuItems(othersItems, "others")}
-                        </div>
+                        </div> */}
                     </div>
                 </nav>
 

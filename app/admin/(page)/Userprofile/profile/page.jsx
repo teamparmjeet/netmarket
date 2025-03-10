@@ -1,8 +1,8 @@
 import React from 'react'
-import UserMetaCard from '@/components/user-profile/UserMetaCard';
-import UserAddressCard from '@/components/user-profile/UserAddressCard';
-import UserInfocard from '@/components/user-profile/UserInfoCard';
-import NomineeDetails from '@/components/user-profile/NomineeDetails';
+import UserAddressCard from '@/components/user-profile/UserAddressCard'
+import UserMetaCard from '@/components/user-profile/UserMetaCard'
+import UserInfocard from '@/components/user-profile/UserInfoCard'
+import NomineeDetails from '@/components/user-profile/NomineeDetails'
 
 export default function page() {
     return (

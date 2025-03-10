@@ -29,6 +29,19 @@ const depthDownlineSellers = [
     currSelfRsp: "0.00",
     currTotalRsp: "0.00",
   },
+  {
+    sno: 3,
+    dsCode: "9D836A",
+    name: "RAMMUKAT MEENA",
+    saleGroup: "SAO",
+    doj: "02/12/2018",
+    sponsorCode: "C365CF",
+    selfSp: "27.00",
+    totalSp: "847.00",
+    currTotalSp: "0.00",
+    currSelfRsp: "0.00",
+    currTotalRsp: "0.00",
+  },
 ];
 
 export default function page() {

@@ -8,7 +8,7 @@ export default function PhotoIdentity() {
                 <div className="grid grid-cols-2 gap-4">
                     <div>
                         <p className="mb-2 text-md leading-normal text-gray-500 dark:text-gray-400">
-                            Name :
+                            Name 
                         </p>
                         <input
                             type="text"
@@ -18,7 +18,7 @@ export default function PhotoIdentity() {
                     </div>
                     <div>
                         <p className="mb-2 text-md leading-normal text-gray-500 dark:text-gray-400">
-                            Number :
+                            Number 
                         </p>
                         <input
                             type="text"

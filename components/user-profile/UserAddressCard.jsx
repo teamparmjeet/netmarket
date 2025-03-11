@@ -158,7 +158,7 @@ export default function UserAddressCard() {
                             ✕
                         </button>
                         <h4 className="mb-5 text-2xl font-semibold text-gray-800 dark:text-white text-center">
-                            Edit Personal Information
+                            Edit Address Information
                         </h4>
                         <form className="flex flex-col" onSubmit={handleUpdate}>
                             <div className="overflow-y-auto px-2 pb-3">

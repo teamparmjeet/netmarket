@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState, useMemo } from "react";
-import Image from "next/image";
 import axios from "axios";
+import Image from "next/image";
 import { useSession } from "next-auth/react";
 
 export default function UserMetaCard() {

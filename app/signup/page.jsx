@@ -93,7 +93,7 @@ export default function Signup() {
                 <h2 className="text-2xl font-bold text-center text-[#161950] mb-4">
                     {step === 1 ? "Verify Email" : step === 2 ? "Enter OTP" : "Create an Account"}
                 </h2>
-                <form onSubmit={step === 1 ? handleEmailSubmit : step === 2 ? handleOtpVerify : handleSubmit} className="grid gap-4">
+                <form onSubmit={step === 1 ? handleEmailSubmit : step === 2 ? handleOtpVerify : handleSubmit} className="grid gap-2">
                     {step === 1 && (
                         <div>
                             <label className="text-gray-700 text-sm font-semibold">Email</label>

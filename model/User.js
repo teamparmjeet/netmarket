@@ -3,9 +3,9 @@ import mongoose, { Schema } from "mongoose";
 const UserSchema = new Schema(
 
     {
-       
+
         name: { type: String, required: true, },
-        image: { type: String},
+        image: { type: String },
         relationTitle: { type: String, enum: ["S/o", "D/o", "W/o"], },
         fatherOrHusbandName: { type: String, },
         gender: { type: String, enum: ["Male", "Female", "Other"], required: true, },
@@ -15,6 +15,11 @@ const UserSchema = new Schema(
         mobileNo: { type: String, required: true, },
         whatsappNo: { type: String, },
         email: { type: String, required: true, },
+        bankName: { type: String, },
+        acnumber: { type: String, },
+        ifscCode: { type: String, },
+        ipanno: { type: String, },
+        iaadharno: { type: String, },
         nomineeName: { type: String, },
         nomineeRelation: { type: String, },
         nomineeDOB: { type: Date, },
@@ -40,9 +45,10 @@ const UserSchema = new Schema(
         ifscCode: { type: String, },
 
         nomineebankName: { type: String, },
-        nomineebranchName: { type: String, },
         nomineeacnumber: { type: String, },
         nomineeifscCode: { type: String, },
+        nomineeipanno: { type: String, },
+        nomineeiaadharno: { type: String, },
 
         password: { type: String, required: true },
 
@@ -55,6 +61,6 @@ const UserSchema = new Schema(
 );
 
 const UserModel =
-    mongoose.models.usertest5 || mongoose.model("usertest5", UserSchema);
+    mongoose.models.usertest6 || mongoose.model("usertest6", UserSchema);
 
 export default UserModel

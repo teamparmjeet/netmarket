@@ -1,13 +1,94 @@
-"use client"
-import React, { useState } from "react";
-import Image from "next/image";
+"use client";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { useSession } from "next-auth/react";
 
 export default function NomineeDetails() {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [selectedRelation, setSelectedRelation] = useState("Wife");
-    const relations = ["Brother", "Father", "Friend", "Mother", "Wife", "Sister"];
+    const { data: session, update } = useSession();
+    const [data, setData] = useState(null);
+    const [fetching, setFetching] = useState(true);
+    const [loading, setLoading] = useState(false);
+    const [formData, setFormData] = useState({
+        nomineeName: "",
+        nomineeRelation: "",
+        nomineeDOB: "",
+        nomineebankName: "",
+        nomineeacnumber: "",
+        nomineeifscCode: "",
+        nomineeipanno: "",
+        nomineeiaadharno: ""
+    });
 
+    useEffect(() => {
+        const fetchUserData = async () => {
+            setLoading(true);
+            if (!session?.user?.email) return;
+            try {
+                const response = await axios.get(`/api/user/find-admin-byemail/${session.user.email}`);
+                if (response.data?._id) {
+                    setData(response.data); // Store full user data
+                  
+                    setFormData({
+                        nomineeName: response.data.nomineeName || "",
+                        nomineeRelation: response.data.nomineeRelation || "",
+                        nomineeDOB: response.data.nomineeDOB || "",
+                        nomineebankName: response.data.nomineebankName || "",
+                        nomineeacnumber: response.data.nomineeacnumber || "",
+                        nomineeifscCode: response.data.nomineeifscCode || "",
+                        nomineeipanno: response.data.nomineeipanno|| "",
+                        nomineeiaadharno: response.data.nomineeiaadharno || "",
+                    });
+                }
+            } catch (error) {
+                console.error("Failed to fetch user data:", error);
+            } finally {
+                setFetching(false);
+                setLoading(false);
 
+            }
+        };
+        fetchUserData();
+    }, [session?.user?.email]);
+
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    const handleUpdate = async (e) => {
+        e.preventDefault();
+        if (!data?._id) return;
+        setLoading(true);
+
+        try {
+            const response = await axios.patch("/api/user/update-user", {
+                id: data._id, // Use user ID
+                ...formData, // Ensure correct format
+            });
+
+            if (response.data.success) {
+                alert("User updated successfully");
+                setIsModalOpen(false);
+                update(); // Refresh session manually if needed
+                window.location.reload();
+            }
+        } catch (error) {
+            console.error("Failed to update user:", error);
+            alert("Failed to update user");
+        } finally {
+            setLoading(false);
+        }
+    };
+    if (loading) {
+        return (
+            <>
+                <div className="text-center text-gray-500 h-8 rounded bg-gray-200 border animate-pulse"></div>
+                <div className="text-center text-gray-500 h-8 rounded bg-gray-200 border animate-pulse"></div>
+                <div className="text-center text-gray-500 h-8 rounded bg-gray-200 border animate-pulse"></div>
+                <div className="text-center text-gray-500 h-8 rounded bg-gray-200 border animate-pulse"></div>
+            </>
+        );
+    }
     return (
         <div>
             <div className="p-5 border bg-white dark:bg-gray-800 border-gray-200 rounded-2xl dark:border-gray-200  lg:p-6">
@@ -24,7 +105,7 @@ export default function NomineeDetails() {
                                         Nominee Name
                                     </p>
                                     <p className="text-md font-medium text-gray-800 dark:text-white/90">
-                                        ASHA
+                                        {data?.nomineeName || "Not Provided"}
                                     </p>
                                 </div>
 
@@ -32,17 +113,10 @@ export default function NomineeDetails() {
                                     <p className="mb-2 text-md leading-normal text-gray-500 dark:text-gray-400">
                                         Relation
                                     </p>
-                                    <select
-                                        className="w-full px-2 py-1 text-md font-medium text-gray-800 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-white dark:border-gray-700 focus:ring focus:ring-blue-200 focus:outline-none"
-                                        value={selectedRelation}
-                                        onChange={(e) => setSelectedRelation(e.target.value)}
-                                    >
-                                        {relations.map((relation) => (
-                                            <option key={relation} value={relation}>
-                                                {relation}
-                                            </option>
-                                        ))}
-                                    </select>
+                                    <p className="text-md font-medium text-gray-800 dark:text-white/90">
+                                        {data?.nomineeRelation || "Not Provided"}
+
+                                    </p>
                                 </div>
 
                                 <div>
@@ -50,7 +124,8 @@ export default function NomineeDetails() {
                                         DOB
                                     </p>
                                     <p className="text-md font-medium text-gray-800 dark:text-white/90">
-                                        01/01/1990
+                                        {data?.nomineeDOB ? new Date(data.dob).toLocaleDateString("en-GB") : "N/A"}
+
                                     </p>
                                 </div>
 
@@ -67,7 +142,8 @@ export default function NomineeDetails() {
                                         Bank Name
                                     </p>
                                     <p className="text-md font-medium text-gray-800 dark:text-white/90">
-                                        JILA SAHKARI BANK
+                                        {data?.nomineebankName || "Not Provided"}
+
                                     </p>
                                 </div>
 
@@ -76,7 +152,8 @@ export default function NomineeDetails() {
                                         Account No
                                     </p>
                                     <p className="text-md font-medium text-gray-800 dark:text-white/90">
-                                        183000561414
+                                        {data?.nomineeacnumber || "Not Provided"}
+
                                     </p>
                                 </div>
                                 <div>
@@ -84,7 +161,8 @@ export default function NomineeDetails() {
                                         IFSC Code
                                     </p>
                                     <p className="text-md font-medium text-gray-800 dark:text-white/90">
-                                        CBIN0MPDCAV
+                                        {data?.nomineeifscCode || "Not Provided"}
+
                                     </p>
                                 </div>
 
@@ -101,7 +179,8 @@ export default function NomineeDetails() {
                                         Pan No
                                     </p>
                                     <p className="text-md font-medium text-gray-800 dark:text-white/90">
-                                        FGJPM8600Q
+                                        {data?.nomineeipanno || "Not Provided"}
+
                                     </p>
                                 </div>
 
@@ -110,7 +189,7 @@ export default function NomineeDetails() {
                                         Addhar No.
                                     </p>
                                     <p className="text-md font-medium text-gray-800 dark:text-white/90">
-                                        329925538953
+                                        {data?.nomineeiaadharno || "Not Provided"}
                                     </p>
                                 </div>
 
@@ -124,78 +203,95 @@ export default function NomineeDetails() {
                         Edit
                     </button>
                 </div>
-            </div>
 
-            {/* Modal */}
-            {isModalOpen && (
-                <div
-                    className="fixed inset-0 w-full h-full  bg-gray-300 z-50 flex items-center justify-center"
-                    onClick={() => setIsModalOpen(false)} // Close modal on background click
-                >
+
+                {isModalOpen && (
                     <div
-                        className="relative max-w-[700px]  w-full mx-auto overflow-y-auto rounded-3xl bg-white p-4 dark:bg-gray-900 lg:p-11"
-                        onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside modal
-                    > <div className="px-2 pr-14">
-                            <h4 className="mb-2 text-2xl font-semibold text-gray-800 dark:text-white/90">
-                                Edit Nominee  Detail&apos;s
+                        className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm z-50"
+                        onClick={() => setIsModalOpen(false)}
+                    >
+                        <div
+                            className="relative max-w-xl w-full bg-white dark:bg-gray-900 shadow-2xl rounded-3xl p-6 lg:p-10"
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            <button
+                                className="absolute top-4 right-4 text-gray-500 dark:text-gray-300 hover:text-red-500"
+                                onClick={() => setIsModalOpen(false)}
+                            >
+                                ✕
+                            </button>
+                            <h4 className="mb-5 text-2xl font-semibold text-gray-800 dark:text-white text-center">
+                                Edit Nominee Information
                             </h4>
-                            <p className="mb-6 text-sm text-gray-500 dark:text-gray-400 lg:mb-7">
-                                Update your details to keep your profile up-to-date.
-                            </p>
-                        </div>
-                        <form className="flex flex-col">
-                            <div className="h-[450px] overflow-y-auto px-2 pb-3">
-                                <div className="grid grid-cols-1 gap-x-6 gap-y-5 lg:grid-cols-2 text-gray-800 dark:text-white/90">
-                                    <div>
-                                        <label className="block text-gray-700 dark:text-gray-300">Nominee Name</label>
-                                        <input className="border  rounded w-full p-2" type="text" placeholder="Enter Nominee Name" />
-                                    </div>
-                                    <div>
-                                        <label className="block text-gray-700 dark:text-gray-300">D.O.B.</label>
-                                        <input className="border  rounded w-full p-2" type="text" placeholder="Enter D.O.B." />
-                                    </div>
-                                    <div>
-                                        <label className="block text-gray-700 dark:text-gray-300">Relation</label>
-                                        <input className="border  rounded w-full p-2" type="text" placeholder="Enter Relation" />
-                                    </div>
-                                    <div>
-                                        <label className="block text-gray-700 dark:text-gray-300">Bank Name</label>
-                                        <input className="border  rounded w-full p-2" type="text" placeholder="Enter Bank Name" />
-                                    </div>
-                                    <div>
-                                        <label className="block text-gray-700 dark:text-gray-300">Account No</label>
-                                        <input className="border  rounded w-full p-2" type="text" placeholder="Enter Account No." />
-                                    </div>
-                                    <div>
-                                        <label className="block text-gray-700 dark:text-gray-300">IFSC Code</label>
-                                        <input className="border  rounded w-full p-2" type="text" placeholder="Enter IFSC Code " />
-                                    </div>
-                                    <div>
-                                        <label className="block text-gray-700 dark:text-gray-300">Pan No </label>
-                                        <input className="border  rounded w-full p-2" type="text" placeholder="Enter Pan No" />
-                                    </div>
-                                    <div>
-                                        <label className="block text-gray-700 dark:text-gray-300">Addhar No.</label>
-                                        <input className="border  rounded w-full p-2" type="text" placeholder="Enter Addhar No." />
+                            <form className="flex flex-col" onSubmit={handleUpdate}>
+                                <div className="overflow-y-auto px-2 pb-3">
+                                    <div className="grid grid-cols-1 gap-x-6 gap-y-5 lg:grid-cols-2 text-gray-800 dark:text-white/90">
+                                        {[
+                                            { label: "Nominee Name", name: "nomineeName", type: "text" },
+                                            { label: "Relation", name: "nomineeRelation", type: "select", options: ["Brother", "Father", "Friend", "Mother", "Wife", "Sister"] },
+                                            { label: "DOB", name: "nomineeDOB", type: "date" },
+                                            { label: "Bank Name", name: "nomineebankName", type: "text" },
+                                            { label: "Account No", name: "nomineeacnumber", type: "number" },
+                                            { label: "IFSC Code", name: "nomineeifscCode", type: "text" },
+                                            { label: "Pan No", name: "nomineeipanno", type: "text" },
+                                            { label: "Addhar No.", name: "nomineeiaadharno", type: "number" },
+                                        ].map((field) => (
+                                            <div key={field.name}>
+                                                <label className="block text-gray-700 dark:text-gray-300 font-medium">
+                                                    {field.label}
+                                                </label>
+                                                {field.type === "select" ? (
+                                                    <select
+                                                        name={field.name}
+                                                        value={formData[field.name]}
+                                                        onChange={handleChange}
+                                                        className="block w-full px-4 py-3 text-gray-500 bg-white border border-gray-200 rounded-md focus:border-[#161950] focus:outline-none focus:ring-[#161950] sm:text-sm"
+                                                    >
+                                                        <option value="">Select {field.label}</option>
+                                                        {field.options.map((option) => (
+                                                            <option key={option} value={option}>
+                                                                {option}
+                                                            </option>
+                                                        ))}
+                                                    </select>
+                                                ) : (
+                                                    <input
+                                                        name={field.name}
+                                                        value={formData[field.name]}
+                                                        onChange={handleChange}
+                                                        className="block w-full px-4 py-3 text-gray-500 bg-white border border-gray-200 rounded-md focus:border-[#161950] focus:outline-none focus:ring-[#161950] sm:text-sm"
+                                                        type={field.type}
+                                                        placeholder={field.label}
+                                                    />
+                                                )}
+                                            </div>
+                                        ))}
                                     </div>
                                 </div>
-                            </div>
-                            <div className="flex items-center gap-3 px-2 mt-6 lg:justify-end">
-                                <button
-                                    type="button"
-                                    className="border px-4 py-2 rounded text-gray-700 hover:bg-gray-100"
-                                    onClick={() => setIsModalOpen(false)}
-                                >
-                                    Close
-                                </button>
-                                <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-                                    Save Changes
-                                </button>
-                            </div>
-                        </form>
+
+                                <div className="flex justify-end gap-3 mt-4">
+                                    <button
+                                        type="button"
+                                        className="border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-100 transition"
+                                        onClick={() => setIsModalOpen(false)}
+                                    >
+                                        Close
+                                    </button>
+                                    <button
+                                        type="submit"
+                                        className="bg-[#161950]/80 text-white px-4 py-2 rounded-lg hover:bg-[#161950] transition disabled:bg-gray-400"
+                                        disabled={loading}
+                                    >
+                                        {loading ? "Saving..." : "Save Changes"}
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
-                </div>
-            )}
+                )}
+            </div>
+
+
         </div>
     );
 }

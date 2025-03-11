@@ -66,6 +66,7 @@ export default function UserAddressCard() {
                 alert("User updated successfully");
                 setIsModalOpen(false);
                 update(); // Refresh session manually if needed
+                window.location.reload();
             }
         } catch (error) {
             console.error("Failed to update user:", error);
@@ -99,7 +100,7 @@ export default function UserAddressCard() {
                                     Address 1
                                 </p>
                                 <p className="text-md font-semibold text-gray-800 dark:text-white/90">
-                                    {data?.address.addressLine1}
+                                    {data?.address?.addressLine1 || "Not Provided"}
                                 </p>
                             </div>
                             <div className="p-6 border border-gray-200 rounded-2xl dark:border-gray-700">
@@ -107,28 +108,29 @@ export default function UserAddressCard() {
                                     Address 2
                                 </p>
                                 <p className="text-md font-semibold text-gray-800 dark:text-white/90">
-                                    {data?.address.addressLine2}
+                                    {data?.address?.addressLine2 || "Not Provided"}
                                 </p>
                             </div>
                         </div>
 
                         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                             {[
-                                { label: "City", value: data?.address.city },
-                                { label: "Landmark", value: data?.address.landmark },
-                                { label: "Pin Code", value: data?.address.pinCode },
-                                { label: "State", value: data?.address.state },
+                                { label: "City", value: data?.address?.city },
+                                { label: "Landmark", value: data?.address?.landmark },
+                                { label: "Pin Code", value: data?.address?.pinCode },
+                                { label: "State", value: data?.address?.state },
                             ].map((item, index) => (
                                 <div key={index}>
                                     <p className="mb-2 text-sm font-medium text-gray-500 dark:text-gray-400">
                                         {item.label}
                                     </p>
                                     <p className="text-md font-semibold text-gray-800 dark:text-white/90">
-                                        {item.value}
+                                        {item.value || "Not Provided"}
                                     </p>
                                 </div>
                             ))}
                         </div>
+
                     </div>
 
                     <button

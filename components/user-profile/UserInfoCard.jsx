@@ -138,7 +138,7 @@ export default function UserInfocard() {
                                 </p>
 
                                 <p className="text-md font-medium text-gray-800 dark:text-white/90">
-                                    {data?.fatherOrHusbandName}
+                                    {data?.fatherOrHusbandName || "Not Provided"}
                                 </p>
                             </div>
                             <div>
@@ -154,7 +154,7 @@ export default function UserInfocard() {
                                     Profession
                                 </p>
                                 <p className="text-md font-medium text-gray-800 dark:text-white/90">
-                                    {data?.profession}
+                                    {data?.profession || "Not Provided"}
                                 </p>
                             </div>
                             <div>
@@ -162,7 +162,7 @@ export default function UserInfocard() {
                                     Marital Status
                                 </p>
                                 <p className="text-md font-medium text-gray-800 dark:text-white/90">
-                                    {data?.maritalStatus}
+                                    {data?.maritalStatus || "Not Provided"}
 
                                 </p>
 

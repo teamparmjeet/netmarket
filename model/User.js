@@ -18,8 +18,17 @@ const UserSchema = new Schema(
         bankName: { type: String, },
         acnumber: { type: String, },
         ifscCode: { type: String, },
-        ipanno: { type: String, },
-        iaadharno: { type: String, },
+        bankimage: { type: String, },
+        panno: { type: String, },
+        panimage: { type: String, },
+        aadharno: { type: String, },
+        aadharimage: { type: String, },
+        aadharfullname: { type: String, },
+
+        addressproof: { type: String, },
+        addressproofno: { type: String, },
+        addressproofimage: { type: String, },
+
         nomineeName: { type: String, },
         nomineeRelation: { type: String, },
         nomineeDOB: { type: Date, },
@@ -61,6 +70,6 @@ const UserSchema = new Schema(
 );
 
 const UserModel =
-    mongoose.models.usertest6 || mongoose.model("usertest6", UserSchema);
+    mongoose.models.usertest8 || mongoose.model("usertest8", UserSchema);
 
 export default UserModel

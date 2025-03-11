@@ -17,10 +17,8 @@ const navItems = [
         subItems: [
             { name: "My Profile", path: "/admin/Userprofile/profile", pro: false },
             { name: "I-Card", path: "/admin/Userprofile/i-card", pro: false },
-            { name: "Upload Photos (I-Card)", path: "/admin/Userprofile/uploadId", pro: false },
             { name: "Agreement", path: "/admin/Userprofile/agreement", pro: false },
             { name: "Addendum", path: "/admin/Userprofile/addendum", pro: false },
-            { name: "Reupload KYC", path: "/admin/Userprofile/reuploadkyc", pro: false },
             { name: "View KYC", path: "/admin/Userprofile/viewkyc", pro: false },
         ],
     },

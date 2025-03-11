@@ -3,9 +3,6 @@ import React from 'react';
 import PanCardDetails from '@/app/admin/component/viewkyc-card/PanCardDetails';
 import AadharcardDetails from '@/app/admin/component/viewkyc-card/AadharcardDetails';
 import AddressProof from '@/app/admin/component/viewkyc-card/AddressProof';
-import AgeProof from '@/app/admin/component/viewkyc-card/AgeProof';
-import PhotoIdentity from '@/app/admin/component/viewkyc-card/PhotoIdentity';
-import PhotoGraph from '@/app/admin/component/viewkyc-card/PhotoGraph';
 import BankDetails from '@/app/admin/component/viewkyc-card/BankDetails';
 
 
@@ -20,10 +17,7 @@ export default function page() {
                     <PanCardDetails />
                     <AadharcardDetails />
                     <AddressProof />
-                    <AgeProof />
-                    <PhotoIdentity />
                     <BankDetails />
-                    <PhotoGraph />
                 </div>
             </div>
         </>

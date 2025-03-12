@@ -93,7 +93,7 @@ export default function PanCardDetails() {
 
                           
                             <div
-                                className={`border border-gray-300 dark:border-gray-700 rounded-md p-4 flex items-center justify-center bg-black/10 dark:bg-gray-800 h-40 mt-4 overflow-hidden relative ${
+                                className={`col-span-2 lg:col-span-1 border border-gray-300 dark:border-gray-700 rounded-md p-4 flex items-center justify-center bg-black/10 dark:bg-gray-800 h-40 mt-4 overflow-hidden relative ${
                                     isEditing ? "cursor-pointer" : "cursor-default"
                                 }`}
                                 onClick={() => isEditing && document.getElementById("pan-upload").click()}

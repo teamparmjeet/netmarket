@@ -13,7 +13,7 @@ export default function page() {
                 <h3 className="mb-5 text-lg font-semibold text-gray-800 dark:text-white/90 lg:mb-7">
                     Uploaded ID Proof&apos;s
                 </h3>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <PanCardDetails />
                     <AadharcardDetails />
                     <AddressProof />

@@ -4,12 +4,12 @@ import { useSidebar } from '@/app/context/SidebarContext'
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { Grid2X2, UserCircle, List, Table2Icon, StickyNote, BoxIcon, ChartArea, ChevronDown } from "lucide-react";
+import { Grid2X2, UserCircle, UsersRound ,Medal , FileUser , BookOpenText ,NotebookText,KeyRound ,MailPlus ,Trophy  ,ScrollText, ChevronDown } from "lucide-react";
 const navItems = [
     {
         icon: <Grid2X2 />,
         name: "Dashboard",
-        path: "/admin",
+        path: "/admin/Dashboard",
     },
     {
         icon: <UserCircle />,
@@ -23,7 +23,7 @@ const navItems = [
         ],
     },
     {
-        icon: <UserCircle />,
+        icon: <UsersRound />,
         name: "Genealogy",
         subItems: [
             { name: "Sales Team", path: "/admin/Genealogy/salesteam", pro: false },
@@ -33,7 +33,7 @@ const navItems = [
         ],
     },
     {
-        icon: <UserCircle />,
+        icon: <FileUser />,
         name: "Account",
         subItems: [
             { name: "Sales Performance", path: "/admin/Account/salesperformance", pro: false },
@@ -44,7 +44,7 @@ const navItems = [
         ],
     },
     {
-        icon: <UserCircle />,
+        icon: <Medal  />,
         name: "Trip/Bonanza",
         subItems: [
             { name: "Spring Bonanza", path: "/admin/Trips/springbonanza", pro: false },
@@ -52,7 +52,7 @@ const navItems = [
         ],
     },
     {
-        icon: <UserCircle />,
+        icon: <BookOpenText  />,
         name: "Order Form",
         subItems: [
             { name: "New Oreder Form", path: "/admin/OrderForm/neworder", pro: false },
@@ -62,12 +62,12 @@ const navItems = [
         ],
     },
     {
-        icon: <UserCircle />,
+        icon: <NotebookText />,
         name: "Statement",
         path: "/admin/Statement",
     },
     {
-        icon: <UserCircle />,
+        icon: <MailPlus />,
         name: "Grievance",
         subItems: [
             { name: "Add", path: "/admin/Grievance/Add", pro: false },
@@ -76,12 +76,12 @@ const navItems = [
         ],
     },
     {
-        icon: <UserCircle />,
+        icon: <KeyRound />,
         name: "Change Password",
         path: "/admin/ChangePassword",
     },
     {
-        icon: <UserCircle />,
+        icon: <Trophy />,
         name: "Company Achievers",
         subItems: [
             { name: "Rank Achievers", path: "/admin/CompanyAchivers/Rank", pro: false },
@@ -91,7 +91,7 @@ const navItems = [
         ],
     },
     {
-        icon: <UserCircle />,
+        icon: <ScrollText />,
         name: "Public Notice",
         subItems: [
             { name: "Times of India", path: "/admin/PublicNotice/TimesIndia", pro: false },

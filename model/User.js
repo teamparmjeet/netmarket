@@ -3,8 +3,8 @@ import mongoose, { Schema } from "mongoose";
 const UserSchema = new Schema(
 
     {
-        dscode: { type: String, required: true,default: "0" },
-        pdscode: { type: String, required: true,default: "0" },
+        dscode: { type: String, required: true, default: "0" },
+        pdscode: { type: String, required: true, default: "0" },
         name: { type: String, required: true, },
         image: { type: String },
         relationTitle: { type: String, enum: ["S/o", "D/o", "W/o"], },
@@ -70,7 +70,18 @@ const UserSchema = new Schema(
     { timestamps: true }
 );
 
+UserSchema.pre("save", async function (next) {
+    if (this.isNew) {
+        const lastUser = await mongoose.model("usertest11").findOne({}, {}, { sort: { dscode: -1 } });
+        if (lastUser && lastUser.dscode) {
+            this.dscode = (parseInt(lastUser.dscode, 10) + 1).toString();
+        } else {
+            this.dscode = "1";
+        }
+    }
+    next();
+});
 const UserModel =
-    mongoose.models.usertest9 || mongoose.model("usertest9", UserSchema);
+    mongoose.models.usertest11 || mongoose.model("usertest11", UserSchema);
 
 export default UserModel

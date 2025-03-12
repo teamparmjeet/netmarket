@@ -3,7 +3,8 @@ import mongoose, { Schema } from "mongoose";
 const UserSchema = new Schema(
 
     {
-
+        dscode: { type: String, required: true,default: "0" },
+        pdscode: { type: String, required: true,default: "0" },
         name: { type: String, required: true, },
         image: { type: String },
         relationTitle: { type: String, enum: ["S/o", "D/o", "W/o"], },
@@ -70,6 +71,6 @@ const UserSchema = new Schema(
 );
 
 const UserModel =
-    mongoose.models.usertest8 || mongoose.model("usertest8", UserSchema);
+    mongoose.models.usertest9 || mongoose.model("usertest9", UserSchema);
 
 export default UserModel

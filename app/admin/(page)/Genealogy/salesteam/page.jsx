@@ -2,44 +2,37 @@
 
 import React, { useState } from "react";
 import { Search, User } from "lucide-react";
+import axios from "axios";
+import Image from "next/image";
 
-export default function page() {
+export default function Page() {
     const [dsId, setDsId] = useState("");
     const [searchResult, setSearchResult] = useState(null);
     const [hoveredUserId, setHoveredUserId] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
 
-    const handleSearch = () => {
-        if (dsId === "123") {
-            setSearchResult({
-                superAdmin: {
-                    name: "John Doe",
-                    role: "Super Admin",
-                    dsId: "DS-001",
-                    email: "john.doe@example.com",
-                    mobile: "+91 98765 43210",
-                    address: "123 Main St, New Delhi",
-                },
-                members: [
-                    {
-                        name: "Alice Smith",
-                        role: "Manager",
-                        dsId: "DS-002",
-                        email: "alice.smith@example.com",
-                        mobile: "+91 91234 56789",
-                        address: "456 Market St, Mumbai",
-                    },
-                    {
-                        name: "Bob Johnson",
-                        role: "Manager",
-                        dsId: "DS-003",
-                        email: "bob.johnson@example.com",
-                        mobile: "+91 90123 45678",
-                        address: "789 Business Rd, Bangalore",
-                    },
-                ],
-            });
-        } else {
-            setSearchResult(null);
+    const handleSearch = async () => {
+        if (!dsId.trim()) return;
+
+        setLoading(true);
+        setError(null);
+        setSearchResult(null);
+
+        try {
+            const response = await axios.get(`/api/dscode/findtwobydscode/${dsId}`);
+            if (response.data.success) {
+                setSearchResult({
+                    user: response.data.mainUser,
+                    members: response.data.relatedUsers,
+                });
+            } else {
+                setError("No user found with this D.S. ID.");
+            }
+        } catch (err) {
+            setError("An error occurred while fetching data.");
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -69,34 +62,55 @@ export default function page() {
                 </button>
             </div>
 
+            {loading && (
+                <div className="animate-pulse space-y-4">
+                    <div className=" h-20 bg-gray-300 rounded-lg"></div>
+                    <div className=" h-20 bg-gray-300 rounded-lg"></div>
+                </div>
+            )}
+
+            {error && <p className="text-red-500">{error}</p>}
+
             {searchResult && (
                 <div className="flex flex-col items-center space-y-8">
+                    {/* Super Admin */}
                     <div
                         className="relative flex flex-col items-center group"
-                        onMouseEnter={() => setHoveredUserId(searchResult.superAdmin.dsId)}
+                        onMouseEnter={() => setHoveredUserId(searchResult.user.dscode)}
                         onMouseLeave={() => setHoveredUserId(null)}
                     >
                         <div className="bg-blue-600 text-white px-6 py-4 rounded-lg shadow-lg flex flex-col items-center w-48 cursor-pointer">
-                            <User className="w-12 h-12 bg-white text-blue-600 rounded-full p-2 mb-2" />
-                            <p className="text-lg font-semibold">{searchResult.superAdmin.name}</p>
-                            <p className="text-sm opacity-75">{searchResult.superAdmin.role}</p>
+                            {searchResult?.user?.image ? (
+                                <Image
+                                    src={searchResult.user.image}
+                                    alt="User"
+                                    width={60}
+                                    height={60}
+                                    className="w-12 h-12 rounded-full mb-2 object-cover"
+                                />
+                            ) : (
+                                <User className="w-12 h-12 bg-white text-blue-600 rounded-full p-2 mb-2" />
+                            )}
+
+                            <p className="text-lg font-semibold text-center">{searchResult.user.name}</p>
+                            <p className="text-sm opacity-75">Main User</p>
                             <p className="text-xs bg-white text-blue-600 px-2 py-1 rounded mt-2">
-                                {searchResult.superAdmin.dsId}
+                                {searchResult.user.dscode}
                             </p>
                         </div>
 
-                        {hoveredUserId === searchResult.superAdmin.dsId && (
-                            <div className="absolute top-20 bg-white border p-4 rounded-lg shadow-lg w-60 text-sm transition-opacity opacity-100">
-                                <p><strong>Full Name:</strong> {searchResult.superAdmin.name}</p>
-                                <p><strong>Email:</strong> {searchResult.superAdmin.email}</p>
-                                <p><strong>Mobile:</strong> {searchResult.superAdmin.mobile}</p>
-                                <p><strong>Address:</strong> {searchResult.superAdmin.address}</p>
+                        {hoveredUserId === searchResult.user.dscode && (
+                            <div className="absolute top-20 bg-white border p-4 rounded-lg shadow-lg w-60 text-sm">
+                                <p><strong>Full Name:</strong> {searchResult.user.name}</p>
+                                <p><strong>Email:</strong> {searchResult.user.email}</p>
+                                <p><strong>Mobile:</strong> {searchResult.user.mobileNo}</p>
+                                <p><strong>Address:</strong> {searchResult.user?.address?.addressLine1}</p>
                             </div>
                         )}
-
                         <div className="w-[2px] h-8 bg-gray-400"></div>
                     </div>
 
+                    {/* Members */}
                     <div className="flex space-x-12 items-start relative">
                         <div className="absolute top-6 left-1/2 transform -translate-x-1/2 w-[80%] h-[2px] bg-gray-400"></div>
 
@@ -104,26 +118,24 @@ export default function page() {
                             <div
                                 key={index}
                                 className="flex flex-col items-center group"
-                                onMouseEnter={() => setHoveredUserId(member.dsId)}
+                                onMouseEnter={() => setHoveredUserId(member.dscode)}
                                 onMouseLeave={() => setHoveredUserId(null)}
                             >
                                 <div className="w-[2px] h-8 bg-gray-400"></div>
-
                                 <div className="bg-green-500 text-white px-6 py-4 rounded-lg shadow-lg flex flex-col items-center w-48 cursor-pointer">
                                     <User className="w-12 h-12 bg-white text-green-500 rounded-full p-2 mb-2" />
                                     <p className="text-lg font-semibold">{member.name}</p>
-                                    <p className="text-sm opacity-75">{member.role}</p>
+                                    <p className="text-sm opacity-75">{member.role || "Member"}</p>
                                     <p className="text-xs bg-white text-green-600 px-2 py-1 rounded mt-2">
-                                        {member.dsId}
+                                        {member.dscode}
                                     </p>
                                 </div>
-
-                                {hoveredUserId === member.dsId && (
-                                    <div className="absolute top-20 bg-white border p-4 rounded-lg shadow-lg w-60 text-sm transition-opacity opacity-100">
+                                {hoveredUserId === member.dscode && (
+                                    <div className="absolute top-20 bg-white border p-4 rounded-lg shadow-lg w-60 text-sm">
                                         <p><strong>Full Name:</strong> {member.name}</p>
                                         <p><strong>Email:</strong> {member.email}</p>
-                                        <p><strong>Mobile:</strong> {member.mobile}</p>
-                                        <p><strong>Address:</strong> {member.address}</p>
+                                        <p><strong>Mobile:</strong> {member.mobileNo}</p>
+                                        <p><strong>Address:</strong> {member?.address?.addressLine1}</p>
                                     </div>
                                 )}
                             </div>

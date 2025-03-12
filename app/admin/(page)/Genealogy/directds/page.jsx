@@ -1,104 +1,147 @@
 "use client";
+import React, { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
+import axios from "axios";
 
-import React from "react";
+export default function Page() {
+    const { data: session } = useSession();
+    const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const [searchResult, setSearchResult] = useState(null);
 
-const directSellers = [
-    {
-        sno: 1,
-        dsCode: "C365CF",
-        name: "SHAMBHUDAYAL MEENA",
-        doj: "02/12/2018",
-        sponsorCode: "12504A",
-        selfSp: "29.00",
-        totalSp: "105782.75",
-        currTotalSp: "0.00",
-        saleGroup: "SGO",
-        currSelfRsp: "0.00",
-        currTotalRsp: "0.00",
-    },
-    {
-        sno: 2,
-        dsCode: "9D8B6A",
-        name: "RAMMUKAT MEENA",
-        doj: "02/12/2018",
-        sponsorCode: "C365CF",
-        selfSp: "27.00",
-        totalSp: "847.00",
-        currTotalSp: "0.00",
-        saleGroup: "SAO",
-        currSelfRsp: "0.00",
-        currTotalRsp: "0.00",
-    },
-    {
-        sno: 3,
-        dsCode: "3266F0D",
-        name: "NARENDRA MEENA",
-        doj: "23/09/2020",
-        sponsorCode: "C365CF",
-        selfSp: "100.00",
-        totalSp: "104906.75",
-        currTotalSp: "0.00",
-        saleGroup: "SGO",
-        currSelfRsp: "0.00",
-        currTotalRsp: "0.00",
-    },
-];
+    useEffect(() => {
+        const fetchUserData = async () => {
+            if (!session?.user?.email) return;
+            try {
+                const response = await axios.get(`/api/user/find-admin-byemail/${session.user.email}`);
+                if (response.data) {
+                    setData(response.data.dscode);
+                }
+            } catch (error) {
+                console.error("Failed to fetch user data:", error);
+            }
+        };
+        fetchUserData();
+    }, [session?.user?.email]);
 
-export default function page() {
+    useEffect(() => {
+        const handleSearch = async () => {
+            if (!data) return;
+            setLoading(true);
+            setError(null);
+            setSearchResult(null);
+
+            try {
+                const response = await axios.get(`/api/dscode/findtwobydscode/${data}`);
+                if (response.data.success) {
+                    setSearchResult({
+                        user: response.data.mainUser, // Main user details
+                        members: response.data.relatedUsers, // Downline members
+                    });
+                } else {
+                    setError("No user found with this D.S. ID.");
+                }
+            } catch (err) {
+                setError("An error occurred while fetching data.");
+            } finally {
+                setLoading(false);
+            }
+        };
+        handleSearch();
+    }, [data]);
+
+    const handlePrint = () => {
+        window.print();
+    };
+
     return (
         <div className="lg:p-6 p-2 max-w-6xl mx-auto bg-white shadow-lg rounded-lg">
             <h2 className="text-2xl font-bold text-center text-gray-700 mb-6">Downline Direct DS</h2>
 
-            <div className="overflow-x-auto rounded-lg border border-gray-200 shadow-sm">
-                <table className="min-w-full bg-white border-collapse">
-                    <thead className="bg-blue-600 text-white text-sm uppercase sticky top-0">
-                        <tr>
-                            {[
-                                "S.No",
-                                "DS Code",
-                                "DS Name",
-                                "DOJ",
-                                "Sponsor DS Code",
-                                "Self SP",
-                                "Total SP",
-                                "Curr. Total SP",
-                                "Sale Group",
-                                "Curr. Self RSP",
-                                "Curr. Total RSP",
-                            ].map((header, index) => (
-                                <th key={index} className="p-3 border border-gray-300 text-center">
-                                    {header}
-                                </th>
-                            ))}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {directSellers.map((seller, index) => (
-                            <tr
-                                key={seller.sno}
-                                className={`border-b text-gray-700 ${index % 2 === 0 ? "bg-gray-50" : "bg-white"
-                                    } hover:bg-gray-100`}
-                            >
-                                <td className="p-3 border text-center">{seller.sno}</td>
-                                <td className="p-3 border text-center font-medium text-blue-600">{seller.dsCode}</td>
-                                <td className="p-3 border text-left">{seller.name}</td>
-                                <td className="p-3 border text-center">{seller.doj}</td>
-                                <td className="p-3 border text-center">{seller.sponsorCode}</td>
-                                <td className="p-3 border text-right font-semibold">{seller.selfSp}</td>
-                                <td className="p-3 border text-right font-semibold">{seller.totalSp}</td>
-                                <td className="p-3 border text-right">{seller.currTotalSp}</td>
-                                <td className="p-3 border text-center">{seller.saleGroup}</td>
-                                <td className="p-3 border text-right">{seller.currSelfRsp}</td>
-                                <td className="p-3 border text-right">{seller.currTotalRsp}</td>
+            {/* Skeleton Loader */}
+            {loading && (
+                <div className="animate-pulse space-y-3">
+                    <div className="h-6 bg-gray-200 rounded"></div>
+                    <div className="h-6 bg-gray-200 rounded w-5/6"></div>
+                    <div className="h-6 bg-gray-200 rounded w-4/6"></div>
+                </div>
+            )}
+
+            {/* Error Message */}
+            {error && <p className="text-red-500 text-center">{error}</p>}
+
+            {/* Display Table */}
+            {!loading && searchResult && (
+                <div className="overflow-x-auto rounded-lg border border-gray-200 shadow-sm">
+                    <table className="min-w-full bg-white border-collapse">
+                        <thead className="bg-blue-600 text-white text-sm uppercase sticky top-0">
+                            <tr>
+                                {[
+                                    "S.No",
+                                    "DS Code",
+                                    "DS Name",
+                                    "DOJ",
+                                    "Sponsor DS Code",
+                                    "Self SP",
+                                    "Total SP",
+                                    "Curr. Total SP",
+                                    "Sale Group",
+                                    "Curr. Self RSP",
+                                    "Curr. Total RSP",
+                                ].map((header, index) => (
+                                    <th key={index} className="p-3 border border-gray-300 text-center">
+                                        {header}
+                                    </th>
+                                ))}
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
+                        </thead>
+                        <tbody>
+                            {/* Main User Row */}
+                            {searchResult.user && (
+                                <tr className="text-center bg-gray-100 font-semibold">
+                                    <td className="p-3 border">1</td>
+                                    <td className="p-3 border">{searchResult?.user?.dscode}</td>
+                                    <td className="p-3 border">{searchResult?.user?.name}</td>
+                                    <td className="p-3 border">{searchResult?.user?.createdAt ? new Date(searchResult.user?.createdAt).toLocaleDateString("en-GB") : "N/A"}</td>
+                                    <td className="p-3 border">{searchResult?.user?.sponsorDscode}</td>
+                                    <td className="p-3 border">{searchResult?.user?.selfSp || "-"}</td>
+                                    <td className="p-3 border">{searchResult?.user?.totalSp || "-"}</td>
+                                    <td className="p-3 border">{searchResult?.user?.currTotalSp || "-"}</td>
+                                    <td className="p-3 border">{searchResult?.user?.saleGroup || "-"}</td>
+                                    <td className="p-3 border">{searchResult?.user?.currSelfRsp || "-"}</td>
+                                    <td className="p-3 border">{searchResult?.user?.currTotalRsp || "-"}</td>
+                                </tr>
+                            )}
+
+                            {/* Downline Members Rows */}
+                            {searchResult.members?.map((member, index) => (
+                                <tr key={index} className="text-center border-t">
+                                    <td className="p-3 border">{index + 2}</td>
+                                    <td className="p-3 border">{member?.dscode}</td>
+                                    <td className="p-3 border">{member?.name}</td>
+                                    <td className="p-3 border">{member?.createdAt ? new Date(member.createdAt).toLocaleDateString("en-GB") : "N/A"}</td>
+                                    <td className="p-3 border">{member?.sponsorDscode}</td>
+                                    <td className="p-3 border">{member?.selfSp || "-"}</td>
+                                    <td className="p-3 border">{member?.totalSp || "-"}</td>
+                                    <td className="p-3 border">{member?.currTotalSp || "-"}</td>
+                                    <td className="p-3 border">{member?.saleGroup || "-"}</td>
+                                    <td className="p-3 border">{member?.currSelfRsp || "-"}</td>
+                                    <td className="p-3 border">{member?.currTotalRsp || "-"}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            )}
+
 
             <p className="text-lg font-semibold text-gray-800 text-center mt-4">
-                Total Direct Seller: <span className="text-blue-600">{directSellers.length}</span>
+                Total Direct Seller:{" "}
+                <span className="text-blue-600">{searchResult?.members?.length + 1 || 0}</span>
             </p>
+
+
         </div>
     );
 }

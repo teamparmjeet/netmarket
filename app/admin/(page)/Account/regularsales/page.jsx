@@ -14,7 +14,7 @@ export default function page() {
 
     return (
         <div className="lg:p-6 p-2 mx-auto bg-white shadow-lg rounded-lg">
-            <h2 className="text-2xl font-bold text-center text-gray-700 mb-6">SalesPerformance </h2>
+            <h2 className="text-2xl font-bold text-center text-gray-700 mb-6">Sales Performance</h2>
 
             <form onSubmit={handleSubmit} className="flex flex-wrap gap-4 justify-center items-end">
                 <div>

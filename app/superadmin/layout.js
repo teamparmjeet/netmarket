@@ -27,13 +27,13 @@ export default function SuperAdminLayout({ children }) {
 
   return (
     <>
-      <div className="min-h-screen xl:flex">
+      <div className="min-h-screen xl:flex  bg-white dark:bg-gray-800">
         <AppSidebar />
         <div
           className={`${geistSans.variable} ${geistMono.variable} antialiased flex-1 transition-all  duration-300 ease-in-out ${mainContentMargin}`}
         >
           <AppHeader />
-          <div className="p-4 mx-auto max-w-(--breakpoint-2xl) md:p-6">{children}</div>
+          <div className="p-4 mx-auto max-w-(--breakpoint-2xl) bg-white dark:bg-gray-800 md:p-6">{children}</div>
         </div>
       </div>
 

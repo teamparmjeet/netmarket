@@ -51,10 +51,6 @@ export default function Page() {
         handleSearch();
     }, [data]);
 
-    const handlePrint = () => {
-        window.print();
-    };
-
     return (
         <div className="lg:p-6 p-2 max-w-6xl mx-auto bg-white shadow-lg rounded-lg">
             <h2 className="text-2xl font-bold text-center text-gray-700 mb-6">Downline Direct DS</h2>

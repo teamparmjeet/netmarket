@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { Mail, Lock } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 export default function Signin() {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
@@ -127,10 +128,14 @@ export default function Signin() {
           </form>
         </div>
 
-        <div className=" hidden md:block w-full  order-1  md:order-2 md:w-1/2 bg-[#161950] text-white  items-center justify-center p-8">
-          <div className=" flex justify-center items-center flex-col h-full">
-            <h2 className="text-2xl font-semibold text-center">Welcome to Our Platform</h2>
-            <p className="mt-4 text-center">Manage your properties and inquiries effortlessly with our intuitive platform.</p>
+        <div className=" border-l-2 border-gray-200 hidden md:block w-full  order-1  md:order-2 md:w-1/2 bg-white text-white  items-center justify-center p-8">
+          <div className=" flex justify-center items-center flex-col">
+            <Image
+              src="/images/user/sitelogo-removebg-preview.png"
+              height={250}
+              width={250}
+              alt=""
+            />
           </div>
         </div>
       </div>

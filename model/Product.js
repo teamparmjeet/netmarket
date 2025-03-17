@@ -1,16 +1,18 @@
 import mongoose, { Schema } from "mongoose";
 
-const BonanzaSchema = new Schema(
+const ProductSchema = new Schema(
 
     {
-        product:{type: String, required: true},
-        defaultdata: { type: String, required: true, default: "Bonanza" }
+        productname: { type: String, required: true },
+        group: { type: String, required: true },
+        price: { type: String, required: true },
+        defaultdata: { type: String, required: true, default: "product" }
 
     },
     { timestamps: true }
 );
 
-const BonanzaModel =
-    mongoose.models.Bonanzatest || mongoose.model("Bonanzatest", BonanzaSchema);
+const ProductModel =
+    mongoose.models.Producttest || mongoose.model("Producttest", ProductSchema);
 
-export default BonanzaModel
+export default ProductModel

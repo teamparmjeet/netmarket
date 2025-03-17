@@ -1,16 +1,38 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Search, User } from "lucide-react";
 import axios from "axios";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
 
 export default function Page() {
+    const { data: session } = useSession();
+
+    const [usertype, setUsertype] = useState(null);
+    const [dscode, setDscode] = useState(null);
     const [dsId, setDsId] = useState("");
     const [searchResult, setSearchResult] = useState(null);
     const [hoveredUserId, setHoveredUserId] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+
+
+    useEffect(() => {
+        const fetchUserData = async () => {
+            if (!session?.user?.email) return;
+            try {
+                const response = await axios.get(`/api/user/find-admin-byemail/${session.user.email}`);
+                if (response.data) {
+                    setUsertype(response.data.usertype);
+                    setDscode(response.data.dscode);
+                }
+            } catch (error) {
+                console.error("Failed to fetch user data:", error);
+            }
+        };
+        fetchUserData();
+    }, [session?.user?.email]);
 
     const handleSearch = async () => {
         if (!dsId.trim()) return;
@@ -20,7 +42,9 @@ export default function Page() {
         setSearchResult(null);
 
         try {
-            const response = await axios.get(`/api/dscode/findtwobydscode/${dsId}`);
+            const response = await axios.get(`/api/dscode/findtwobydscode/${dsId}`, {
+                params: { usertype, dscode }, 
+            });
             if (response.data.success) {
                 setSearchResult({
                     user: response.data.mainUser,
@@ -73,7 +97,7 @@ export default function Page() {
 
             {searchResult && (
                 <div className="flex flex-col items-center space-y-8">
-                    {/* Super Admin */}
+                  
                     <div
                         className="relative flex flex-col items-center group"
                         onMouseEnter={() => setHoveredUserId(searchResult.user.dscode)}

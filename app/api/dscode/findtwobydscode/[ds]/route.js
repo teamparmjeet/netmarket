@@ -5,10 +5,11 @@ export async function GET(request) {
   await dbConnect();
 
   try {
-    
+
     const url = new URL(request.url);
     const ds = url.pathname.split("/").pop();
-
+    const usertype = url.searchParams.get("usertype");
+    const dscode = url.searchParams.get("dscode");
     if (!ds) {
       return Response.json(
         {
@@ -19,7 +20,7 @@ export async function GET(request) {
       );
     }
 
- 
+
     const mainUser = await UserModel.findOne({ dscode: ds });
     if (!mainUser) {
       return Response.json(

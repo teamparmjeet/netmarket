@@ -28,17 +28,7 @@ const navItems = [
             { name: "Depth Downline", path: "/superadmin/Genealogy/depthdownline", pro: false },
         ],
     },
-    {
-        icon: <FileUser />,
-        name: "Account",
-        subItems: [
-            { name: "Sales Performance", path: "/superadmin/Account/salesperformance", pro: false },
-            { name: "My Regular Sales Comission", path: "/superadmin/Account/regularsales", pro: false },
-            { name: "Trip/Bonanzo Comission", path: "/superadmin/Account/tripcomission", pro: false },
-            { name: "My Repurchase Payments", path: "/superadmin/Account/repurchasepayments", pro: false },
-            { name: "Step Pendency", path: "/superadmin/Account/steppendency", pro: false },
-        ],
-    },
+   
     {
         icon: <Medal  />,
         name: "Trip/Bonanza",
@@ -49,51 +39,19 @@ const navItems = [
     },
     {
         icon: <BookOpenText  />,
-        name: "Order Form",
+        name: "Product Form",
         subItems: [
-            { name: "New Oreder Form", path: "/superadmin/OrderForm/neworder", pro: false },
-            { name: "Pending Orders", path: "/superadmin/OrderForm/pendingorder", pro: false },
-            { name: "My Approved Orders", path: "/superadmin/OrderForm/approvedorder", pro: false },
-            { name: "Product List", path: "/superadmin/OrderForm/productlist", pro: false },
+            { name: "Product Group", path: "/superadmin/Product/productgroup", pro: false },
+            { name: "Add Product", path: "/superadmin/Product/addproduct", pro: false },
         ],
     },
-    {
-        icon: <NotebookText />,
-        name: "Statement",
-        path: "/superadmin/Statement",
-    },
-    {
-        icon: <MailPlus />,
-        name: "Grievance",
-        subItems: [
-            { name: "Add", path: "/superadmin/Grievance/Add", pro: false },
-            { name: "View", path: "/superadmin/Grievance/View", pro: false },
-            { name: "Call/Mail Us", path: "/superadmin/Grievance/Callus", pro: false },
-        ],
-    },
+   
     {
         icon: <KeyRound />,
         name: "Change Password",
         path: "/superadmin/ChangePassword",
     },
-    {
-        icon: <Trophy />,
-        name: "Company Achievers",
-        subItems: [
-            { name: "Rank Achievers", path: "/superadmin/CompanyAchivers/Rank", pro: false },
-            { name: "Trip Achievers", path: "/superadmin/CompanyAchivers/Trip", pro: false },
-            { name: "Car Achievers", path: "/superadmin/CompanyAchivers/Car", pro: false },
-            { name: "Marketing Plan", path: "/superadmin/CompanyAchivers/Marketing", pro: false },
-        ],
-    },
-    {
-        icon: <ScrollText />,
-        name: "Public Notice",
-        subItems: [
-            { name: "Times of India", path: "/superadmin/PublicNotice/TimesIndia", pro: false },
-            { name: "Rashtriya Saharas", path: "/superadmin/PublicNotice/RashtriyaSaharas", pro: false },
-        ],
-    },
+   
 
 ];
 

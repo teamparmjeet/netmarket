@@ -271,7 +271,7 @@ const AppSidebar = () => {
             onMouseLeave={() => setIsHovered(false)}
         >
             <div className={`py-8 flex ${!isExpanded && !isHovered ? "lg:justify-center" : "justify-start"}`}>
-                <Link href="/">
+                <Link href="/admin">
                     {isExpanded || isHovered || isMobileOpen ? (
                         <>
                             <Image className="block dark:hidden" src="/images/logo/logo.svg" alt="Logo" width={150} height={40} />

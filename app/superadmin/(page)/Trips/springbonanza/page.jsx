@@ -52,9 +52,9 @@ export default function TripBonanzaUpload() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
-      <h1 className="text-2xl font-bold mb-4">Upload Trip Bonanza Image</h1>
-      <div className="bg-white p-6 rounded-lg shadow-md w-96">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-white dark:bg-gray-800 p-4">
+      <h1 className="text-2xl font-bold mb-4 text-gray-800 dark:text-white">Upload Trip Bonanza Image</h1>
+      <div className="bg-white dark:bg-gray-800 p-6 border border-gray-100 dark:border-gray-600 rounded-lg shadow-md w-96">
         <input
           type="file"
           accept="image/*"
@@ -68,7 +68,7 @@ export default function TripBonanzaUpload() {
         )}
         <button
           onClick={handleSave}
-          className="mt-4 w-full bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600 disabled:bg-gray-400"
+          className="mt-4 w-full bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600 disabled:bg-gray-400 dark:disabled:bg-gray-600"
           disabled={!file || uploading || loading}
         >
           {loading || uploading ? 'Uploading...' : 'Submit'}

@@ -37,8 +37,8 @@ export default function Page() {
             ) : error ? (
                 <p className="text-center text-red-500 font-semibold">{error}</p>
             ) : (
-                <div className="overflow-x-auto">
-                    <table className="w-full border border-gray-200 shadow-lg rounded-lg overflow-hidden">
+                <div className="overflow-x-auto border rounded-lg">
+                    <table className="w-full border border-gray-200 dark:border-white shadow-lg rounded-lg overflow-hidden">
                         <thead>
                             <tr className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white text-left">
                                 <th className="py-3 px-4 border-r">Ds Code</th>
@@ -54,16 +54,16 @@ export default function Page() {
                                 data.map((user, index) => (
                                     <tr
                                         key={index}
-                                        className={`border-b ${index % 2 === 0 ? "bg-gray-50" : "bg-white"
-                                            } hover:bg-blue-100 transition duration-200`}
+                                        className={`border-b ${index % 2 === 0 ? "bg-gray-50 dark:bg-gray-700" : "bg-white dark:bg-gray-800"
+                                            } hover:bg-blue-100 dark:hover:bg-gray-600 text-black dark:text-white transition duration-200`}
                                     >
                                         <td className="py-3 px-4 border-r">{user.dscode}</td>
                                         <td className="py-3 px-4 border-r">{user.name}</td>
                                         <td className="py-3 px-4 border-r  font-light">{user.email}</td>
-                                        <td className="py-3 px-4 border-r font-medium text-indigo-600">
+                                        <td className="py-3 px-4 border-r font-medium text-indigo-600 dark:text-sky-400">
                                             {user.usertype === "0" ? "User" : "Admin"}
                                         </td>
-                                        <td className="py-3 px-4  font-medium text-indigo-600">
+                                        <td className="py-3 px-4  font-medium text-indigo-600 dark:text-sky-400">
                                             {user.status === "0" ? "In Active" : "Active"}
                                         </td>
                                         <td className="py-3 px-4 border-r">

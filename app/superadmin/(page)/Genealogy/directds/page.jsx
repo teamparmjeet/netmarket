@@ -56,8 +56,8 @@ export default function Page() {
     };
 
     return (
-        <div className="lg:p-6 p-2 max-w-6xl mx-auto bg-white shadow-lg rounded-lg">
-            <h2 className="text-2xl font-bold text-center text-gray-700 mb-6">Downline Direct DS</h2>
+        <div className="lg:p-6 p-2 max-w-6xl mx-auto bg-white dark:bg-gray-800 shadow-lg dark:shadow-none rounded-lg border border-white dark:border-gray-600">
+            <h2 className="text-2xl font-bold text-center text-gray-700 dark:text-white mb-6">Downline Direct DS</h2>
 
             {/* Skeleton Loader */}
             {loading && (
@@ -74,8 +74,8 @@ export default function Page() {
             {/* Display Table */}
             {!loading && searchResult && (
                 <div className="overflow-x-auto rounded-lg border border-gray-200 shadow-sm">
-                    <table className="min-w-full bg-white border-collapse">
-                        <thead className="bg-blue-600 text-white text-sm uppercase sticky top-0">
+                    <table className="min-w-full bg-white dark:bg-gray-800 border-collapse">
+                        <thead className="bg-blue-600 text-white dark:text-gray-200 text-sm uppercase sticky top-0">
                             <tr>
                                 {[
                                     "S.No",
@@ -99,7 +99,7 @@ export default function Page() {
                         <tbody>
                             {/* Main User Row */}
                             {searchResult.user && (
-                                <tr className="text-center bg-gray-100 font-semibold">
+                                <tr className="text-center bg-gray-100 dark:bg-gray-800 font-semibold text-gray-800 dark:text-gray-400">
                                     <td className="p-3 border">1</td>
                                     <td className="p-3 border">{searchResult?.user?.dscode}</td>
                                     <td className="p-3 border">{searchResult?.user?.name}</td>
@@ -116,7 +116,7 @@ export default function Page() {
 
                             {/* Downline Members Rows */}
                             {searchResult.members?.map((member, index) => (
-                                <tr key={index} className="text-center border-t">
+                                <tr key={index} className="text-center border-t text-gray-800 dark:text-gray-200">
                                     <td className="p-3 border">{index + 2}</td>
                                     <td className="p-3 border">{member?.dscode}</td>
                                     <td className="p-3 border">{member?.name}</td>
@@ -136,7 +136,7 @@ export default function Page() {
             )}
 
 
-            <p className="text-lg font-semibold text-gray-800 text-center mt-4">
+            <p className="text-lg font-semibold text-gray-800 dark:text-white text-center mt-4">
                 Total Direct Seller:{" "}
                 <span className="text-blue-600">{searchResult?.members?.length + 1 || 0}</span>
             </p>

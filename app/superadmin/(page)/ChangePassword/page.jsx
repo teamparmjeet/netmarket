@@ -91,7 +91,8 @@ export default function ChangePasswordPage() {
   };
 
   return (
-    <div className="max-w-md mx-auto p-6 bg-white dark:bg-gray-700 shadow-lg rounded-lg text-gray-700 dark:text-white">
+   <div className="flex justify-center items-center w-full min-h-screen">
+     <div className="max-w-md sm:min-w-md p-6 bg-white dark:bg-gray-700 shadow-lg rounded-lg text-gray-700 dark:text-white">
       <Toaster />
       <h2 className="text-2xl font-semibold mb-4 text-center">
         {step === 1 && "Verify Email"}
@@ -183,5 +184,6 @@ export default function ChangePasswordPage() {
         </form>
       )}
     </div>
+   </div>
   );
 }

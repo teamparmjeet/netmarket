@@ -47,7 +47,7 @@ const navItems = [
         icon: <Medal  />,
         name: "Trip/Bonanza",
         subItems: [
-            { name: "Spring Bonanza", path: "/admin/Trips/springbonanza", pro: false },
+            // { name: "Spring Bonanza", path: "/admin/Trips/springbonanza", pro: false },
             { name: "My Trip list", path: "/admin/Trips/mytriplist", pro: false },
         ],
     },

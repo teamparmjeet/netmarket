@@ -18,18 +18,18 @@ const tripAchievers = [
 export default function page() {
   return (
     <div className="p-6 max-w-5xl mx-auto">
-      <h2 className="text-2xl font-bold text-center text-gray-700 mb-6">Trip Achiever List</h2>
+      <h2 className="text-2xl font-bold text-center text-gray-700 dark:text-white mb-6">Trip Achiever List</h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {tripAchievers.map((trip) => (
           <div
             key={trip.id}
-            className="bg-white shadow-md rounded-lg p-5 flex items-center justify-between border-l-4 
+            className="bg-gray-100 dark:bg-gray-700  shadow-md rounded-lg p-5 flex items-center justify-between border-l-4 
               border-blue-600 hover:border-blue-700 transition duration-300"
           >
             <div>
-              <h3 className="text-lg font-semibold text-gray-800">{trip.tripName}</h3>
-              <p className="text-sm text-gray-500">Achieve Date: {trip.achieveDate || "N/A"}</p>
+              <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100">{trip.tripName}</h3>
+              <p className="text-sm text-gray-500 dark:text-gray-400">Achieve Date: {trip.achieveDate || "N/A"}</p>
             </div>
             <span
               className={`px-3 py-1 text-sm font-semibold rounded-lg ${

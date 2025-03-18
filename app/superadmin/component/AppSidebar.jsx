@@ -43,6 +43,7 @@ const navItems = [
         subItems: [
             { name: "Product Group", path: "/superadmin/Product/productgroup", pro: false },
             { name: "Add Product", path: "/superadmin/Product/addproduct", pro: false },
+            { name: "All Product", path: "/superadmin/Product/allproduct", pro: false },
         ],
     },
    

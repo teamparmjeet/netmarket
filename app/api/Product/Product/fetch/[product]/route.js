@@ -5,7 +5,7 @@ export const GET = async (request) => {
   await dbConnect();
 
   try {
-    const data = await ProductModel.find({ defaultdata: "ProductGroup" });
+    const data = await ProductModel.find({ defaultdata: "product" });
 
     return Response.json(
       {

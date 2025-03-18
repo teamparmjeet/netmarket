@@ -113,6 +113,12 @@ export default function Signin() {
                 required
                 disabled={loading}
               />
+              <Link href="/forgot">
+                <span className="text-[#161950]  text-xs cursor-pointer">
+                  Forgot Password?
+                </span>
+              </Link>
+
             </div>
 
             <button

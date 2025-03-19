@@ -83,9 +83,14 @@ export default function UserProfile() {
       </Section>
 
       <Section title="Address">
-        <p className="text-gray-600 dark:text-gray-200">
-          {userData.address?.addressLine1 || "N/A"}
-        </p>
+        <InfoGrid>
+          <p className="text-gray-600 dark:text-gray-200">
+            {userData.address?.addressLine1 || "N/A"}
+          </p>
+          <p className="text-gray-600 dark:text-gray-200">
+            {userData.address?.addressLine2 || "N/A"}
+          </p>
+        </InfoGrid>
         <p className="text-gray-600 dark:text-gray-200">
           {userData.address?.city}, {userData.address?.state} -{" "}
           {userData.address?.pinCode}
@@ -113,29 +118,37 @@ export default function UserProfile() {
             label="Document No"
             value={userData.kycVerification?.documentNo}
           />
-          <div>
-            <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-2">
-              Uploaded Document
-            </h3>
-            <InfoGrid>
-              <a
-                href={userData.panimage || "/images/user/icon-5359553_640.webp"}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Image
-                  src={
-                    userData.panimage || "/images/user/icon-5359553_640.webp"
-                  }
-                  alt="KYC Document"
-                  width={300}
-                  height={200}
-                  className="w-full h-auto rounded-md border border-gray-600 object-contain shadow-md cursor-pointer"
-                />
-              </a>
-            </InfoGrid>
-          </div>
         </InfoGrid>
+      </Section>
+
+      <Section title="Uploaded Documents">
+        <InfoGrid4>
+          {[
+            {
+              label: "PAN Card",
+              image: userData.panimage,
+              value: userData.panno,
+            },
+            {
+              label: "Aadhar Card",
+              image: userData.aadharimage,
+              value: userData.aadharno,
+            },
+            {
+              label: "Address Proof",
+              image: userData.addressproofimage,
+              value: userData.addressproofno,
+            },
+          ].map((doc, index) => (
+            <ImageCard
+              key={index}
+              label={doc.label}
+              image={doc.image}
+              value={doc.value}
+              showValue={true}
+            />
+          ))}
+        </InfoGrid4>
       </Section>
 
       <Section title="Bank Details">
@@ -144,19 +157,12 @@ export default function UserProfile() {
           <InfoCard label="Account Number" value={userData.acnumber} />
           <InfoCard label="IFSC Code" value={userData.ifscCode} />
           <InfoGrid>
-            <a
-              href={userData.bankimage || "/images/user/icon-5359553_640.webp"}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Image
-                src={userData.bankimage || "/images/user/icon-5359553_640.webp"}
-                alt="KYC Document"
-                width={300}
-                height={200}
-                className="w-full h-42 rounded-md border border-gray-600 object-cover shadow-md cursor-pointer"
-              />
-            </a>
+            <ImageCard
+              label="Bank Document"
+              image={userData.bankimage}
+              value={userData.acnumber}
+              showValue={false}
+            />
           </InfoGrid>
         </InfoGrid>
       </Section>
@@ -172,6 +178,14 @@ export default function UserProfile() {
           <InfoCard label="Bank Name" value={userData.nomineebankName} />
           <InfoCard label="Account No." value={userData.nomineeacnumber} />
           <InfoCard label="IFSC Code" value={userData.nomineeifscCode} />
+          <InfoCard
+            label="Nominee Pan Card No."
+            value={userData.nomineeipanno}
+          />
+          <InfoCard
+            label="Nominee Aadhar No."
+            value={userData.nomineeiaadharno}
+          />
         </InfoGrid>
       </Section>
 
@@ -197,11 +211,43 @@ const Section = ({ title, children }) => (
 const InfoGrid = ({ children }) => (
   <div className="grid grid-cols-2 gap-4 ">{children}</div>
 );
+const InfoGrid4 = ({ children }) => (
+  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 ">{children}</div>
+);
 
 const InfoCard = ({ label, value }) => (
   <div>
     <h3 className="font-semibold text-gray-700 dark:text-gray-100">{label}</h3>
     <p className="text-gray-600 dark:text-gray-400">{value || "N/A"}</p>
+  </div>
+);
+
+const ImageCard = ({ label, image, value, showValue = false }) => (
+  <div className="">
+    <h3 className="text-md font-medium text-gray-800 dark:text-gray-300 mb-2">
+      {label}
+    </h3>
+    {image ? (
+      <a href={image} target="_blank" rel="noopener noreferrer">
+        <Image
+          src={image}
+          alt={label}
+          width={300}
+          height={200}
+          className="w-full h-42 rounded-md object-cover shadow-md cursor-pointer"
+        />
+      </a>
+    ) : (
+      <p className="text-gray-500 dark:text-gray-400">No document uploaded</p>
+    )}
+
+    {showValue && value && (
+      <div className="mt-2 px-3 py-1 bg-gray-200 dark:bg-gray-700 rounded-md">
+        <p className="text-gray-700 dark:text-gray-300 text-sm">
+          <strong>{label} No:</strong> {value}
+        </p>
+      </div>
+    )}
   </div>
 );
 

@@ -76,6 +76,7 @@ export default function UserProfile() {
           <InfoCard label="Profession" value={userData.profession} />
           <InfoCard label="Marital Status" value={userData.maritalStatus} />
           <InfoCard label="Mobile Number" value={userData.mobileNo} />
+          <InfoCard label="Whatsapp Number" value={userData.whatsappNo} />
           <InfoCard label="DS Code" value={userData.dscode} />
           <InfoCard label="PDS Code" value={userData.pdscode} />
         </InfoGrid>
@@ -118,12 +119,14 @@ export default function UserProfile() {
             </h3>
             <InfoGrid>
               <a
-                href={userData.image || "/images/user/icon-5359553_640.webp"}
+                href={userData.panimage || "/images/user/icon-5359553_640.webp"}
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 <Image
-                  src={userData.image || "/images/user/icon-5359553_640.webp"}
+                  src={
+                    userData.panimage || "/images/user/icon-5359553_640.webp"
+                  }
                   alt="KYC Document"
                   width={300}
                   height={200}
@@ -140,6 +143,21 @@ export default function UserProfile() {
           <InfoCard label="Bank Name" value={userData.bankName} />
           <InfoCard label="Account Number" value={userData.acnumber} />
           <InfoCard label="IFSC Code" value={userData.ifscCode} />
+          <InfoGrid>
+            <a
+              href={userData.bankimage || "/images/user/icon-5359553_640.webp"}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Image
+                src={userData.bankimage || "/images/user/icon-5359553_640.webp"}
+                alt="KYC Document"
+                width={300}
+                height={200}
+                className="w-full h-42 rounded-md border border-gray-600 object-cover shadow-md cursor-pointer"
+              />
+            </a>
+          </InfoGrid>
         </InfoGrid>
       </Section>
 

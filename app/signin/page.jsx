@@ -114,7 +114,7 @@ export default function Signin() {
                 disabled={loading}
               />
               <Link href="/forgot">
-                <span className="text-[#161950]  text-xs cursor-pointer">
+                <span className="text-xs cursor-pointer hover:underline hover:text-[#161950] font-semibold text-gray-600 mt-2">
                   Forgot Password?
                 </span>
               </Link>

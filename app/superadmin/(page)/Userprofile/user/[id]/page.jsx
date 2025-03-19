@@ -56,9 +56,13 @@ export default function UserProfile() {
           className="w-24 h-24 rounded-full border object-cover shadow-md"
         />
         <div>
-          <h2 className="text-2xl font-bold text-gray-800 dark:text-white">{userData.name}</h2>
+          <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
+            {userData.name}
+          </h2>
           <p className="text-gray-600 dark:text-gray-300">{userData.email}</p>
-          <p className="text-sm text-gray-500 dark:text-gray-200">{userData.gender}</p>
+          <p className="text-sm text-gray-500 dark:text-gray-200">
+            {userData.gender}
+          </p>
         </div>
       </div>
 
@@ -108,6 +112,26 @@ export default function UserProfile() {
             label="Document No"
             value={userData.kycVerification?.documentNo}
           />
+          <div>
+            <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-2">
+              Uploaded Document
+            </h3>
+            <InfoGrid>
+              <a
+                href={userData.image || "/images/user/icon-5359553_640.webp"}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Image
+                  src={userData.image || "/images/user/icon-5359553_640.webp"}
+                  alt="KYC Document"
+                  width={300}
+                  height={200}
+                  className="w-full h-auto rounded-md border border-gray-600 object-contain shadow-md cursor-pointer"
+                />
+              </a>
+            </InfoGrid>
+          </div>
         </InfoGrid>
       </Section>
 
@@ -145,7 +169,7 @@ export default function UserProfile() {
 
 const Section = ({ title, children }) => (
   <div className="mt-6 p-4 bg-gray-50 dark:bg-gray-800 dark:shadow-none dark:border rounded-lg shadow-sm">
-    <h3 className="text-xl font-bold text-gray-800 border-b pb-2 mb-4">
+    <h3 className="text-xl font-bold text-gray-800 dark:text-gray-200 border-b pb-2 mb-4">
       {title}
     </h3>
     {children}

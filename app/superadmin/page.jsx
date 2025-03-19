@@ -37,7 +37,7 @@ export default function Page() {
   return (
     <div className="w-full max-w-6xl mx-auto p-4">
       {loading ? (
-        <div className="h-96 flex justify-center items-center bg-gray-200 animate-pulse">
+        <div className="h-96 flex justify-center items-center bg-gray-200  animate-pulse">
           <div className="w-full h-full bg-gray-300 rounded-lg"></div>
         </div>
       ) : error ? (

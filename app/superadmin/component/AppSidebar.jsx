@@ -4,7 +4,7 @@ import { useSidebar } from '@/app/context/SidebarContext'
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { Grid2X2, UserCircle, UsersRound ,Medal , FileUser , BookOpenText ,NotebookText,KeyRound ,MailPlus ,Trophy  ,ScrollText, ChevronDown } from "lucide-react";
+import { Grid2X2,TrophyIcon, UserCircle, UsersRound, Medal, FileUser, BookOpenText, NotebookText, KeyRound, MailPlus, Trophy, ScrollText, ChevronDown } from "lucide-react";
 const navItems = [
     {
         icon: <Grid2X2 />,
@@ -28,9 +28,9 @@ const navItems = [
             { name: "Depth Downline", path: "/superadmin/Genealogy/depthdownline", pro: false },
         ],
     },
-   
+
     {
-        icon: <Medal  />,
+        icon: <Medal />,
         name: "Trip/Bonanza",
         subItems: [
             { name: "Spring Bonanza", path: "/superadmin/Trips/springbonanza", pro: false },
@@ -38,7 +38,7 @@ const navItems = [
         ],
     },
     {
-        icon: <BookOpenText  />,
+        icon: <BookOpenText />,
         name: "Product Form",
         subItems: [
             { name: "Product Group", path: "/superadmin/Product/productgroup", pro: false },
@@ -46,13 +46,22 @@ const navItems = [
             { name: "All Product", path: "/superadmin/Product/allproduct", pro: false },
         ],
     },
-   
+
+    {
+        icon: <TrophyIcon />,
+        name: "Achivers",
+        subItems: [
+            { name: "Add Achivers", path: "/superadmin/Achivers/add", pro: false },
+            { name: "All Achivers", path: "/superadmin/Achivers/all", pro: false },
+        ],
+    },
+
     {
         icon: <KeyRound />,
         name: "Change Password",
         path: "/superadmin/ChangePassword",
     },
-   
+
 
 ];
 

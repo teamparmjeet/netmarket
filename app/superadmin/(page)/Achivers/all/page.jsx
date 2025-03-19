@@ -124,7 +124,13 @@ export default function Page() {
                     />
                   </td>
                   <td className="py-4 px-6 text-gray-800 dark:text-gray-200">{achiever.name}</td>
-                  <td className="py-4 px-6 text-gray-800 dark:text-gray-200">{achiever.achivementtype1}</td>
+                  <td className="py-4 px-6 text-gray-800 dark:text-gray-200">{achiever.achivementtype1}
+                    <span className=" font-semibold ms-2">
+                      {achiever.achivementtype1 === "Rank Achiever" ? `(${achiever.ranktype})` : ""}
+                      {achiever.achivementtype1 === "Trip Achiever" ? `(${achiever.triptype})` : ""}
+                    </span>
+
+                  </td>
                   <td className="py-4 px-6 text-gray-800 dark:text-gray-200">{achiever.address}</td>
                 </tr>
               ))}

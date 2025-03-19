@@ -8,6 +8,8 @@ const AchiversSchema = new Schema(
         image: { type: String },
         address: { type: String },
         achivementtype1: { type: String },
+        ranktype:{type: String },
+        triptype:{type: String },
         defaultdata: { type: String, required: true, default: "Achivers" }
 
     },
@@ -15,6 +17,6 @@ const AchiversSchema = new Schema(
 );
 
 const AchiversModel =
-    mongoose.models.Achiverstest1 || mongoose.model("Achiverstest1", AchiversSchema);
+    mongoose.models.Achiverstest2 || mongoose.model("Achiverstest2", AchiversSchema);
 
 export default AchiversModel

@@ -8,6 +8,8 @@ export default function Page() {
         dsid: "",
         address: "",
         achivementtype1: "",
+        ranktype: "",
+        triptype: "",
         image: null,
     });
 
@@ -51,7 +53,12 @@ export default function Page() {
         if (!formData.address.trim()) newErrors.address = "Address is required";
         if (!formData.achivementtype1.trim()) newErrors.achivementtype1 = "Achievement Type 1 is required";
         if (!file) newErrors.image = "Image is required";
-
+        if (formData.achivementtype1 === "Rank Achiever" && !formData.ranktype.trim()) {
+            newErrors.ranktype = "Rank Type is required";
+        }
+        if (formData.achivementtype1 === "Trip Achiever" && !formData.triptype.trim()) {
+            newErrors.triptype = "Trip Type is required";
+        }
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
@@ -190,8 +197,41 @@ export default function Page() {
                         {errors.achivementtype1 && <p className="text-red-500 text-xs">{errors.achivementtype1}</p>}
                     </div>
 
+                    {formData.achivementtype1 === "Rank Achiever" && (
+                        <div className="col-span-12 md:col-span-6">
+                            <select
+                                name="ranktype"
+                                value={formData.ranktype}
+                                onChange={handleChange}
+                                className="w-full border p-2 rounded text-sm"
+                                disabled={loading}
+                            >
+                                <option value="">Select Rank Type</option>
+                                <option value="Rank 1">Rank 1</option>
+                                <option value="Rank 2">Rank 2</option>
+                                <option value="Rank 3">Rank 3</option>
+                            </select>
+                            {errors.ranktype && <p className="text-red-500 text-xs">{errors.ranktype}</p>}
+                        </div>
+                    )}
 
-
+                    {formData.achivementtype1 === "Trip Achiever" && (
+                        <div className="col-span-12 md:col-span-6">
+                            <select
+                                name="triptype"
+                                value={formData.triptype}
+                                onChange={handleChange}
+                                className="w-full border p-2 rounded text-sm"
+                                disabled={loading}
+                            >
+                                <option value="">Select Trip Type</option>
+                                <option value="Trip 1">Trip 1</option>
+                                <option value="Trip 2">Trip 2</option>
+                                <option value="Trip 3">Trip 3</option>
+                            </select>
+                            {errors.triptype && <p className="text-red-500 text-xs">{errors.triptype}</p>}
+                        </div>
+                    )}
                     {/* Image Upload */}
                     <div className="col-span-12">
                         <label className="text-sm font-medium text-gray-600">Upload Image</label>

@@ -1,37 +1,50 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { saveAs } from "file-saver";
 import * as XLSX from "xlsx";
 
-const rankData = {
-  "TOPAZ DS": [
-    { id: "69C765", name: "KULDEEP", city: "Delhi 9711190019" },
-    { id: "555245", name: "VIKAS", city: "Charkhi Dadri" },
-    { id: "52A896", name: "ANILVIR", city: "Bhiwani" },
-  ],
-  "RUBY STAR DS": [
-    { id: "B8C1B2", name: "RISHI RAM SAHU", city: "Nawapara" },
-    { id: "58D038", name: "KOMAL PRASAD SAHU", city: "Nawapara" },
-    { id: "7DE261", name: "PRADEEP NAMDEO DHOTE", city: "Nagpur" },
-  ],
-  "DIAMOND DS": [
-    { id: "6F53AB", name: "RAMVIR SINGH", city: "Jaipur" },
-    { id: "0733FA", name: "RATNAMALA RAVINDRA SANGOLKAR", city: "Nagpur" },
-    { id: "3D9888", name: "SAJJNA", city: "Pilani" },
-  ]
-};
-
-export default function page() {
-  const [selectedRank, setSelectedRank] = useState("TOPAZ DS");
+export default function Page() {
+  const [rankAchievers, setRankAchievers] = useState([]);
+  const [availableRanks, setAvailableRanks] = useState(["All Ranks"]);
+  const [selectedRank, setSelectedRank] = useState("All Ranks");
   const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(true);
   const itemsPerPage = 10;
 
-  const totalPages = Math.ceil(rankData[selectedRank].length / itemsPerPage);
+  useEffect(() => {
+    const fetchRankAchievers = async () => {
+      try {
+        const response = await axios.get("/api/achivers/fetchbytype/Rank Achiever");
+        const achieversData = response.data.data || [];
+
+        // Extract unique ranks and add "All Ranks"
+        const ranks = ["All Ranks", ...new Set(achieversData.map((item) => item.ranktype))];
+
+        setRankAchievers(achieversData);
+        setAvailableRanks(ranks);
+      } catch (error) {
+        console.error("Error fetching Rank achievers:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRankAchievers();
+  }, []);
+
+  // Filtering logic: Show all when "All Ranks" is selected
+  const filteredAchievers =
+    selectedRank === "All Ranks"
+      ? rankAchievers
+      : rankAchievers.filter((achiever) => achiever.ranktype === selectedRank);
+
+  const totalPages = Math.ceil(filteredAchievers.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const currentItems = rankData[selectedRank].slice(startIndex, startIndex + itemsPerPage);
+  const currentItems = filteredAchievers.slice(startIndex, startIndex + itemsPerPage);
 
   const exportToExcel = () => {
-    const worksheet = XLSX.utils.json_to_sheet(rankData[selectedRank]);
+    const worksheet = XLSX.utils.json_to_sheet(filteredAchievers);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Rank Achievers");
     const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
@@ -42,7 +55,8 @@ export default function page() {
   return (
     <div className="mx-auto lg:p-6 p-2 bg-white dark:bg-gray-700 shadow-lg rounded-lg text-gray-700 dark:text-white">
       <h2 className="text-2xl font-semibold mb-4 text-center">Rank Achiever List</h2>
-      
+
+      {/* Rank Selection Dropdown */}
       <div className="mb-4">
         <label className="block text-sm font-medium">Select Rank</label>
         <select
@@ -53,33 +67,41 @@ export default function page() {
           }}
           className="border rounded-lg p-2 w-full bg-white dark:bg-gray-700 text-gray-700 dark:text-white"
         >
-          {Object.keys(rankData).map((rank) => (
-            <option key={rank} value={rank}>{rank}</option>
+          {availableRanks.map((rank) => (
+            <option key={rank} value={rank}>
+              {rank}
+            </option>
           ))}
         </select>
       </div>
-      
-      <table className="w-full border-collapse border border-gray-300 rounded-lg overflow-hidden">
-        <thead>
-          <tr className="bg-gray-100 dark:bg-gray-600">
-            <th className="border border-gray-300 px-4 py-2">Sno</th>
-            <th className="border border-gray-300 px-4 py-2">DS ID</th>
-            <th className="border border-gray-300 px-4 py-2">DS Name</th>
-            <th className="border border-gray-300 px-4 py-2">City</th>
-          </tr>
-        </thead>
-        <tbody>
-          {currentItems.map((achiever, index) => (
-            <tr key={achiever.id} className="text-center bg-white dark:bg-gray-800">
-              <td className="border border-gray-300 px-4 py-2">{startIndex + index + 1}</td>
-              <td className="border border-gray-300 px-4 py-2">{achiever.id}</td>
-              <td className="border border-gray-300 px-4 py-2">{achiever.name}</td>
-              <td className="border border-gray-300 px-4 py-2">{achiever.city}</td>
+
+      {/* Table */}
+      {loading ? (
+        <p className="text-center">Loading...</p>
+      ) : (
+        <table className="w-full border-collapse border border-gray-300 rounded-lg overflow-hidden">
+          <thead>
+            <tr className="bg-gray-100 dark:bg-gray-600">
+              <th className="border border-gray-300 px-4 py-2">Sno</th>
+              <th className="border border-gray-300 px-4 py-2">DS ID</th>
+              <th className="border border-gray-300 px-4 py-2">DS Name</th>
+              <th className="border border-gray-300 px-4 py-2">City</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-      
+          </thead>
+          <tbody>
+            {currentItems.map((achiever, index) => (
+              <tr key={achiever._id} className="text-center bg-white dark:bg-gray-800">
+                <td className="border border-gray-300 px-4 py-2">{startIndex + index + 1}</td>
+                <td className="border border-gray-300 px-4 py-2">{achiever.dsid}</td>
+                <td className="border border-gray-300 px-4 py-2">{achiever.name}</td>
+                <td className="border border-gray-300 px-4 py-2">{achiever.address}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+
+      {/* Pagination Controls */}
       <div className="flex justify-between items-center mt-4">
         <button
           onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
@@ -88,7 +110,9 @@ export default function page() {
         >
           Previous
         </button>
-        <span>Page {currentPage} of {totalPages}</span>
+        <span>
+          Page {currentPage} of {totalPages}
+        </span>
         <button
           onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
           disabled={currentPage === totalPages}
@@ -97,7 +121,8 @@ export default function page() {
           Next
         </button>
       </div>
-      
+
+      {/* Export to Excel Button */}
       <button
         onClick={exportToExcel}
         className="mt-4 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 w-40"

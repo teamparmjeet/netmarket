@@ -7,6 +7,7 @@ import { signOut } from 'next-auth/react';
 import { LogOut } from 'lucide-react';
 
 import Image from "next/image";
+
 const AppHeader = () => {
     const [isApplicationMenuOpen, setApplicationMenuOpen] = useState(false);
     const { isMobileOpen, toggleSidebar, toggleMobileSidebar } = useSidebar();
@@ -83,19 +84,12 @@ const AppHeader = () => {
 
                     <Link href="/" className="lg:hidden">
                         <Image
-                            width={154}
-                            height={32}
-                            className="block dark:hidden"
-                            src="./images/logo/logo.svg"
+                            width={60}
+                            height={60}
+                            src="/images/logo/logo-blank.png"
                             alt="Logo"
                         />
-                        <Image
-                            width={154}
-                            height={32}
-                            className="hidden dark:block"
-                            src="./images/logo/logo-dark.svg"
-                            alt="Logo"
-                        />
+                 
                     </Link>
 
                     <button

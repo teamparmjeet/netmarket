@@ -211,15 +211,15 @@ const AppSidebar = () => {
             onMouseEnter={() => !isExpanded && setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
         >
-            <div className={`py-8 flex ${!isExpanded && !isHovered ? "lg:justify-center" : "justify-start"}`}>
+            <div className={`py-4 flex ${!isExpanded && !isHovered ? "lg:justify-center" : "justify-start"}`}>
                 <Link href="/superadmin">
                     {isExpanded || isHovered || isMobileOpen ? (
                         <>
-                            <Image className="block dark:hidden" src="/images/logo/logo.svg" alt="Logo" width={150} height={40} />
-                            <Image className="hidden dark:block" src="/images/logo/logo-dark.svg" alt="Logo" width={150} height={40} />
+                            <Image className="" src="/images/logo/logo-blank.png" alt="Logo" width={80} height={80} />
+                            {/* <Image className="hidden dark:block" src="/images/logo/logo-dark.svg" alt="Logo" width={150} height={40} /> */}
                         </>
                     ) : (
-                        <Image src="/images/logo/logo-icon.svg" alt="Logo" width={32} height={32} />
+                        <Image src="/images/logo/logo-blank.png" alt="Logo" width={80} height={80} />
                     )}
                 </Link>
             </div>

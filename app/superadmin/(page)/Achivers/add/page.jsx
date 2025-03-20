@@ -106,15 +106,15 @@ export default function Page() {
 
     return (
         <div className="flex flex-col items-center justify-center   p-4">
-            <h1 className="text-xl font-semibold mb-4 text-gray-700">Register Achiever</h1>
+            <h1 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200">Register Achiever</h1>
             <form
                 onSubmit={handleSubmit}
-                className="bg-white p-4 md:p-6 border border-gray-200 rounded-lg shadow-lg w-full max-w-2xl"
+                className="bg-white dark:bg-gray-800 p-4 md:p-6 border border-gray-200 dark:border-gray-600 rounded-lg shadow-lg w-full"
             >
                 <div className="grid grid-cols-12 gap-4">
                     {/* Name */}
                     <div className="col-span-12 md:col-span-6">
-                        <label className="text-sm font-medium text-gray-600">Name</label>
+                        <label className="text-sm font-medium text-gray-600 dark:text-gray-200">Name</label>
                         <select
                             name="name"
                             value={formData.name}
@@ -126,7 +126,7 @@ export default function Page() {
                                     dsid: selectedUser?.dscode || "",
                                 });
                             }}
-                            className="w-full border p-2 rounded bg-gray-50"
+                            className="w-full border p-2 rounded bg-gray-50 dark:bg-gray-800 text-gray-600 dark:text-gray-200"
                             disabled={loading}
                         >
                             <option value="">Select Name</option>
@@ -141,7 +141,7 @@ export default function Page() {
 
                     {/* DSID */}
                     <div className="col-span-12 md:col-span-6">
-                        <label className="text-sm font-medium text-gray-600">DSID</label>
+                        <label className="text-sm font-medium text-gray-600 dark:text-gray-200">DSID</label>
                         <select
                             name="dsid"
                             value={formData.dsid}
@@ -153,7 +153,7 @@ export default function Page() {
                                     name: selectedUser?.name || "",
                                 });
                             }}
-                            className="w-full border p-2 rounded bg-gray-50"
+                            className="w-full border p-2 rounded bg-gray-50 dark:bg-gray-800 text-gray-600 dark:text-gray-200"
                             disabled={loading}
                         >
                             <option value="">Select DSID</option>
@@ -186,7 +186,7 @@ export default function Page() {
                             name="achivementtype1"
                             value={formData.achivementtype1}
                             onChange={handleChange}
-                            className="w-full border p-2 rounded text-sm"
+                            className="w-full border p-2 rounded text-sm bg-gray-50 dark:bg-gray-800 text-gray-600 dark:text-gray-200"
                             disabled={loading}
                         >
                             <option value="">Select Achievement Type 1</option>
@@ -234,7 +234,7 @@ export default function Page() {
                     )}
                     {/* Image Upload */}
                     <div className="col-span-12">
-                        <label className="text-sm font-medium text-gray-600">Upload Image</label>
+                        <label className="text-sm font-medium text-gray-600 dark:text-gray-200">Upload Image</label>
                         <input
                             type="file"
                             accept="image/*"
@@ -247,10 +247,10 @@ export default function Page() {
                     </div>
 
                     {/* Submit Button */}
-                    <div className="col-span-12">
+                    <div className="col-span-12 text-center">
                         <button
                             type="submit"
-                            className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 disabled:bg-gray-400"
+                            className="w-42 bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 disabled:bg-gray-400"
                             disabled={loading || uploading}
                         >
                             {loading || uploading ? "Submitting..." : "Submit"}

@@ -10,7 +10,7 @@ export async function POST(req, res) {
         await newdata.save();
 
         return Response.json({
-            message: "data Register",
+            message: "Order Register",
             success: true,
         }, { status: 200 })
     } catch (error) {

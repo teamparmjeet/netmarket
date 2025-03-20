@@ -72,8 +72,8 @@ export default function Page() {
           }}
         >
           <option value="">All Achievement Types</option>
-          {uniqueTypes.map((type) => (
-            <option key={type} value={type}>{type}</option>
+          {uniqueTypes.map((type, index) => (
+            <option key={index} value={type}>{type}</option>
           ))}
         </select>
 
@@ -84,8 +84,8 @@ export default function Page() {
           onChange={(e) => setSelectedName(e.target.value)}
         >
           <option value="">All Names</option>
-          {uniqueNames.map((name) => (
-            <option key={name} value={name}>{name}</option>
+          {uniqueNames.map((name, index) => (
+            <option key={index} value={name}>{name}</option>
           ))}
         </select>
       </div>
@@ -109,9 +109,9 @@ export default function Page() {
               </tr>
             </thead>
             <tbody>
-              {filteredAchievers.map((achiever) => (
+              {filteredAchievers.map((achiever, index) => (
                 <tr
-                  key={achiever.dsid}
+                  key={index}
                   className="border-b dark:border-gray-700 hover:bg-indigo-100 dark:hover:bg-indigo-900 transition"
                 >
                   <td className="py-4 px-6">

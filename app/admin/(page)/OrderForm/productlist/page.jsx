@@ -1,77 +1,161 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
-const categories = {
-  "HOME CARE": [
-    { code: "100", name: "POWER FLUSH TOILET CLEANER", dp: "₹83.00", sp: "0.25", rsp: "0.25" },
-    { code: "101", name: "LIMFRESH LIQUID DISH WASH", dp: "₹89.00", sp: "0.25", rsp: "0.25" },
-    { code: "103", name: "BATHVEDA GLYCERIN & NATURAL OIL BAR", dp: "₹169.00", sp: "0.25", rsp: "0.25" },
-    { code: "104", name: "BATHVEDA BEAUTY CREAM BAR", dp: "₹167.00", sp: "0.25", rsp: "0.25" },
-    { code: "105", name: "BATHVEDA GOAT MILK BAR", dp: "₹300.00", sp: "0.50", rsp: "0.50" }
-  ],
-  "AGRICULTURE PRODUCTS": [
-    { code: "126", name: "VEDIK AGRO PGPR", dp: "₹515.00", sp: "3.00", rsp: "3.00" },
-    { code: "128", name: "VEDIK AGRO AGRO 90", dp: "₹494.00", sp: "2.00", rsp: "2.00" },
-    { code: "129", name: "VEDIK AGRO ECO HARIYALI", dp: "₹1015.00", sp: "6.00", rsp: "6.00" },
-    { code: "130", name: "VEDIK AGRO BHUVITA SOIL CONDITIONER", dp: "₹496.00", sp: "2.00", rsp: "2.00" },
-    { code: "131", name: "VEDIK AGRO BIO NPK", dp: "₹620.00", sp: "3.00", rsp: "3.00" }
-  ],
-  "BEAUTY & PERSONAL CARE": [
-    { code: "131", name: "MAKEUP MANTRAS LIP BALM", dp: "₹31.00", sp: "0.10", rsp: "0.10" },
-    { code: "133", name: "MAKEUP MANTRAS KIWI FRUIT FACE WASH", dp: "₹139.00", sp: "0.50", rsp: "0.50" },
-    { code: "134", name: "MAKEUP MANTRAS STRAWBERRY FACE WASH", dp: "₹140.00", sp: "0.50", rsp: "0.50" },
-    { code: "135", name: "MAKEUP MANTRAS DAY CREAM FOR MEN", dp: "₹231.00", sp: "1.00", rsp: "1.00" },
-    { code: "136", name: "MAKEUP MANTRAS NIGHT CREAM FOR WOMEN", dp: "₹236.00", sp: "1.00", rsp: "1.00" }
-  ],
-  "HAIR CARE": [
-    { code: "11", name: "MAKEUP MANTRAS HAIRDOC OIL", dp: "₹215.00", sp: "1.00", rsp: "1.00" },
-    { code: "12", name: "MAKEUP MANTRAS EXE HAIR CLEANSER", dp: "₹210.00", sp: "1.00", rsp: "1.00" },
-    { code: "147", name: "MAKEUP MANTRAS HAIRDOC OIL 200 ML", dp: "₹404.00", sp: "2.00", rsp: "2.00" },
-    { code: "60", name: "MAKEUP MANTRAS EXE HAIR SHINE OINT", dp: "₹236.00", sp: "1.00", rsp: "1.00" },
-    { code: "61", name: "MAKEUP MANTRAS HAIR SERUM", dp: "₹299.00", sp: "1.50", rsp: "1.50" }
-  ],
-  "SPICES": [
-    { code: "180", name: "ECO AROGYAM CHILLI POWDER-100 GM", dp: "₹54.00", sp: "0.10", rsp: "0.10" },
-    { code: "181", name: "ECO AROGYAM CHILLI POWDER-200 GM", dp: "₹105.00", sp: "0.20", rsp: "0.20" },
-    { code: "182", name: "ECO AROGYAM CHILLI POWDER-500 GM", dp: "₹256.00", sp: "0.50", rsp: "0.50" },
-    { code: "183", name: "ECO AROGYAM CHILLI POWDER-1 KG", dp: "₹507.00", sp: "1.00", rsp: "1.00" },
-    { code: "184", name: "ECO AROGYAM TURMERIC POWDER-100 GM", dp: "₹38.00", sp: "0.10", rsp: "0.10" }
-  ],
-};
+export default function Page() {
+  const [products, setProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-export default function ProductList() {
+  const [selectedGroup, setSelectedGroup] = useState("");
+  const [selectedProduct, setSelectedProduct] = useState("");
+  const [minPrice, setMinPrice] = useState("");
+  const [maxPrice, setMaxPrice] = useState("");
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      setLoading(true);
+      setError("");
+      try {
+        const response = await axios.get("/api/Product/Product/fetch/s");
+        setProducts(response.data.data || []);
+        setFilteredProducts(response.data.data || []);
+      } catch (error) {
+        setError(error.response?.data?.message || "Failed to fetch products.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  // Get unique groups
+  const uniqueGroups = [...new Set(products.map((p) => p.group))];
+
+  // Get unique products (if group selected, filter; otherwise, show all)
+  const uniqueProducts = [
+    ...new Set(
+      (selectedGroup ? products.filter((p) => p.group === selectedGroup) : products).map(
+        (p) => p.productname
+      )
+    ),
+  ];
+
+  // Filter Logic
+  useEffect(() => {
+    let filtered = products.filter((product) => {
+      const matchGroup = selectedGroup ? product.group === selectedGroup : true;
+      const matchProduct = selectedProduct
+        ? product.productname === selectedProduct
+        : true;
+      const matchPrice =
+        (minPrice ? product.price >= parseFloat(minPrice) : true) &&
+        (maxPrice ? product.price <= parseFloat(maxPrice) : true);
+
+      return matchGroup && matchProduct && matchPrice;
+    });
+
+    setFilteredProducts(filtered);
+  }, [selectedGroup, selectedProduct, minPrice, maxPrice, products]);
+
   return (
-    <div className="mx-auto lg:p-5 p-2 bg-white dark:bg-gray-700 shadow-lg rounded-lg text-gray-700 dark:text-white">
-      <h2 className="text-2xl font-semibold mb-4 text-center">Product List</h2>
-      {Object.entries(categories).map(([category, products]) => (
-        <div key={category} className="mb-6">
-          <h3 className="text-xl font-semibold mb-2 text-blue-600 dark:text-blue-400">{category}</h3>
-          <table className="w-full border-collapse border border-gray-300 rounded-lg overflow-hidden">
-            <thead>
-              <tr className="bg-gray-100 dark:bg-gray-600">
-                <th className="border border-gray-300 px-4 py-2">S.NO.</th>
-                <th className="border border-gray-300 px-4 py-2">Product Code</th>
-                <th className="border border-gray-300 px-4 py-2">Product Name</th>
-                <th className="border border-gray-300 px-4 py-2">DP</th>
-                <th className="border border-gray-300 px-4 py-2">SP</th>
-                <th className="border border-gray-300 px-4 py-2">RSP</th>
-              </tr>
-            </thead>
-            <tbody>
-              {products.map((product, index) => (
-                <tr key={product.code} className="text-center bg-white dark:bg-gray-800">
-                  <td className="border border-gray-300 px-4 py-2">{index + 1}</td>
-                  <td className="border border-gray-300 px-4 py-2">{product.code}</td>
-                  <td className="border border-gray-300 px-4 py-2">{product.name}</td>
-                  <td className="border border-gray-300 px-4 py-2">{product.dp}</td>
-                  <td className="border border-gray-300 px-4 py-2">{product.sp}</td>
-                  <td className="border border-gray-300 px-4 py-2">{product.rsp}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+<div className="mx-auto p-8 bg-white dark:bg-gray-900 shadow-xl rounded-lg border border-gray-200 dark:border-gray-700">
+  <h2 className="text-3xl font-semibold text-center text-gray-800 dark:text-gray-200 mb-8">
+    🛍️ Product List
+  </h2>
+
+  {/* Filters */}
+  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+    {/* Group Filter */}
+    <select
+      className="p-3 border rounded-lg shadow-sm w-full bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-indigo-400 dark:focus:ring-indigo-500 transition"
+      value={selectedGroup}
+      onChange={(e) => {
+        setSelectedGroup(e.target.value);
+        setSelectedProduct(""); // Reset product filter when group changes
+      }}
+    >
+      <option value="" className="text-gray-700 dark:text-gray-300">All Groups</option>
+      {uniqueGroups.map((group) => (
+        <option key={group} value={group} className="text-gray-700 dark:text-gray-300">
+          {group}
+        </option>
       ))}
+    </select>
+
+    {/* Product Filter */}
+    <select
+      className="p-3 border rounded-lg shadow-sm w-full bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-indigo-400 dark:focus:ring-indigo-500 transition"
+      value={selectedProduct}
+      onChange={(e) => setSelectedProduct(e.target.value)}
+    >
+      <option value="" className="text-gray-700 dark:text-gray-300">All Products</option>
+      {uniqueProducts.map((product) => (
+        <option key={product} value={product} className="text-gray-700 dark:text-gray-300">
+          {product}
+        </option>
+      ))}
+    </select>
+
+    {/* Min Price Filter */}
+    <input
+      type="number"
+      className="p-3 border rounded-lg shadow-sm w-full bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-indigo-400 dark:focus:ring-indigo-500 transition"
+      placeholder="Min Price"
+      value={minPrice}
+      onChange={(e) => setMinPrice(e.target.value)}
+    />
+
+    {/* Max Price Filter */}
+    <input
+      type="number"
+      className="p-3 border rounded-lg shadow-sm w-full bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-indigo-400 dark:focus:ring-indigo-500 transition"
+      placeholder="Max Price"
+      value={maxPrice}
+      onChange={(e) => setMaxPrice(e.target.value)}
+    />
+  </div>
+
+  {error && <p className="text-red-500 text-center">{error}</p>}
+  {loading && <p className="text-blue-500 dark:text-blue-400 text-center">Loading products...</p>}
+
+  {!loading && !error && filteredProducts.length === 0 && (
+    <p className="text-gray-500 dark:text-gray-400 text-center">No products available.</p>
+  )}
+
+  {/* Product Table */}
+  {filteredProducts.length > 0 && (
+    <div className="overflow-x-auto mt-6 border border-gray-100 dark:border-gray-600 rounded-lg">
+      <table className="w-full border-collapse bg-white dark:bg-gray-800 shadow-md rounded-lg overflow-hidden">
+        <thead className="bg-indigo-600 text-white dark:bg-indigo-700">
+          <tr>
+            <th className="py-4 px-6 text-left">Product Name</th>
+            <th className="py-4 px-6 text-left">Group</th>
+            <th className="py-4 px-6 text-left">Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          {filteredProducts.map((product, index) => (
+            <tr
+              key={product._id}
+              className={`border-b dark:border-gray-700 ${
+                index % 2 === 0 ? "bg-gray-50 dark:bg-gray-900" : "bg-white dark:bg-gray-800"
+              } hover:bg-indigo-100 dark:hover:bg-indigo-900 transition`}
+            >
+              <td className="py-4 px-6 text-gray-800 dark:text-gray-200">{product.productname}</td>
+              <td className="py-4 px-6 text-gray-800 dark:text-gray-200">{product.group}</td>
+              <td className="py-4 px-6 font-semibold text-indigo-700 dark:text-indigo-400">
+                ₹{product.price}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
+  )}
+</div>
+
   );
 }

@@ -3,27 +3,28 @@ import mongoose, { Schema } from "mongoose";
 const OrderSchema = new Schema(
 
     {
-        date: { type: Date, },
+        date: { type: Date, required: true },
         transactionId: { type: String, },
-        dscode: { type: String, },
-        dsname: { type: String, },
-        address: { type: String, },
-        mobileno: { type: Number, },
-        shippingAddress: { type: String, },
-        shippingmobile: { type: String, },
-        shippinpPincode: { type: String, },
-        paymentmod: { type: String, },
-        cftype: { type: String, },
-        state: { type: String, },
-        district: { type: String, },
-        productgroup: { type: String, },
-        productcolor: { type: String, },
-        product: { type: String, },
-        salegroup: { type: String, },
-        quantity: { type: String, },
-        shippingcharge: { type: String, },
-        netamount: { type: String, },
+        dscode: { type: String, required: true },
+        dsname: { type: String, required: true },
+        address: { type: String, required: true },
+        mobileno: { type: Number, required: true },
+        shippingAddress: { type: String, required: true },
+        shippingmobile: { type: String, required: true },
+        shippinpPincode: { type: String, required: true },
+        paymentmod: { type: String, required: true },
+        cftype: { type: String, required: true },
+        // state: { type: String, required: true },
+        // district: { type: String, required: true },
+        productgroup: { type: String, required: true },
+        // productcolor: { type: String, required: true },
+        product: { type: String, required: true },
+        salegroup: { type: String, required: true },
+        quantity: { type: String, required: true },
+        shippingcharge: { type: String, required: true },
+        netamount: { type: String, required: true },
         remarks: { type: String, },
+        status: { type: Boolean, required: true, default: false },
         defaultdata: { type: String, required: true, default: "Order" }
 
     },
@@ -31,6 +32,6 @@ const OrderSchema = new Schema(
 );
 
 const OrderModel =
-    mongoose.models.Ordertest || mongoose.model("Ordertest", OrderSchema);
+    mongoose.models.Ordertest5 || mongoose.model("Ordertest5", OrderSchema);
 
 export default OrderModel

@@ -238,20 +238,25 @@ export default function OrderForm() {
         <InputField label="Shipping Pincode" name="shippinpPincode" onChange={handleChange} required />
         <SelectField label="Medium of Payment" name="paymentmod" options={["Online", "Cash"]} onChange={handleChange} required />
         <SelectField label="C&F Type" name="cftype" options={["Type A", "Type B"]} onChange={handleChange} required />
-        <SelectField label="Product Group"
+        <SelectField
+          label="Product Group"
           name="productgroup"
           options={productGroups}
-          value={formData.productgroup}
+          value={formData.productgroup} // Ensure value is controlled
           onChange={handleChange}
-          required />
+          required
+        />
         {formData.productgroup && (
-          <SelectField label="Product"
+          <SelectField
+            label="Product"
             name="product"
             options={filteredProducts.map((p) => p.productname)}
-            value={formData.product}
+            value={formData.product} // Ensure value is controlled
             onChange={handleChange}
-            required />
+            required
+          />
         )}
+
         <RadioField label="Sale Group" name="salegroup" options={["SAO", "SGO"]} onChange={handleChange} required />
         <InputField label="Quantity" name="quantity" type="number" onChange={handleChange} required />
         <InputField label="Shipping Charge" name="shippingcharge" onChange={handleChange} required />
@@ -266,7 +271,10 @@ export default function OrderForm() {
         <textarea name="remarks" onChange={handleChange} placeholder="Remarks (Optional)" className="w-full p-2 border rounded"></textarea>
 
         <div className="col-span-2 flex justify-center">
-          <button type="submit" disabled={isSubmitting} className="bg-blue-600 w-full hover:bg-blue-700 text-white font-medium px-6 py-2 rounded-lg shadow-md">
+          <button type="submit" disabled={isSubmitting} className={`px-6 py-3 w-full rounded-lg font-semibold transition-all duration-300 ${isSubmitting
+              ? "bg-gray-400 text-gray-700 cursor-not-allowed"
+              : "bg-blue-500 text-white hover:bg-blue-600"
+            }`}>
             {isSubmitting ? "Submitting..." : "Submit Order"}
           </button>
         </div>

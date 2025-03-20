@@ -3,6 +3,7 @@ import mongoose, { Schema } from "mongoose";
 const OrderSchema = new Schema(
 
     {
+        orderNo: { type: String, required: true, default: "0" },
         date: { type: Date, required: true },
         transactionId: { type: String, },
         dscode: { type: String, required: true },
@@ -31,7 +32,18 @@ const OrderSchema = new Schema(
     { timestamps: true }
 );
 
+OrderSchema.pre("save", async function (next) {
+    if (this.isNew) {
+        const lastorder = await mongoose.model("Ordertest7").findOne({}, {}, { sort: { orderNo: -1 } });
+        if (lastorder && lastorder.orderNo) {
+            this.orderNo = (parseInt(lastorder.orderNo, 10) + 1).toString();
+        } else {
+            this.orderNo = "1";
+        }
+    }
+    next();
+});
 const OrderModel =
-    mongoose.models.Ordertest5 || mongoose.model("Ordertest5", OrderSchema);
+    mongoose.models.Ordertest7 || mongoose.model("Ordertest7", OrderSchema);
 
 export default OrderModel

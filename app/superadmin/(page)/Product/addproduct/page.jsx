@@ -6,7 +6,9 @@ export default function AddProductPage() {
   const [formData, setFormData] = useState({
     productname: "",
     group: "",
-    price: "",
+    dp: "",
+    sp: "",
+    mrp: ""
   });
 
   const [productGroups, setProductGroups] = useState([]);
@@ -45,7 +47,9 @@ export default function AddProductPage() {
     if (
       !formData.productname.trim() ||
       !formData.group.trim() ||
-      !formData.price.trim() ||
+      !formData.dp.trim() ||
+      !formData.sp.trim() ||
+      !formData.mrp.trim() ||
       loading
     )
       return;
@@ -60,7 +64,7 @@ export default function AddProductPage() {
         formData
       );
       setSuccess(response.data.message || "Product added successfully.");
-      setFormData({ productname: "", group: "", price: "" });
+      setFormData({ productname: "", sp: "", mrp: "", group: "", dp: "" });
     } catch (error) {
       setError(error.response?.data?.message || "Failed to add product.");
     } finally {
@@ -114,12 +118,32 @@ export default function AddProductPage() {
           ))}
         </select>
 
-        {/* Price Input */}
+        {/* dp Input */}
         <input
           type="number"
-          name="price"
-          placeholder="Price"
-          value={formData.price}
+          name="sp"
+          placeholder="SP"
+          value={formData.sp}
+          onChange={handleChange}
+          className="w-full p-2 border rounded bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-200 dark:focus:ring-blue-500"
+          required
+        />
+
+        <input
+          type="number"
+          name="dp"
+          placeholder="Discount Price"
+          value={formData.dp}
+          onChange={handleChange}
+          className="w-full p-2 border rounded bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-200 dark:focus:ring-blue-500"
+          required
+        />
+
+        <input
+          type="number"
+          name="mrp"
+          placeholder="Market Price"
+          value={formData.mrp}
           onChange={handleChange}
           className="w-full p-2 border rounded bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-200 dark:focus:ring-blue-500"
           required
@@ -129,11 +153,10 @@ export default function AddProductPage() {
         <button
           type="submit"
           disabled={loading}
-          className={`w-40 col-span-full justify-self-center text-white p-2 rounded transition ${
-            loading
-              ? "bg-gray-400 cursor-not-allowed"
-              : "bg-blue-500 hover:bg-blue-600"
-          }`}
+          className={`w-40 col-span-full justify-self-center text-white p-2 rounded transition ${loading
+            ? "bg-gray-400 cursor-not-allowed"
+            : "bg-blue-500 hover:bg-blue-600"
+            }`}
         >
           {loading ? "Submitting..." : "Submit"}
         </button>

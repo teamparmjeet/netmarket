@@ -4,7 +4,7 @@ import { useSidebar } from '@/app/context/SidebarContext'
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { Grid2X2,TrophyIcon, UserCircle, UsersRound, Medal, FileUser, BookOpenText, NotebookText, KeyRound, MailPlus, Trophy, ScrollText, ChevronDown } from "lucide-react";
+import { Grid2X2, TrophyIcon, UserCircle, UsersRound, Medal, FileUser, BookOpenText, NotebookText, KeyRound, MailPlus, Trophy, ScrollText, ChevronDown } from "lucide-react";
 const navItems = [
     {
         icon: <Grid2X2 />,
@@ -28,13 +28,20 @@ const navItems = [
             { name: "Depth Downline", path: "/superadmin/Genealogy/depthdownline", pro: false },
         ],
     },
-
+    {
+        icon: <Trophy />,
+        name: "Level",
+        subItems: [
+            { name: "Add Level", path: "/superadmin/Level/add", pro: false },
+            { name: "All Level", path: "/superadmin/Level/all", pro: false },
+        ],
+    },
     {
         icon: <Medal />,
         name: "Trip/Bonanza",
         subItems: [
-            { name: "Spring Bonanza", path: "/superadmin/Trips/springbonanza", pro: false },
-            { name: "My Trip list", path: "/superadmin/Trips/mytriplist", pro: false },
+            { name: "Add Offer", path: "/superadmin/Trips/add", pro: false },
+            { name: "List", path: "/superadmin/Trips/all", pro: false },
         ],
     },
     {
@@ -215,8 +222,8 @@ const AppSidebar = () => {
                 <Link href="/superadmin">
                     {isExpanded || isHovered || isMobileOpen ? (
                         <>
-                           <div className="hidden lg:block"> <Image src="/images/logo/logo-blank.png" alt="Logo" width={80} height={80} /></div>
-                              </>
+                            <div className="hidden lg:block"> <Image src="/images/logo/logo-blank.png" alt="Logo" width={80} height={80} /></div>
+                        </>
                     ) : (
                         <Image src="/images/logo/logo-blank.png" alt="Logo" width={80} height={80} />
                     )}

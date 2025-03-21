@@ -5,6 +5,8 @@ import axios from 'axios';
 export default function TripBonanzaUpload() {
   const [image, setImage] = useState(null);
   const [file, setFile] = useState(null);
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
   const [uploading, setUploading] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -17,7 +19,7 @@ export default function TripBonanzaUpload() {
   };
 
   const handleImageUpload = async (file) => {
-    setUploading(true); 
+    setUploading(true);
     const formData = new FormData();
     formData.append("file", file);
     try {
@@ -27,18 +29,23 @@ export default function TripBonanzaUpload() {
       console.error("Image upload failed:", error);
       return null;
     } finally {
-      setUploading(false); 
+      setUploading(false);
     }
   };
 
   const handleSave = async () => {
-    if (!file) return;
+    if (!file || !title || !description) {
+      alert("Please fill in all fields");
+      return;
+    }
     setLoading(true);
     try {
       const imageUrl = await handleImageUpload(file);
       if (imageUrl) {
         await axios.post("/api/bonanza/create", {
           image: imageUrl,
+          title,
+          description,
         });
         alert("Image uploaded and details updated successfully!");
         window.location.reload();
@@ -52,24 +59,38 @@ export default function TripBonanzaUpload() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-white dark:bg-gray-800 p-4">
-      <h1 className="text-2xl font-bold mb-4 text-gray-800 dark:text-white">Upload Trip Bonanza Image</h1>
-      <div className="bg-white dark:bg-gray-800 p-6 border border-gray-100 dark:border-gray-600 rounded-lg shadow-md w-96">
+    <div className="flex flex-col items-center h-svh bg-gray-100 dark:bg-gray-900 p-6">
+      <h1 className="text-3xl font-semibold mb-6 text-gray-900 dark:text-white">Add Bonanza </h1>
+      <div className="bg-white dark:bg-gray-800 p-8 border border-gray-300 dark:border-gray-700 rounded shadow">
         <input
           type="file"
           accept="image/*"
           onChange={handleImageChange}
-          className="mb-4 w-full border p-2 rounded"
+          className="mb-4 w-full border border-gray-300 dark:border-gray-600 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
+        <input
+          type="text"
+          placeholder="Enter Title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          className="mb-4 w-full border border-gray-300 dark:border-gray-600 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+        <textarea
+          placeholder="Enter Description"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          className="mb-4 w-full border border-gray-300 dark:border-gray-600 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+          rows="4"
+        ></textarea>
         {image && (
           <div className="mt-4">
-            <img src={image} alt="Trip Bonanza" className="w-full rounded-lg shadow-md" />
+            <img src={image} alt="Trip Bonanza" className="w-full rounded shadow-md" />
           </div>
         )}
         <button
           onClick={handleSave}
-          className="mt-4 w-full bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600 disabled:bg-gray-400 dark:disabled:bg-gray-600"
-          disabled={!file || uploading || loading}
+          className="mt-4 w-full bg-blue-600 text-white p-3 rounded font-medium hover:bg-blue-700 disabled:bg-gray-400 dark:disabled:bg-gray-600 transition duration-200"
+          disabled={!file || !title || !description || uploading || loading}
         >
           {loading || uploading ? 'Uploading...' : 'Submit'}
         </button>

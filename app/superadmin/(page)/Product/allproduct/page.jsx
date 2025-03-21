@@ -10,8 +10,8 @@ export default function Page() {
 
   const [selectedGroup, setSelectedGroup] = useState("");
   const [selectedProduct, setSelectedProduct] = useState("");
-  const [minPrice, setMinPrice] = useState("");
-  const [maxPrice, setMaxPrice] = useState("");
+  const [mindp, setMindp] = useState("");
+  const [maxdp, setMaxdp] = useState("");
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -50,112 +50,117 @@ export default function Page() {
       const matchProduct = selectedProduct
         ? product.productname === selectedProduct
         : true;
-      const matchPrice =
-        (minPrice ? product.price >= parseFloat(minPrice) : true) &&
-        (maxPrice ? product.price <= parseFloat(maxPrice) : true);
+      const matchdp =
+        (mindp ? product.dp >= parseFloat(mindp) : true) &&
+        (maxdp ? product.dp <= parseFloat(maxdp) : true);
 
-      return matchGroup && matchProduct && matchPrice;
+      return matchGroup && matchProduct && matchdp;
     });
 
     setFilteredProducts(filtered);
-  }, [selectedGroup, selectedProduct, minPrice, maxPrice, products]);
+  }, [selectedGroup, selectedProduct, mindp, maxdp, products]);
 
   return (
-<div className="mx-auto p-8 bg-white dark:bg-gray-900 shadow-xl rounded-lg border border-gray-200 dark:border-gray-700">
-  <h2 className="text-3xl font-semibold text-center text-gray-800 dark:text-gray-200 mb-8">
-    🛍️ Product List
-  </h2>
+    <div className="mx-auto p-8 bg-white dark:bg-gray-900 shadow-xl rounded-lg border border-gray-200 dark:border-gray-700">
+      <h2 className="text-3xl font-semibold text-center text-gray-800 dark:text-gray-200 mb-8">
+        🛍️ Product List
+      </h2>
 
-  {/* Filters */}
-  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-    {/* Group Filter */}
-    <select
-      className="p-3 border rounded-lg shadow-sm w-full bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-indigo-400 dark:focus:ring-indigo-500 transition"
-      value={selectedGroup}
-      onChange={(e) => {
-        setSelectedGroup(e.target.value);
-        setSelectedProduct(""); // Reset product filter when group changes
-      }}
-    >
-      <option value="" className="text-gray-700 dark:text-gray-300">All Groups</option>
-      {uniqueGroups.map((group) => (
-        <option key={group} value={group} className="text-gray-700 dark:text-gray-300">
-          {group}
-        </option>
-      ))}
-    </select>
-
-    {/* Product Filter */}
-    <select
-      className="p-3 border rounded-lg shadow-sm w-full bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-indigo-400 dark:focus:ring-indigo-500 transition"
-      value={selectedProduct}
-      onChange={(e) => setSelectedProduct(e.target.value)}
-    >
-      <option value="" className="text-gray-700 dark:text-gray-300">All Products</option>
-      {uniqueProducts.map((product) => (
-        <option key={product} value={product} className="text-gray-700 dark:text-gray-300">
-          {product}
-        </option>
-      ))}
-    </select>
-
-    {/* Min Price Filter */}
-    <input
-      type="number"
-      className="p-3 border rounded-lg shadow-sm w-full bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-indigo-400 dark:focus:ring-indigo-500 transition"
-      placeholder="Min Price"
-      value={minPrice}
-      onChange={(e) => setMinPrice(e.target.value)}
-    />
-
-    {/* Max Price Filter */}
-    <input
-      type="number"
-      className="p-3 border rounded-lg shadow-sm w-full bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-indigo-400 dark:focus:ring-indigo-500 transition"
-      placeholder="Max Price"
-      value={maxPrice}
-      onChange={(e) => setMaxPrice(e.target.value)}
-    />
-  </div>
-
-  {error && <p className="text-red-500 text-center">{error}</p>}
-  {loading && <p className="text-blue-500 dark:text-blue-400 text-center">Loading products...</p>}
-
-  {!loading && !error && filteredProducts.length === 0 && (
-    <p className="text-gray-500 dark:text-gray-400 text-center">No products available.</p>
-  )}
-
-  {/* Product Table */}
-  {filteredProducts.length > 0 && (
-    <div className="overflow-x-auto mt-6 border border-gray-100 dark:border-gray-600 rounded-lg">
-      <table className="w-full border-collapse bg-white dark:bg-gray-800 shadow-md rounded-lg overflow-hidden">
-        <thead className="bg-indigo-600 text-white dark:bg-indigo-700">
-          <tr>
-            <th className="py-4 px-6 text-left">Product Name</th>
-            <th className="py-4 px-6 text-left">Group</th>
-            <th className="py-4 px-6 text-left">Price</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredProducts.map((product, index) => (
-            <tr
-              key={product._id}
-              className={`border-b dark:border-gray-700 ${
-                index % 2 === 0 ? "bg-gray-50 dark:bg-gray-900" : "bg-white dark:bg-gray-800"
-              } hover:bg-indigo-100 dark:hover:bg-indigo-900 transition`}
-            >
-              <td className="py-4 px-6 text-gray-800 dark:text-gray-200">{product.productname}</td>
-              <td className="py-4 px-6 text-gray-800 dark:text-gray-200">{product.group}</td>
-              <td className="py-4 px-6 font-semibold text-indigo-700 dark:text-indigo-400">
-                ₹{product.price}
-              </td>
-            </tr>
+      {/* Filters */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        {/* Group Filter */}
+        <select
+          className="p-3 border rounded-lg shadow-sm w-full bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-indigo-400 dark:focus:ring-indigo-500 transition"
+          value={selectedGroup}
+          onChange={(e) => {
+            setSelectedGroup(e.target.value);
+            setSelectedProduct(""); // Reset product filter when group changes
+          }}
+        >
+          <option value="" className="text-gray-700 dark:text-gray-300">All Groups</option>
+          {uniqueGroups.map((group) => (
+            <option key={group} value={group} className="text-gray-700 dark:text-gray-300">
+              {group}
+            </option>
           ))}
-        </tbody>
-      </table>
+        </select>
+
+        {/* Product Filter */}
+        <select
+          className="p-3 border rounded-lg shadow-sm w-full bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-indigo-400 dark:focus:ring-indigo-500 transition"
+          value={selectedProduct}
+          onChange={(e) => setSelectedProduct(e.target.value)}
+        >
+          <option value="" className="text-gray-700 dark:text-gray-300">All Products</option>
+          {uniqueProducts.map((product) => (
+            <option key={product} value={product} className="text-gray-700 dark:text-gray-300">
+              {product}
+            </option>
+          ))}
+        </select>
+
+        {/* Min dp Filter */}
+        <input
+          type="number"
+          className="p-3 border rounded-lg shadow-sm w-full bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-indigo-400 dark:focus:ring-indigo-500 transition"
+          placeholder="Min dp"
+          value={mindp}
+          onChange={(e) => setMindp(e.target.value)}
+        />
+
+        {/* Max dp Filter */}
+        <input
+          type="number"
+          className="p-3 border rounded-lg shadow-sm w-full bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-indigo-400 dark:focus:ring-indigo-500 transition"
+          placeholder="Max dp"
+          value={maxdp}
+          onChange={(e) => setMaxdp(e.target.value)}
+        />
+      </div>
+
+      {error && <p className="text-red-500 text-center">{error}</p>}
+      {loading && <p className="text-blue-500 dark:text-blue-400 text-center">Loading products...</p>}
+
+      {!loading && !error && filteredProducts.length === 0 && (
+        <p className="text-gray-500 dark:text-gray-400 text-center">No products available.</p>
+      )}
+
+      {/* Product Table */}
+      {filteredProducts.length > 0 && (
+        <div className="overflow-x-auto mt-6 border border-gray-100 dark:border-gray-600 rounded-lg">
+          <table className="w-full border-collapse bg-white dark:bg-gray-800 shadow-md rounded-lg overflow-hidden">
+            <thead className="bg-indigo-600 text-white dark:bg-indigo-700">
+              <tr>
+                <th className="py-4 px-6 text-left">Sn</th>
+                <th className="py-4 px-6 text-left">Product Name</th>
+                <th className="py-4 px-6 text-left">Group</th>
+                <th className="py-4 px-6 text-left">Sp</th>
+                <th className="py-4 px-6 text-left">Mrp</th>
+                <th className="py-4 px-6 text-left">Discount Price</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredProducts.map((product, index) => (
+                <tr
+                  key={product._id}
+                  className={`border-b dark:border-gray-700 ${index % 2 === 0 ? "bg-gray-50 dark:bg-gray-900" : "bg-white dark:bg-gray-800"
+                    } hover:bg-indigo-100 dark:hover:bg-indigo-900 transition`}
+                >
+                  <td className="py-4 px-6 text-gray-800 dark:text-gray-200">{index + 1}</td>
+                  <td className="py-4 px-6 text-gray-800 dark:text-gray-200">{product.productname}</td>
+                  <td className="py-4 px-6 text-gray-800 dark:text-gray-200">{product.group}</td>
+                  <td className="py-4 px-6 text-gray-800 dark:text-gray-200">{product.sp}</td>
+                  <td className="py-4 px-6 text-gray-800 dark:text-gray-200">{product.mrp}</td>
+                  <td className="py-4 px-6 font-semibold text-indigo-700 dark:text-indigo-400">
+                    ₹{product.dp}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
-  )}
-</div>
 
   );
 }

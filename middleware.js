@@ -23,7 +23,7 @@ export async function middleware(req) {
   // If no token, redirect all protected routes to /signin
   if (!token && ["/superadmin", "/admin", "/user"].some(path => url.pathname.startsWith(path))) {
     console.log("No token found, redirecting to /signin");
-    url.pathname = "/signin";
+    url.pathname = "/";
     return NextResponse.redirect(url);
   }
 

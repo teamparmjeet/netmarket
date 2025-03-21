@@ -215,9 +215,8 @@ const AppSidebar = () => {
                 <Link href="/superadmin">
                     {isExpanded || isHovered || isMobileOpen ? (
                         <>
-                            <Image className="" src="/images/logo/logo-blank.png" alt="Logo" width={80} height={80} />
-                            {/* <Image className="hidden dark:block" src="/images/logo/logo-dark.svg" alt="Logo" width={150} height={40} /> */}
-                        </>
+                           <div className="hidden lg:block"> <Image src="/images/logo/logo-blank.png" alt="Logo" width={80} height={80} /></div>
+                              </>
                     ) : (
                         <Image src="/images/logo/logo-blank.png" alt="Logo" width={80} height={80} />
                     )}

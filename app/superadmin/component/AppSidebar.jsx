@@ -38,10 +38,10 @@ const navItems = [
     },
     {
         icon: <Medal />,
-        name: "Trip/Bonanza",
+        name: "Bonanza",
         subItems: [
-            { name: "Add Offer", path: "/superadmin/Trips/add", pro: false },
-            { name: "List", path: "/superadmin/Trips/all", pro: false },
+            { name: "Add Bonanza", path: "/superadmin/Bonanza/add", pro: false },
+            { name: "Bonanza List", path: "/superadmin/Bonanza/all", pro: false },
         ],
     },
     {

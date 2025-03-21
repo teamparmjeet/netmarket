@@ -5,13 +5,13 @@ export const GET = async (request) => {
   await dbConnect();
 
   try {
-    const images = await SpringBonanza.find({ defaultdata: "Bonanza" }).select("image -_id");
+    const data = await SpringBonanza.find({ defaultdata: "Bonanza" });
 
     return Response.json(
       {
         message: "Image URLs fetched successfully!",
         success: true,
-        images,
+        data,
       },
       { status: 200 }
     );

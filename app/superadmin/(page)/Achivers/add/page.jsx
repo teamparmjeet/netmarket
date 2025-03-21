@@ -19,6 +19,7 @@ export default function Page() {
     const [uploading, setUploading] = useState(false);
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState({});
+    const [level, setLevel] = useState([]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -32,7 +33,21 @@ export default function Page() {
 
         fetchData();
     }, []);
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get("/api/level/fetch/level");
+                setLevel(response.data.data || []);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+                setErrors("Failed to load data.");
+            } finally {
+                setLoading(false);
+            }
+        };
 
+        fetchData();
+    }, []);
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
@@ -207,9 +222,11 @@ export default function Page() {
                                 disabled={loading}
                             >
                                 <option value="">Select Rank Type</option>
-                                <option value="Rank 1">Rank 1</option>
-                                <option value="Rank 2">Rank 2</option>
-                                <option value="Rank 3">Rank 3</option>
+                                {level.map((data) => (
+
+                                    <option key={data._id} value={data.level_name}>{data.level_name}</option>
+
+                                ))}
                             </select>
                             {errors.ranktype && <p className="text-red-500 text-xs">{errors.ranktype}</p>}
                         </div>
@@ -225,9 +242,14 @@ export default function Page() {
                                 disabled={loading}
                             >
                                 <option value="">Select Trip Type</option>
-                                <option value="Trip 1">Trip 1</option>
-                                <option value="Trip 2">Trip 2</option>
-                                <option value="Trip 3">Trip 3</option>
+                                {level
+                                    .filter((data) => data.bonus && data.bonus.trim() !== "") 
+                                    .map((data) => (
+                                        <option key={data._id} value={data.bonus}>
+                                            {data.bonus}
+                                        </option>
+                                    ))}
+
                             </select>
                             {errors.triptype && <p className="text-red-500 text-xs">{errors.triptype}</p>}
                         </div>

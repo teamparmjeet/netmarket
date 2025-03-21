@@ -65,7 +65,7 @@ export default function page() {
                     {["S.No", "Date", "Amount", "Status"].map((header, index) => (
                       <th
                         key={index}
-                        className="text-left p-3 border text-gray-800 dark:text-white"
+                        className="text-left  p-3 border text-gray-800 dark:text-white"
                       >
                         {header}
                       </th>

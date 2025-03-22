@@ -3,6 +3,7 @@ import mongoose, { Schema } from "mongoose";
 const ProductSchema = new Schema(
 
     {
+        image:{ type: String, required: true },
         productname: { type: String, required: true },
         group: { type: String, required: true },
         dp: { type: String, required: true },
@@ -15,6 +16,6 @@ const ProductSchema = new Schema(
 );
 
 const ProductModel =
-    mongoose.models.Producttest1 || mongoose.model("Producttest1", ProductSchema);
+    mongoose.models.Producttest4 || mongoose.model("Producttest4", ProductSchema);
 
 export default ProductModel

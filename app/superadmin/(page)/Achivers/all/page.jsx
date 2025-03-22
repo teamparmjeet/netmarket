@@ -30,10 +30,18 @@ export default function Page() {
     fetchAchievers();
   }, []);
 
-  // Get unique achievement types
-  const uniqueTypes = [...new Set(achievers.map((a) => a.achivementtype1))];
+  const deleteAchiever = async (id) => {
+    try {
+      await axios.delete(`/api/achivers/delete/${id}`);
+      setError("Deleted");
+      setAchievers((prev) => prev.filter((achiever) => achiever._id !== id));
+      setFilteredAchievers((prev) => prev.filter((achiever) => achiever._id !== id));
+    } catch (error) {
+      setError("Failed to delete achiever.");
+    }
+  };
 
-  // Get unique names (if type selected, filter; otherwise, show all)
+  const uniqueTypes = [...new Set(achievers.map((a) => a.achivementtype1))];
   const uniqueNames = [
     ...new Set(
       (selectedType
@@ -43,7 +51,6 @@ export default function Page() {
     ),
   ];
 
-  // Filter Logic
   useEffect(() => {
     let filtered = achievers.filter((achiever) => {
       const matchType = selectedType ? achiever.achivementtype1 === selectedType : true;
@@ -60,9 +67,7 @@ export default function Page() {
         🏆 Achievers List
       </h2>
 
-      {/* Filters */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-        {/* Achievement Type Filter */}
         <select
           className="p-3 border rounded-lg shadow-sm w-full bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-indigo-400 dark:focus:ring-indigo-500 transition"
           value={selectedType}
@@ -77,7 +82,6 @@ export default function Page() {
           ))}
         </select>
 
-        {/* Name Filter */}
         <select
           className="p-3 border rounded-lg shadow-sm w-full bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-indigo-400 dark:focus:ring-indigo-500 transition"
           value={selectedName}
@@ -96,7 +100,6 @@ export default function Page() {
         <p className="text-gray-500 dark:text-gray-400 text-center">No achievers available.</p>
       )}
 
-      {/* Achievers Table */}
       {filteredAchievers.length > 0 && (
         <div className="overflow-x-auto mt-6 border border-gray-100 dark:border-gray-600 rounded-lg">
           <table className="w-full border-collapse bg-white dark:bg-gray-800 shadow-md rounded-lg overflow-hidden">
@@ -105,7 +108,9 @@ export default function Page() {
                 <th className="py-4 px-6 text-left">Image</th>
                 <th className="py-4 px-6 text-left">Name</th>
                 <th className="py-4 px-6 text-left">Achievement Type</th>
+                <th className="py-4 px-6 text-left">-</th>
                 <th className="py-4 px-6 text-left">Address</th>
+                <th className="py-4 px-6 text-left">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -124,14 +129,17 @@ export default function Page() {
                     />
                   </td>
                   <td className="py-4 px-6 text-gray-800 dark:text-gray-200">{achiever.name}</td>
-                  <td className="py-4 px-6 text-gray-800 dark:text-gray-200">{achiever.achivementtype1}
-                    <span className=" font-semibold ms-2">
-                      {achiever.achivementtype1 === "Rank Achiever" ? `(${achiever.ranktype})` : ""}
-                      {achiever.achivementtype1 === "Trip Achiever" ? `(${achiever.triptype})` : ""}
-                    </span>
-
-                  </td>
+                  <td className="py-4 px-6 text-gray-800 dark:text-gray-200">{achiever.achivementtype1}</td>
+                  <td className="py-4 px-6 text-gray-800 dark:text-gray-200">{achiever?.ranktype} {achiever?.triptype}</td>
                   <td className="py-4 px-6 text-gray-800 dark:text-gray-200">{achiever.address}</td>
+                  <td className="py-4 px-6">
+                    <button
+                      onClick={() => deleteAchiever(achiever._id)}
+                      className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition"
+                    >
+                      Delete
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>

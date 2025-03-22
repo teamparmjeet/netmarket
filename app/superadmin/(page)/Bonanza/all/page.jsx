@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
+
 export default function Page() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -13,7 +14,6 @@ export default function Page() {
       try {
         const response = await axios.get("/api/bonanza/fetch/bonanza");
         setData(response.data.data || []);
-        console.log(data)
       } catch (error) {
         console.error("Error fetching data:", error);
         setError("Failed to load data.");
@@ -24,6 +24,15 @@ export default function Page() {
 
     fetchData();
   }, []);
+
+  const deleteBonanza = async (id) => {
+    try {
+      await axios.delete(`/api/bonanza/delete/${id}`);
+      setData(data.filter((item) => item._id !== id));
+    } catch (error) {
+      console.error("Error deleting item:", error);
+    }
+  };
 
   return (
     <div className="p-6">
@@ -47,7 +56,8 @@ export default function Page() {
                 <th className="py-3 px-4 border-r">Sn No</th>
                 <th className="py-3 px-4 border-r">Image</th>
                 <th className="py-3 px-4 border-r">Title</th>
-                <th className="py-3 px-4">Description</th>
+                <th className="py-3 px-4 border-r">Description</th>
+                <th className="py-3 px-4">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -65,12 +75,20 @@ export default function Page() {
                       </Link>
                     </td>
                     <td className="py-3 text-sm font-medium px-4 border-r">{item.title}</td>
-                    <td className="py-3 text-sm font-medium px-4">{item.description}</td>
+                    <td className="py-3 text-sm font-medium px-4 border-r">{item.description}</td>
+                    <td className="py-3 text-sm font-medium px-4">
+                      <button
+                        className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 transition"
+                        onClick={() => deleteBonanza(item._id)}
+                      >
+                        Delete
+                      </button>
+                    </td>
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td colSpan="3" className="text-center py-6 text-gray-500 font-medium">
+                  <td colSpan="5" className="text-center py-6 text-gray-500 font-medium">
                     No data found.
                   </td>
                 </tr>

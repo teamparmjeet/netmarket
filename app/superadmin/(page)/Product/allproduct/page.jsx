@@ -1,7 +1,8 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-
+import Image from "next/image";
+import Link from "next/link";
 export default function Page() {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
@@ -132,11 +133,13 @@ export default function Page() {
             <thead className="bg-indigo-600 text-white dark:bg-indigo-700">
               <tr>
                 <th className="py-4 px-6 text-left">Sn</th>
+                <th className="py-4 px-6 text-left">Image</th>
                 <th className="py-4 px-6 text-left">Product Name</th>
                 <th className="py-4 px-6 text-left">Group</th>
                 <th className="py-4 px-6 text-left">Sp</th>
                 <th className="py-4 px-6 text-left">Mrp</th>
                 <th className="py-4 px-6 text-left">Discount Price</th>
+                <th className="py-4 px-6 text-left">Action</th>
               </tr>
             </thead>
             <tbody>
@@ -147,6 +150,17 @@ export default function Page() {
                     } hover:bg-indigo-100 dark:hover:bg-indigo-900 transition`}
                 >
                   <td className="py-4 px-6 text-gray-800 dark:text-gray-200">{index + 1}</td>
+                  <td className="py-4 px-6 text-gray-800 dark:text-gray-200">
+                    <Link href={product.image} target="_blank">
+                      <Image
+                        src={product.image}
+                        alt=""
+                        priority
+                        width={50}
+                        height={50}
+                      />
+                    </Link>
+                  </td>
                   <td className="py-4 px-6 text-gray-800 dark:text-gray-200">{product.productname}</td>
                   <td className="py-4 px-6 text-gray-800 dark:text-gray-200">{product.group}</td>
                   <td className="py-4 px-6 text-gray-800 dark:text-gray-200">{product.sp}</td>
@@ -154,6 +168,12 @@ export default function Page() {
                   <td className="py-4 px-6 font-semibold text-indigo-700 dark:text-indigo-400">
                     ₹{product.dp}
                   </td>
+                  <td className="py-4 px-6 text-gray-800 dark:text-gray-200">
+                    <Link href={`/superadmin/Product/update/${product._id}`} className=" bg-blue-400 text-white px-1 hover:bg-blue-500 py-0.5 rounded">
+                     Action
+                    </Link>
+                  </td>
+
                 </tr>
               ))}
             </tbody>

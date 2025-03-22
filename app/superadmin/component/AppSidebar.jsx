@@ -4,7 +4,7 @@ import { useSidebar } from '@/app/context/SidebarContext'
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { Grid2X2, TrophyIcon, UserCircle, UsersRound, Medal, FileUser, BookOpenText, NotebookText, KeyRound, MailPlus, Trophy, ScrollText, ChevronDown } from "lucide-react";
+import { Grid2X2, TrophyIcon, UserCircle,ImageIcon, UsersRound, Medal, FileUser, BookOpenText, NotebookText, KeyRound, MailPlus, Trophy, ScrollText, ChevronDown } from "lucide-react";
 const navItems = [
     {
         icon: <Grid2X2 />,
@@ -64,11 +64,16 @@ const navItems = [
     },
 
     {
+        icon: <ImageIcon />,
+        name: "Dashboard Image",
+        path: "/superadmin/dashboardimage",
+    },
+
+    {
         icon: <KeyRound />,
         name: "Change Password",
         path: "/superadmin/ChangePassword",
     },
-
 
 ];
 

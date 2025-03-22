@@ -15,7 +15,7 @@ export default function Page() {
     const fetchImages = async () => {
       try {
         const response = await axios.get("/api/bonanza/fetch/s");
-        setImages(response.data.images || []);
+        setImages(response.data.data || []);
       } catch (error) {
         console.error("Error fetching images:", error);
         setError("Failed to load images.");

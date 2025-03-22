@@ -14,8 +14,8 @@ export default function Page() {
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const response = await axios.get("/api/bonanza/fetch/s");
-        setImages(response.data.images || []);
+        const response = await axios.get("/api/dashboardimage/fetch/Dashboardimage");
+        setImages(response.data.data || []);
       } catch (error) {
         console.error("Error fetching images:", error);
         setError("Failed to load images.");
@@ -57,14 +57,15 @@ export default function Page() {
             images.map((img, index) => (
               <div key={index} className="relative flex justify-center items-center h-full w-full border">
                 <Link href={img.image} target="_blank">
-                <Image
-                  src={img.image}
-                  alt={`Trip Bonanza ${index + 1}`}
-                  width={900}
-                  height={500}
-                  className="rounded-lg  object-cover w-fit h-fit"
+                  <Image
+                    src={img.image}
+                    alt={`Trip Bonanza ${index + 1}`}
+                    width={900}
+                    priority
+                    height={500}
+                    className="rounded-lg  object-cover w-fit h-fit"
                   />
-                  </Link>
+                </Link>
 
               </div>
             ))

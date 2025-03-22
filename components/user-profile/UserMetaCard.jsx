@@ -109,12 +109,20 @@ export default function UserMetaCard() {
                         </div>
 
 
-                        <div className="order-3 xl:order-2">
-                            <h4 className="mb-2 text-lg font-semibold text-center text-gray-800 dark:text-white/90 xl:text-left">
+                        <div className="order-3 xl:order-2 bg-white dark:bg-gray-800">
+                            <h4 className="mb-3 text-xl font-semibold text-center xl:text-left text-gray-900 dark:text-white">
                                 {fetching ? "Loading..." : data?.name || "Unknown"}
                             </h4>
-                            <span className=" text-white px-2  py-0.5 rounded-lg bg-red-800 text-sm">Not Aproved</span>
+                            <div className="flex items-center justify-center xl:justify-start space-x-3">
+                                <h2 className="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 font-medium px-3 py-1 rounded-lg text-sm shadow">
+                                    DsId : {data?.dscode}
+                                </h2>
+                                <span className="bg-red-600 text-white px-3 py-1 rounded-lg text-sm font-medium shadow-md">
+                                    Not Approved
+                                </span>
+                            </div>
                         </div>
+
                     </div>
 
 

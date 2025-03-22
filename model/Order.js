@@ -22,7 +22,7 @@ const OrderSchema = new Schema(
                 quantity: { type: String, required: true }
             }
         ],
-        salegroup: { type: String, required: true },
+        salegroup: { type: String, enum: ["SAO", "SGO"], },
         shippingcharge: { type: String, required: true },
         netamount: { type: String, required: true },
         remarks: { type: String, },
@@ -36,7 +36,7 @@ const OrderSchema = new Schema(
 
 OrderSchema.pre("save", async function (next) {
     if (this.isNew) {
-        const lastorder = await mongoose.model("Ordertest110").findOne({}, {}, { sort: { orderNo: -1 } });
+        const lastorder = await mongoose.model("Ordertest111").findOne({}, {}, { sort: { orderNo: -1 } });
         if (lastorder && lastorder.orderNo) {
             this.orderNo = (parseInt(lastorder.orderNo, 10) + 1).toString();
         } else {
@@ -46,6 +46,6 @@ OrderSchema.pre("save", async function (next) {
     next();
 });
 const OrderModel =
-    mongoose.models.Ordertest110 || mongoose.model("Ordertest110", OrderSchema);
+    mongoose.models.Ordertest111 || mongoose.model("Ordertest111", OrderSchema);
 
 export default OrderModel

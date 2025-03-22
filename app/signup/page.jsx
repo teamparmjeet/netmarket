@@ -66,6 +66,7 @@ export default function Signup() {
             setStep(3);
         } catch (error) {
             toast.error(error.response?.data?.message || "Invalid OTP");
+            setIsSubmitting(false);
         }
     };
 

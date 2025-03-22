@@ -10,7 +10,7 @@ const navItems = [
         icon: <UserCircle />, name: "User Profile",
         subItems: [
             { name: "My Profile", path: "/user/Userprofile/profile", pro: false },
-            { name: "View KYC", path: "/user/Userprofile/viewkyc", pro: false },
+            { name: "KYC Document", path: "/user/Userprofile/viewkyc", pro: false },
         ],
     },
     {

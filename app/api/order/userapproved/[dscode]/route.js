@@ -5,9 +5,9 @@ export async function GET(request, { params }) {
     await dbConnect();
 
     try {
-        const type = decodeURIComponent(params?.type || "");
+        const dscode = decodeURIComponent(params?.dscode || "");
 
-        const data = await OrderModel.find({ dscode: dscode, status: false });
+        const data = await OrderModel.find({ dscode: dscode, status: true });
 
         if (!data.length) {
             return Response.json(

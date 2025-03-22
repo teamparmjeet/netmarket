@@ -139,7 +139,7 @@ export default function AadharcardDetails() {
                             />
                         </div>
 
-                      
+                        {!data.kycVerification.isVerified && (
                         <div className="mt-4 flex gap-4">
                             {isEditing ? (
                                 <button
@@ -154,7 +154,7 @@ export default function AadharcardDetails() {
                                     Edit
                                 </button>
                             )}
-                        </div>
+                        </div>)}
                     </>
                 )}
             </div>

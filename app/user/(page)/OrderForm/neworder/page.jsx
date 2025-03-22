@@ -26,6 +26,7 @@ const InputField = ({
       required={required}
       defaultValue={defaultValue}
       disabled={disabled}
+      min={type === "number" ? 1 : undefined}
     />
   </div>
 );
@@ -42,7 +43,7 @@ const SelectField = ({ label, name, options, onChange, required = false }) => (
         className="border border-gray-300 dark:border-gray-600  px-2 py-1 w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-1 focus:ring-blue-500 focus:outline-none transition-all duration-300 appearance-none"
         required={required}
       >
-        <option value="">Select {label}</option>
+        <option value=""  >Select {label}</option>
         {options.map((option, index) => (
           <option key={index} value={option}>
             {option}
@@ -54,36 +55,9 @@ const SelectField = ({ label, name, options, onChange, required = false }) => (
   </div>
 );
 
-const RadioField = ({ label, name, options, onChange, required = false }) => (
-  <div className="space-y-2  md:w-1/2 w-full md:px-4">
-    <label className="block text-gray-800 dark:text-gray-200 text-xs font-semibold">
-      {label} {required && <span className="text-red-500">*</span>}
-    </label>
-    <div className="flex flex-wrap gap-4">
-      {options.map((option, index) => (
-        <label
-          key={index}
-          className="flex items-center space-x-2 px-4 py-2 bg-gray-100 dark:bg-gray-800 rounded-lg cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-300"
-        >
-          <input
-            type="radio"
-            name={name}
-            value={option}
-            onChange={onChange}
-            className="hidden peer"
-            required={required}
-          />
-          <div className="w-5 h-5 border-2 border-gray-400 dark:border-gray-500 rounded-full flex items-center justify-center peer-checked:border-blue-500">
-            <div className="w-3 h-3 bg-blue-500 rounded-full hidden peer-checked:block"></div>
-          </div>
-          <span className="text-gray-700 dark:text-white">{option}</span>
-        </label>
-      ))}
-    </div>
-  </div>
-);
 
-export { InputField, SelectField, RadioField };
+
+export { InputField, SelectField };
 
 export default function OrderForm() {
   const { data: session } = useSession();
@@ -296,6 +270,11 @@ export default function OrderForm() {
       toast.error("Sale Group Require");
       return;
     }
+
+    if (!formData.address) {
+      toast.error("First Complete Your Profile Address Not Found");
+      return;
+    }
     setIsSubmitting(true);
     try {
       const response = await axios.post("/api/order/create", formData);
@@ -329,9 +308,9 @@ export default function OrderForm() {
         <InputField label="Shipping Pincode" name="shippinpPincode" onChange={handleChange} required />
         <SelectField label="Medium of Payment" name="paymentmod" options={["Online", "Cash"]} onChange={handleChange} required />
         <SelectField label="C&F Type" name="cftype" options={["Type A", "Type B"]} onChange={handleChange} required />
-        <div className="w-full bg-gray-100 py-4 flex flex-wrap gap-y-4">
+        <div className="w-full bg-gray-100  dark:bg-gray-900 py-4 flex flex-wrap gap-y-4">
           {formData.productDetails.map((detail, index) => (
-            <div key={index} className="w-full flex gap-4 items-center">
+            <div key={index} className="w-full flex flex-wrap gap-y-4 items-center">
               {/* Product Group Dropdown */}
               <SelectField
                 label="Product Group"
@@ -341,31 +320,32 @@ export default function OrderForm() {
                 onChange={(e) => handleChange(e, index)}
                 required
               />
-              {/* Product Dropdown (Filtered by Selected Group) */}
-              <SelectField
-                label="Product"
-                name="product"
-                options={
-                  detail.productgroup
-                    ? products
-                      .filter((item) => item.group === detail.productgroup)
-                      .map((p) => p.productname)
-                    : []
-                }
-                value={detail.product}
-                onChange={(e) => handleChange(e, index)}
-                required
-              />
-              {/* Quantity Input Field */}
-              <InputField
-                label="Quantity"
-                name="quantity"
-                type="number"
-                value={detail.quantity}
-                onChange={(e) => handleChange(e, index)}
-                required
-              />
-
+              {detail.productgroup.length > 0 && (
+                <SelectField
+                  label="Product"
+                  name="product"
+                  options={
+                    detail.productgroup
+                      ? products
+                        .filter((item) => item.group === detail.productgroup)
+                        .map((p) => p.productname)
+                      : []
+                  }
+                  value={detail.product}
+                  onChange={(e) => handleChange(e, index)}
+                  required
+                />
+              )}
+              {detail.productgroup.length > 0 && (
+                <InputField
+                  label="Quantity"
+                  name="quantity"
+                  type="number"
+                  value={detail.quantity}
+                  onChange={(e) => handleChange(e, index)}
+                  required
+                />
+              )}
               {/* Remove Product Button */}
               {formData.productDetails.length > 1 && (
                 <button
@@ -379,7 +359,7 @@ export default function OrderForm() {
             </div>
           ))}
 
-          {/* Add More Products Button */}
+
           <button
             type="button"
             onClick={addProductRow}
@@ -401,9 +381,8 @@ export default function OrderForm() {
         <InputField label="Total SP" name="totalsp" defaultValue={formData.totalsp} disabled />
         <InputField label="Shipping Charge" name="shippingcharge" defaultValue={formData.shippingcharge} disabled />
 
-
-        <RadioField label="Sale Group" name="salegroup" options={["SAO", "SGO"]} onChange={handleChange} />
-        <textarea name="remarks" onChange={handleChange} placeholder="Remarks (Optional)" className="w-full p-2 border rounded"></textarea>
+        <SelectField label="Sale Group" name="salegroup" options={["SAO", "SGO"]} onChange={handleChange} required />
+        <textarea name="remarks" onChange={handleChange} placeholder="Remarks (Optional)" className="w-full p-2 placeholder-gray-400 dark:placeholder:text-white border rounded"></textarea>
 
         <div className="col-span-2 w-full flex justify-center">
           <button type="submit" disabled={isSubmitting} className={`px-6 py-3 w-full rounded-lg font-semibold transition-all duration-300 ${isSubmitting

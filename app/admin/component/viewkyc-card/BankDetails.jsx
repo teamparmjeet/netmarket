@@ -150,22 +150,22 @@ export default function BankDetails() {
                             />
                         </div>
 
-
-                        <div className="mt-4 flex gap-4">
-                            {isEditing ? (
-                                <button
-                                    className="bg-blue-500 text-white p-2 rounded-md disabled:opacity-50"
-                                    onClick={handleSave}
-                                    disabled={loading || uploading}
-                                >
-                                    {loading ? "Saving..." : "Save"}
-                                </button>
-                            ) : (
-                                <button className="bg-gray-700 text-white p-2 rounded-md" onClick={() => setIsEditing(true)}>
-                                    Edit
-                                </button>
-                            )}
-                        </div>
+                        {!data.kycVerification.isVerified && (
+                            <div className="mt-4 flex gap-4">
+                                {isEditing ? (
+                                    <button
+                                        className="bg-blue-500 text-white p-2 rounded-md disabled:opacity-50"
+                                        onClick={handleSave}
+                                        disabled={loading || uploading}
+                                    >
+                                        {loading ? "Saving..." : "Save"}
+                                    </button>
+                                ) : (
+                                    <button className="bg-gray-700 text-white p-2 rounded-md" onClick={() => setIsEditing(true)}>
+                                        Edit
+                                    </button>
+                                )}
+                            </div>)}
                     </>
                 )}
             </div>

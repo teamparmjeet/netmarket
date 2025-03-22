@@ -144,7 +144,7 @@ export default function AddressProof() {
                             />
                         </div>
 
-
+                        {!data.kycVerification.isVerified && (
                         <div className="mt-4 flex gap-4">
                             {isEditing ? (
                                 <button
@@ -160,6 +160,7 @@ export default function AddressProof() {
                                 </button>
                             )}
                         </div>
+                        )}
                     </>
                 )}
             </div>

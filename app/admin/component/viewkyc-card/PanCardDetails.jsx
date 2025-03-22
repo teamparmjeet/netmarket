@@ -36,7 +36,7 @@ export default function PanCardDetails() {
     }, [session?.user?.email]);
 
     const handleImageUpload = async (file) => {
-        setUploading(true); 
+        setUploading(true);
         const formData = new FormData();
         formData.append("file", file);
         try {
@@ -46,7 +46,7 @@ export default function PanCardDetails() {
             console.error("Image upload failed:", error);
             return null;
         } finally {
-            setUploading(false); 
+            setUploading(false);
         }
     };
 
@@ -91,11 +91,10 @@ export default function PanCardDetails() {
                                 />
                             </div>
 
-                          
+
                             <div
-                                className={`col-span-2 lg:col-span-1 border border-gray-300 dark:border-gray-700 rounded-md p-4 flex items-center justify-center bg-black/10 dark:bg-gray-800 h-40 mt-4 overflow-hidden relative ${
-                                    isEditing ? "cursor-pointer" : "cursor-default"
-                                }`}
+                                className={`col-span-2 lg:col-span-1 border border-gray-300 dark:border-gray-700 rounded-md p-4 flex items-center justify-center bg-black/10 dark:bg-gray-800 h-40 mt-4 overflow-hidden relative ${isEditing ? "cursor-pointer" : "cursor-default"
+                                    }`}
                                 onClick={() => isEditing && document.getElementById("pan-upload").click()}
                             >
                                 {uploading ? (
@@ -104,7 +103,7 @@ export default function PanCardDetails() {
                                     </div>
                                 ) : panimage ? (
                                     <Link href={panimage} target="_blank">
-                                    <Image src={panimage} alt="Pan Card" layout="fill" objectFit="cover" className="rounded-md" />
+                                        <Image src={panimage} alt="Pan Card" layout="fill" objectFit="cover" className="rounded-md" />
                                     </Link>
                                 ) : (
                                     <p className="text-gray-500">Click to upload</p>
@@ -125,27 +124,27 @@ export default function PanCardDetails() {
                             />
                         </div>
 
-                      
-                        <div className="mt-4 flex gap-4">
-                            {isEditing ? (
-                                <button
-                                    className="bg-blue-500 text-white p-2 rounded-md disabled:opacity-50"
-                                    onClick={handleSave}
-                                    disabled={loading || uploading}
-                                >
-                                    {loading ? "Saving..." : "Save"}
-                                </button>
-                            ) : (
-                                <button className="bg-gray-700 text-white p-2 rounded-md" onClick={() => setIsEditing(true)}>
-                                    Edit
-                                </button>
-                            )}
-                        </div>
+                        {!data.kycVerification.isVerified && (
+                            <div className="mt-4 flex gap-4">
+                                {isEditing ? (
+                                    <button
+                                        className="bg-blue-500 text-white p-2 rounded-md disabled:opacity-50"
+                                        onClick={handleSave}
+                                        disabled={loading || uploading}
+                                    >
+                                        {loading ? "Saving..." : "Save"}
+                                    </button>
+                                ) : (
+                                    <button className="bg-gray-700 text-white p-2 rounded-md" onClick={() => setIsEditing(true)}>
+                                        Edit
+                                    </button>
+                                )}
+                            </div>)}
                     </>
                 )}
             </div>
 
-           
+
             {isModalOpen && (
                 <div
                     className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50"

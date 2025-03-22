@@ -9,7 +9,7 @@ export default function Header() {
   const [country, setCountry] = useState("Discover");
 
   return (
-    <header className="bg-white shadow-md py-4 px-6 flex items-center justify-between fixed top-0 w-full">
+    <header className="bg-white shadow-md py-4 px-6 flex items-center justify-between fixed top-0 w-full z-50">
      
       <div className="flex space-x-4">
         <div className="relative">

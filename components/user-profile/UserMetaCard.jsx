@@ -13,7 +13,7 @@ export default function UserMetaCard() {
     const [loading, setLoading] = useState(false);
     const [fetching, setFetching] = useState(true);
 
-    
+
     useEffect(() => {
         const fetchUserData = async () => {
             if (!session?.user?.email) return;
@@ -21,7 +21,7 @@ export default function UserMetaCard() {
                 const response = await axios.get(`/api/user/find-admin-byemail/${session.user.email}`);
                 if (response.data?.name) {
                     setData(response.data);
-                    setName(response.data.name); 
+                    setName(response.data.name);
                 }
             } catch (error) {
                 console.error("Failed to fetch user name:", error);
@@ -37,7 +37,7 @@ export default function UserMetaCard() {
         return { "0": "User", "1": "Admin", "2": "Superadmin" }[session?.user?.usertype] || "";
     }, [session?.user?.usertype]);
 
-  
+
     const handleImageUpload = async (file) => {
         const formData = new FormData();
         formData.append("file", file);
@@ -55,7 +55,7 @@ export default function UserMetaCard() {
         e.preventDefault();
         setLoading(true);
 
-        let imageUrl = data?.image || ""; 
+        let imageUrl = data?.image || "";
 
         if (image) {
             const uploadedImage = await handleImageUpload(image);
@@ -70,18 +70,18 @@ export default function UserMetaCard() {
             });
 
             if (response.data.success) {
-               
+
                 await update({
                     ...session,
                     user: { ...session.user, name, image: imageUrl },
                 });
 
-             
+
                 const updatedUser = await axios.get(`/api/user/find-admin-byemail/${session.user.email}`);
                 setData(updatedUser.data);
                 setName(updatedUser.data.name);
                 window.location.reload();
-                
+
                 setImage(null);
                 setIsModalOpen(false);
             }
@@ -97,7 +97,7 @@ export default function UserMetaCard() {
             <div className="p-5 border border-gray-200 rounded-2xl dark:border-gray-200 lg:p-6">
                 <div className="flex flex-col gap-5 xl:flex-row xl:items-center xl:justify-between">
                     <div className="flex flex-col items-center w-full gap-6 xl:flex-row">
-                       
+
                         <div className="w-20 h-20 overflow-hidden border border-gray-200 rounded-full dark:border-gray-800">
                             <Image
                                 width={80}
@@ -108,18 +108,16 @@ export default function UserMetaCard() {
                             />
                         </div>
 
-                     
+
                         <div className="order-3 xl:order-2">
                             <h4 className="mb-2 text-lg font-semibold text-center text-gray-800 dark:text-white/90 xl:text-left">
                                 {fetching ? "Loading..." : data?.name || "Unknown"}
                             </h4>
-                            <p className="text-sm text-gray-500 dark:text-gray-400 text-center xl:text-left">
-                                {userRole}
-                            </p>
+                            <span className=" text-white px-2  py-0.5 rounded-lg bg-red-800 text-sm">Not Aproved</span>
                         </div>
                     </div>
 
-                   
+
                     <button
                         onClick={() => setIsModalOpen(true)}
                         className="flex w-full items-center justify-center gap-2 rounded-full border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200 lg:inline-flex lg:w-auto"
@@ -139,7 +137,7 @@ export default function UserMetaCard() {
                         className="relative max-w-lg w-full bg-white dark:bg-gray-900 shadow-2xl rounded-3xl p-6 lg:p-10"
                         onClick={(e) => e.stopPropagation()}
                     >
-                     
+
                         <button
                             className="absolute top-4 right-4 text-gray-500 dark:text-gray-300 hover:text-red-500"
                             onClick={() => setIsModalOpen(false)}
@@ -147,15 +145,15 @@ export default function UserMetaCard() {
                             ✕
                         </button>
 
-                   
+
                         <h4 className="mb-5 text-2xl font-semibold text-gray-800 dark:text-white text-center">
                             Edit Personal Information
                         </h4>
 
-                      
+
                         <form className="flex flex-col space-y-4" onSubmit={handleUpdate}>
                             <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
-                               
+
                                 <div>
                                     <label className="block text-gray-700 dark:text-gray-300 font-medium">Name</label>
                                     <input
@@ -167,7 +165,7 @@ export default function UserMetaCard() {
                                     />
                                 </div>
 
-                              
+
                                 <div>
                                     <label className="block text-gray-700 dark:text-gray-300 font-medium">Upload Image</label>
                                     <input
@@ -179,7 +177,7 @@ export default function UserMetaCard() {
                                 </div>
                             </div>
 
-                            
+
                             <div className="flex justify-end gap-3 mt-4">
                                 <button
                                     type="button"

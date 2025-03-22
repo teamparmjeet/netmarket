@@ -5,6 +5,8 @@ const UserSchema = new Schema(
     {
         dscode: { type: String, required: true, default: "0" },
         pdscode: { type: String, required: true, default: "0" },
+        earnsp:{ type: String, required: true, default: "0"},
+        group:{ type: String, enum: ["sao", "sgo"], },
         name: { type: String, required: true, },
         image: { type: String },
         relationTitle: { type: String, enum: ["S/o", "D/o", "W/o"], },
@@ -82,6 +84,6 @@ UserSchema.pre("save", async function (next) {
     next();
 });
 const UserModel =
-    mongoose.models.usertest11 || mongoose.model("usertest11", UserSchema);
+    mongoose.models.usertest123 || mongoose.model("usertest123", UserSchema);
 
 export default UserModel

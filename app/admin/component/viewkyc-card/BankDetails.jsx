@@ -4,7 +4,7 @@ import axios from "axios";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { X } from "lucide-react";
-
+import Link from "next/link";
 export default function BankDetails() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const { data: session } = useSession();
@@ -128,7 +128,9 @@ export default function BankDetails() {
                                         <p className="text-gray-500">Uploading...</p>
                                     </div>
                                 ) : bankimage ? (
-                                    <Image src={bankimage} alt="bank Card" layout="fill" objectFit="cover" className="rounded-md" />
+                                    <Link href={bankimage} target="_blank">
+                                        <Image src={bankimage} alt="bank Card" layout="fill" objectFit="cover" className="rounded-md" />
+                                    </Link>
                                 ) : (
                                     <p className="text-gray-500">Click to upload</p>
                                 )}

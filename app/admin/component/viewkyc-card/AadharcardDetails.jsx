@@ -4,6 +4,7 @@ import axios from "axios";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { X } from "lucide-react";
+import Link from "next/link";
 
 export default function AadharcardDetails() {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -116,7 +117,9 @@ export default function AadharcardDetails() {
                                         <p className="text-gray-500">Uploading...</p>
                                     </div>
                                 ) : aadharimage ? (
+                                    <Link href={aadharimage} target="_blank">
                                     <Image src={aadharimage} alt="aadhar Card" layout="fill" objectFit="cover" className="rounded-md" />
+                                    </Link>
                                 ) : (
                                     <p className="text-gray-500">Click to upload</p>
                                 )}

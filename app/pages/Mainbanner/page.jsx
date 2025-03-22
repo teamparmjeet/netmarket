@@ -19,9 +19,31 @@ export default function Mainbanner() {
     mobile: { breakpoint: { max: 464, min: 0 }, items: 1 },
   };
 
+  const CustomLeftArrow = ({ onClick }) => (
+    <button
+      onClick={onClick}
+      className={`absolute left-4 top-1/2 -translate-y-1/2 z-10 text-black text-3xl transition-opacity duration-300 ${
+        hover ? "opacity-100" : "opacity-0"
+      }`}
+    >
+      <ChevronLeft size={40} />
+    </button>
+  );
+
+  const CustomRightArrow = ({ onClick }) => (
+    <button
+      onClick={onClick}
+      className={`absolute right-4 top-1/2 -translate-y-1/2 z-10 text-black text-3xl transition-opacity duration-300 ${
+        hover ? "opacity-100" : "opacity-0"
+      }`}
+    >
+      <ChevronRight size={40} />
+    </button>
+  );
+
   return (
     <div
-      className="w-full mx-auto mt-24 p-0 relative group"
+      className="w-full mx-auto p-0 relative group"
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
     >
@@ -31,27 +53,11 @@ export default function Mainbanner() {
         autoPlay
         autoPlaySpeed={3000}
         keyBoardControl
-        afterChange={(currentSlide) => setActiveIndex(currentSlide)} // ✅ Properly updates active dot
+        afterChange={(currentSlide) => setActiveIndex(currentSlide)} 
         removeArrowOnDeviceType={["tablet", "mobile"]}
         containerClass="carousel-container"
-        customLeftArrow={
-          <button
-            className={`absolute left-4 top-1/2 -translate-y-1/2 z-10 text-black text-3xl transition-opacity duration-300 ${
-              hover ? "opacity-100" : "opacity-0"
-            }`}
-          >
-            <ChevronLeft size={40} />
-          </button>
-        }
-        customRightArrow={
-          <button
-            className={`absolute right-4 top-1/2 -translate-y-1/2 z-10 text-black text-3xl transition-opacity duration-300 ${
-              hover ? "opacity-100" : "opacity-0"
-            }`}
-          >
-            <ChevronRight size={40} />
-          </button>
-        }
+        customLeftArrow={<CustomLeftArrow />} 
+        customRightArrow={<CustomRightArrow />} 
       >
         {images.map((img, index) => (
           <div key={index} className="h-full w-full p-0 relative">
@@ -68,7 +74,6 @@ export default function Mainbanner() {
         ))}
       </Carousel>
 
-      {/* Fixed Active Dots */}
       <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
         {images.map((_, idx) => (
           <span

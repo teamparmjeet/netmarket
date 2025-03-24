@@ -13,8 +13,8 @@ const InputField = ({
   defaultValue,
   disabled = false,
 }) => (
-  <div className="space-y-2">
-    <label className="block text-gray-800 dark:text-gray-200 text-sm font-semibold">
+  <div className="space-y-2 md:w-1/2 w-full md:px-4">
+    <label className="block text-gray-800 dark:text-gray-200 text-xs font-semibold">
       {label} {required && <span className="text-red-500">*</span>}
     </label>
     <input
@@ -22,68 +22,42 @@ const InputField = ({
       name={name}
       placeholder={placeholder}
       onChange={onChange}
-      className="border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-300 disabled:bg-gray-200 disabled:dark:bg-gray-700"
+      className="border border-gray-300 dark:border-gray-600 px-2 py-1 w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-300 focus:ring-1 focus:ring-blue-500 focus:outline-none transition-all duration-300 disabled:bg-gray-100 disabled:dark:bg-gray-700"
       required={required}
       defaultValue={defaultValue}
       disabled={disabled}
+      min={type === "number" ? 1 : undefined}
     />
   </div>
 );
 
 const SelectField = ({ label, name, options, onChange, required = false }) => (
-  <div className="space-y-2">
-    <label className="block text-gray-800 dark:text-gray-200 text-sm font-semibold">
+  <div className="space-y-2  md:w-1/2 w-full md:px-4">
+    <label className="block text-gray-800 dark:text-gray-200 text-xs font-semibold">
       {label} {required && <span className="text-red-500">*</span>}
     </label>
     <div className="relative">
       <select
         name={name}
         onChange={onChange}
-        className="border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-300 appearance-none"
+        className="border border-gray-300 dark:border-gray-600  px-2 py-1 w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-1 focus:ring-blue-500 focus:outline-none transition-all duration-300 appearance-none"
         required={required}
       >
-        <option value="">Select {label}</option>
+        <option value=""  >Select {label}</option>
         {options.map((option, index) => (
           <option key={index} value={option}>
             {option}
           </option>
         ))}
       </select>
-      <span className="absolute right-3 top-3 text-gray-500 dark:text-gray-400 pointer-events-none">▼</span>
+      <span className="absolute right-3 top-1 text-gray-500 dark:text-gray-400 pointer-events-none">▼</span>
     </div>
   </div>
 );
 
-const RadioField = ({ label, name, options, onChange, required = false }) => (
-  <div className="space-y-2">
-    <label className="block text-gray-800 dark:text-gray-200 text-sm font-semibold">
-      {label} {required && <span className="text-red-500">*</span>}
-    </label>
-    <div className="flex flex-wrap gap-4">
-      {options.map((option, index) => (
-        <label
-          key={index}
-          className="flex items-center space-x-2 px-4 py-2 bg-gray-100 dark:bg-gray-800 rounded-lg cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-300"
-        >
-          <input
-            type="radio"
-            name={name}
-            value={option}
-            onChange={onChange}
-            className="hidden peer"
-            required={required}
-          />
-          <div className="w-5 h-5 border-2 border-gray-400 dark:border-gray-500 rounded-full flex items-center justify-center peer-checked:border-blue-500">
-            <div className="w-3 h-3 bg-blue-500 rounded-full hidden peer-checked:block"></div>
-          </div>
-          <span className="text-gray-700 dark:text-white">{option}</span>
-        </label>
-      ))}
-    </div>
-  </div>
-);
 
-export { InputField, SelectField, RadioField };
+
+export { InputField, SelectField };
 
 export default function OrderForm() {
   const { data: session } = useSession();
@@ -106,12 +80,11 @@ export default function OrderForm() {
     paymentmod: "",
     cftype: "",
     salegroup: "",
-    productgroup: "",
-    product: "",
-    quantity: "",
+    productDetails: [{ productgroup: "", product: "", quantity: "" }],
     shippingcharge: "",
     netamount: "",
     remarks: "",
+    totalsp: "",
   });
 
   useEffect(() => {
@@ -160,38 +133,124 @@ export default function OrderForm() {
     fetchProducts();
   }, []);
 
-
-  const handleChange = (e) => {
+  const handleChange = (e, index = null) => {
     const { name, value } = e.target;
 
     setFormData((prev) => {
-      let updatedData = { ...prev, [name]: value };
+      let updatedData = { ...prev };
 
-      if (name === "product") {
-        const selectedProduct = products.find((p) => p.productname === value);
-        if (selectedProduct) {
-          updatedData = {
-            ...updatedData,
-            product: value,
-            netamount: prev.quantity ? selectedProduct.price * prev.quantity : "",
-          };
-        }
-      }
+      if (index !== null) {
+        const updatedProductDetails = [...prev.productDetails];
+        updatedProductDetails[index] = {
+          ...updatedProductDetails[index],
+          [name]: value,
+        };
 
-      if (name === "quantity") {
-        const selectedProduct = products.find((p) => p.productname === prev.product);
-        if (selectedProduct) {
-          updatedData = {
-            ...updatedData,
-            quantity: value,
-            netamount: selectedProduct.price * value,
-          };
+        // Handle product selection
+        if (name === "product") {
+          const selectedProduct = products.find((p) => p.productname === value);
+          if (selectedProduct) {
+            updatedProductDetails[index] = {
+              ...updatedProductDetails[index],
+              product: value,
+              quantity: updatedProductDetails[index].quantity || 1, // Default quantity = 1
+              netamount:
+                selectedProduct.dp *
+                (updatedProductDetails[index].quantity || 1),
+              sp: selectedProduct.sp || 0, // Store selling price
+            };
+          }
         }
+
+        // Handle quantity change
+        if (name === "quantity") {
+          const selectedProduct = products.find(
+            (p) => p.productname === updatedProductDetails[index].product
+          );
+          if (selectedProduct) {
+            updatedProductDetails[index] = {
+              ...updatedProductDetails[index],
+              quantity: value,
+              netamount: selectedProduct.dp * value,
+              sp: selectedProduct.sp || 0, // Ensure selling price is stored
+            };
+          }
+        }
+
+        updatedData.productDetails = updatedProductDetails;
+
+        // ✅ Calculate total net amount
+        const totalNetAmount = updatedProductDetails.reduce(
+          (sum, item) => sum + (parseFloat(item.netamount) || 0),
+          0
+        );
+
+        // ✅ Calculate total SP (Selling Price)
+        const totalSp = updatedProductDetails.reduce(
+          (sum, item) =>
+            sum + (parseFloat(item.sp) || 0) * (parseInt(item.quantity) || 0),
+          0
+        );
+
+        updatedData.netamount = totalNetAmount;
+        updatedData.shippingcharge = totalNetAmount < 2000 ? 70 : 0; // ✅ Shipping logic
+        updatedData.totalsp = totalSp; // ✅ Total Selling Price
+
+      } else {
+        updatedData[name] = value;
       }
 
       return updatedData;
     });
   };
+
+
+
+  const handleProductChange = (index, field, value) => {
+    setFormData((prev) => {
+      const updatedProducts = [...prev.productDetails];
+      updatedProducts[index] = { ...updatedProducts[index], [field]: value };
+
+      // Auto-update netamount if product and quantity are selected
+      if (field === "product") {
+        const selectedProduct = products.find((p) => p.productname === value);
+        if (selectedProduct) {
+          updatedProducts[index].netamount =
+            updatedProducts[index].quantity && selectedProduct.dp
+              ? selectedProduct.dp * updatedProducts[index].quantity
+              : "";
+        }
+      }
+
+      if (field === "quantity") {
+        const selectedProduct = products.find(
+          (p) => p.productname === updatedProducts[index].product
+        );
+        if (selectedProduct) {
+          updatedProducts[index].netamount = selectedProduct.dp * value;
+        }
+      }
+
+      return { ...prev, productDetails: updatedProducts };
+    });
+  };
+
+  // Add more products
+  const addProductRow = () => {
+    setFormData((prev) => ({
+      ...prev,
+      productDetails: [...prev.productDetails, { productgroup: "", product: "", quantity: "" }],
+    }));
+  };
+
+  // Remove product row
+  const removeProductRow = (index) => {
+    setFormData((prev) => {
+      const updatedProducts = prev.productDetails.filter((_, i) => i !== index);
+      return { ...prev, productDetails: updatedProducts };
+    });
+  };
+
 
 
   const filteredProducts = formData.productgroup
@@ -203,6 +262,17 @@ export default function OrderForm() {
 
     if (formData.paymentmod === "Online" && !formData.transactionId) {
       toast.error("Transaction ID is required for online payments!");
+      return;
+    }
+
+
+    if (!formData.salegroup) {
+      toast.error("Sale Group Require");
+      return;
+    }
+
+    if (!formData.address) {
+      toast.error("First Complete Your Profile Address Not Found");
       return;
     }
     setIsSubmitting(true);
@@ -226,7 +296,7 @@ export default function OrderForm() {
       {fetching && <p className="text-center text-gray-600 dark:text-gray-300">Fetching user details...</p>}
       {error && <p className="text-center text-red-500">{error}</p>}
 
-      <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <form onSubmit={handleSubmit} className=" flex flex-wrap gap-y-4">
         <InputField label="Date" name="date" type="date" defaultValue={formData.date} disabled />
         <InputField label="Transaction ID" name="transactionId" placeholder="Enter Transaction ID" onChange={handleChange} />
         <InputField label="DS Code" name="dscode" defaultValue={formData.dscode} disabled required />
@@ -238,28 +308,69 @@ export default function OrderForm() {
         <InputField label="Shipping Pincode" name="shippinpPincode" onChange={handleChange} required />
         <SelectField label="Medium of Payment" name="paymentmod" options={["Online", "Cash"]} onChange={handleChange} required />
         <SelectField label="C&F Type" name="cftype" options={["Type A", "Type B"]} onChange={handleChange} required />
-        <SelectField
-          label="Product Group"
-          name="productgroup"
-          options={productGroups}
-          value={formData.productgroup} // Ensure value is controlled
-          onChange={handleChange}
-          required
-        />
-        {formData.productgroup && (
-          <SelectField
-            label="Product"
-            name="product"
-            options={filteredProducts.map((p) => p.productname)}
-            value={formData.product} // Ensure value is controlled
-            onChange={handleChange}
-            required
-          />
-        )}
+        <div className="w-full bg-gray-100  dark:bg-gray-900 py-4 flex flex-wrap gap-y-4">
+          {formData.productDetails.map((detail, index) => (
+            <div key={index} className="w-full flex flex-wrap gap-y-4 items-center">
+              {/* Product Group Dropdown */}
+              <SelectField
+                label="Product Group"
+                name="productgroup"
+                options={productGroups}
+                value={detail.productgroup}
+                onChange={(e) => handleChange(e, index)}
+                required
+              />
+              {detail.productgroup.length > 0 && (
+                <SelectField
+                  label="Product"
+                  name="product"
+                  options={
+                    detail.productgroup
+                      ? products
+                        .filter((item) => item.group === detail.productgroup)
+                        .map((p) => p.productname)
+                      : []
+                  }
+                  value={detail.product}
+                  onChange={(e) => handleChange(e, index)}
+                  required
+                />
+              )}
+              {detail.productgroup.length > 0 && (
+                <InputField
+                  label="Quantity"
+                  name="quantity"
+                  type="number"
+                  value={detail.quantity}
+                  onChange={(e) => handleChange(e, index)}
+                  required
+                />
+              )}
+              {/* Remove Product Button */}
+              {formData.productDetails.length > 1 && (
+                <button
+                  type="button"
+                  onClick={() => removeProductRow(index)}
+                  className="bg-red-500 text-white px-3 py-1 rounded-md"
+                >
+                  Remove
+                </button>
+              )}
+            </div>
+          ))}
 
-        <RadioField label="Sale Group" name="salegroup" options={["SAO", "SGO"]} onChange={handleChange} required />
-        <InputField label="Quantity" name="quantity" type="number" onChange={handleChange} required />
-        <InputField label="Shipping Charge" name="shippingcharge" onChange={handleChange} required />
+
+          <button
+            type="button"
+            onClick={addProductRow}
+            className="bg-green-500 text-white px-4 py-2 m-2 rounded-md mt-2"
+          >
+            Add More Products
+          </button>
+        </div>
+
+
+
         <InputField
           label="Net Amount"
           name="netamount"
@@ -267,13 +378,16 @@ export default function OrderForm() {
           required
           disabled
         />
+        <InputField label="Total SP" name="totalsp" defaultValue={formData.totalsp} disabled />
+        <InputField label="Shipping Charge" name="shippingcharge" defaultValue={formData.shippingcharge} disabled />
 
-        <textarea name="remarks" onChange={handleChange} placeholder="Remarks (Optional)" className="w-full p-2 border rounded"></textarea>
+        <SelectField label="Sale Group" name="salegroup" options={["SAO", "SGO"]} onChange={handleChange} required />
+        <textarea name="remarks" onChange={handleChange} placeholder="Remarks (Optional)" className="w-full p-2 placeholder-gray-400 dark:placeholder:text-white border rounded"></textarea>
 
-        <div className="col-span-2 flex justify-center">
+        <div className="col-span-2 w-full flex justify-center">
           <button type="submit" disabled={isSubmitting} className={`px-6 py-3 w-full rounded-lg font-semibold transition-all duration-300 ${isSubmitting
-              ? "bg-gray-400 text-gray-700 cursor-not-allowed"
-              : "bg-blue-500 text-white hover:bg-blue-600"
+            ? "bg-gray-400 text-gray-700 cursor-not-allowed"
+            : "bg-blue-500 text-white hover:bg-blue-600"
             }`}>
             {isSubmitting ? "Submitting..." : "Submit Order"}
           </button>

@@ -7,7 +7,7 @@ export async function GET(request, { params }) {
     try {
         const type = decodeURIComponent(params?.type || "");
 
-        const data = await OrderModel.find({ dscode: dscode, status: false });
+        const data = await OrderModel.find({  status: type });
 
         if (!data.length) {
             return Response.json(

@@ -4,12 +4,20 @@ import { useSidebar } from '@/app/context/SidebarContext'
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { Grid2X2, TrophyIcon, UserCircle,ImageIcon, UsersRound, Medal, FileUser, BookOpenText, NotebookText, KeyRound, MailPlus, Trophy, ScrollText, ChevronDown } from "lucide-react";
+import { Grid2X2, TrophyIcon, ListCheck, UserCircle, ImageIcon, UsersRound, Medal, FileUser, BookOpenText, NotebookText, KeyRound, MailPlus, Trophy, ScrollText, ChevronDown } from "lucide-react";
 const navItems = [
     {
         icon: <Grid2X2 />,
         name: "Dashboard",
         path: "/superadmin/Dashboard",
+    },
+    {
+        icon: <ListCheck />,
+        name: "Orders",
+        subItems: [
+            { name: "Approved", path: "/superadmin/order/approvedorder", pro: false },
+            { name: "Pending", path: "/superadmin/order/pendingdorder", pro: false },
+        ],
     },
     {
         icon: <UserCircle />,
@@ -36,6 +44,7 @@ const navItems = [
             { name: "All Level", path: "/superadmin/Level/all", pro: false },
         ],
     },
+
     {
         icon: <Medal />,
         name: "Bonanza",

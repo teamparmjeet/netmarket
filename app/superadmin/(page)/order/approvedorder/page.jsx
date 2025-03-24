@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { saveAs } from "file-saver";
 import * as XLSX from "xlsx";
+import OrderDetails from "@/components/OrderDetails/OrderDetails";
 
 export default function PendingOrders() {
     const [dateFrom, setDateFrom] = useState("");
@@ -9,8 +10,7 @@ export default function PendingOrders() {
     const [allOrders, setAllOrders] = useState([]);
     const [filteredOrders, setFilteredOrders] = useState([]);
     const [loadingOrders, setLoadingOrders] = useState(true);
-
-
+    const [selectedOrder, setSelectedOrder] = useState(null);
 
     useEffect(() => {
         const fetchOrders = async () => {
@@ -33,7 +33,7 @@ export default function PendingOrders() {
 
     const applyFilter = () => {
         const filtered = allOrders.filter((order) => {
-            const orderDate = order.date.split("T")[0]; // Extract only the YYYY-MM-DD part
+            const orderDate = order.date.split("T")[0];
             return orderDate >= dateFrom && orderDate <= dateTo;
         });
         setFilteredOrders(filtered);
@@ -46,6 +46,14 @@ export default function PendingOrders() {
         const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
         const data = new Blob([excelBuffer], { type: "application/octet-stream" });
         saveAs(data, "PendingOrders.xlsx");
+    };
+
+    const openModal = (order) => {
+        setSelectedOrder(order);
+    };
+
+    const closeModal = () => {
+        setSelectedOrder(null);
     };
 
     return (
@@ -76,10 +84,12 @@ export default function PendingOrders() {
                     <thead>
                         <tr className="bg-gray-100 dark:bg-gray-600">
                             <th className="border border-gray-300 px-4 py-2">Order No</th>
+                            <th className="border border-gray-300 px-4 py-2">DsId</th>
+                            <th className="border border-gray-300 px-4 py-2">Mobile Number</th>
                             <th className="border border-gray-300 px-4 py-2">Amount</th>
                             <th className="border border-gray-300 px-4 py-2">Payment Mode</th>
                             <th className="border border-gray-300 px-4 py-2">Date</th>
-                            <th className="border border-gray-300 px-4 py-2">Status</th>
+                            <th className="border border-gray-300 px-4 py-2">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -87,10 +97,19 @@ export default function PendingOrders() {
                             filteredOrders.map((order) => (
                                 <tr key={order._id} className="text-center bg-white dark:bg-gray-800">
                                     <td className="border border-gray-300 px-4 py-2">{order.orderNo}</td>
+                                    <td className="border border-gray-300 px-4 py-2">{order.dscode}</td>
+                                    <td className="border border-gray-300 px-4 py-2">{order.mobileno}</td>
                                     <td className="border border-gray-300 px-4 py-2">{order.netamount}</td>
                                     <td className="border border-gray-300 px-4 py-2">{order.paymentmod}</td>
                                     <td className="border border-gray-300 px-4 py-2">{new Date(order.date).toLocaleDateString("en-GB")}</td>
-                                    <td className="border border-gray-300 px-4 py-2">{order.status ? "Approved" : "Pending"}</td>
+                                    <td className="border border-gray-300 px-4 py-2">
+                                        <button
+                                            onClick={() => openModal(order)}
+                                            className="text-blue-500 hover:text-blue-700"
+                                        >
+                                            View
+                                        </button>
+                                    </td>
                                 </tr>
                             ))
                         ) : (
@@ -102,6 +121,22 @@ export default function PendingOrders() {
                 </table>
             )}
             <button onClick={exportToExcel} className="mt-4 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 w-40">Export to Excel</button>
+
+            {/* Modal */}
+            {selectedOrder && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                    <div className="bg-white dark:bg-gray-800 w-full h-full p-6 overflow-auto relative">
+                        <button
+                            onClick={closeModal}
+                            className="absolute top-4 right-4 text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white text-2xl"
+                        >
+                            ×
+                        </button>
+                        <h2 className="text-2xl font-semibold mb-4">Order Details - {selectedOrder.orderNo}</h2>
+                        <OrderDetails data={selectedOrder}/>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

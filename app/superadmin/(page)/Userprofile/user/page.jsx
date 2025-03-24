@@ -74,12 +74,12 @@ export default function Page() {
                                             {user.group}
                                         </td>
                                         <td
-                                            className={`py-2 px-3 font-medium ${user.status === "0"
+                                            className={`py-2 px-3 font-medium ${user.usertype === "0"
                                                 ? "text-red-600 dark:text-red-500"
                                                 : "text-indigo-600 dark:text-sky-400"
                                                 }`}
                                         >
-                                            {user.status === "0" ? "In Active" : "Active"}
+                                            {user.usertype === "1" ? "Active" : "In Active"}
                                         </td>
                                         <td className="py-2 px-3">
                                             <Link

@@ -4,6 +4,7 @@ import axios from "axios";
 import { useParams } from "next/navigation";
 import Image from "next/image";
 import Order from "@/components/Order/Order";
+import UserVerify from "@/components/UserVerify/UserVerify";
 export default function UserProfile() {
   const { id } = useParams();
   const decodedId = decodeURIComponent(id);
@@ -60,20 +61,21 @@ export default function UserProfile() {
           <h4 className="mb-3 text-xl font-semibold text-center xl:text-left text-gray-900 dark:text-white">
             {userData?.name || "Unknown"}
           </h4>
-          <div className="flex items-center justify-center xl:justify-start space-x-3">
+          <div className="flex flex-wrap gap-2 items-center  xl:justify-start space-x-3">
             <h2 className="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 font-medium px-3 py-1 rounded-lg text-sm shadow">
               DsId : {userData?.dscode}
             </h2>
             <h3 className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 font-medium px-3 py-1 rounded-lg text-sm shadow">
               Group : {userData?.group}
             </h3>
-            <span className="bg-red-600 text-white px-3 py-1 rounded-lg text-sm font-medium shadow-md">
-              Not Approved
-            </span>
+
+            <UserVerify data={userData} />
           </div>
         </div>
       </div>
-      <Order />
+   
+      <Order id={userData?.dscode} />
+
       <Section title="Personal Details">
         <InfoGrid>
           <InfoCard

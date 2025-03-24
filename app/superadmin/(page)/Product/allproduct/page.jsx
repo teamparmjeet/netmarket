@@ -170,7 +170,7 @@ export default function Page() {
                   </td>
                   <td className="py-4 px-6 text-gray-800 dark:text-gray-200">
                     <Link href={`/superadmin/Product/update/${product._id}`} className=" bg-blue-400 text-white px-1 hover:bg-blue-500 py-0.5 rounded">
-                     Action
+                      Action
                     </Link>
                   </td>
 

@@ -8,7 +8,7 @@ export async function POST(req) {
     try {
         const data = await req.json();
 
-        if (!data.name || !data.email || !data.password || !data.mobileNo) {
+        if (!data.name || !data.email || !data.password || !data.mobileNo || !data.group || !data.pdscode) {
             return new Response(
                 JSON.stringify({ success: false, message: "All fields are required!" }),
                 { status: 400 }
@@ -22,7 +22,13 @@ export async function POST(req) {
                 { status: 400 }
             );
         }
-
+        const referrerExists = await UserModel.findOne({ dscode: data.pdscode }).lean();
+        if (!referrerExists) {
+            return new Response(
+                JSON.stringify({ success: false, message: "Invalid referral code!" }),
+                { status: 400 }
+            );
+        }
         const hashedPassword = await bcrypt.hash(data.password, 10);
 
         const newUser = new UserModel({

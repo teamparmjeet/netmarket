@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "next/navigation";
 import Image from "next/image";
+import Order from "@/components/Order/Order";
 export default function UserProfile() {
   const { id } = useParams();
   const decodedId = decodeURIComponent(id);
@@ -55,17 +56,24 @@ export default function UserProfile() {
           height={200}
           className="w-24 h-24 rounded-full border object-cover shadow-md"
         />
-        <div>
-          <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
-            {userData.name}
-          </h2>
-          <p className="text-gray-600 dark:text-gray-300">{userData.email}</p>
-          <p className="text-sm text-gray-500 dark:text-gray-200">
-            {userData.gender}
-          </p>
+        <div className="order-3 xl:order-2 bg-white dark:bg-gray-800">
+          <h4 className="mb-3 text-xl font-semibold text-center xl:text-left text-gray-900 dark:text-white">
+            {userData?.name || "Unknown"}
+          </h4>
+          <div className="flex items-center justify-center xl:justify-start space-x-3">
+            <h2 className="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 font-medium px-3 py-1 rounded-lg text-sm shadow">
+              DsId : {userData?.dscode}
+            </h2>
+            <h3 className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 font-medium px-3 py-1 rounded-lg text-sm shadow">
+              Group : {userData?.group}
+            </h3>
+            <span className="bg-red-600 text-white px-3 py-1 rounded-lg text-sm font-medium shadow-md">
+              Not Approved
+            </span>
+          </div>
         </div>
       </div>
-
+      <Order />
       <Section title="Personal Details">
         <InfoGrid>
           <InfoCard
@@ -99,11 +107,10 @@ export default function UserProfile() {
 
       <Section title="KYC Verification">
         <p
-          className={`font-semibold ${
-            userData.kycVerification?.isVerified
-              ? "text-green-600"
-              : "text-red-600"
-          }`}
+          className={`font-semibold ${userData.kycVerification?.isVerified
+            ? "text-green-600"
+            : "text-red-600"
+            }`}
         >
           {userData.kycVerification?.isVerified
             ? "Verified ✅"
@@ -255,9 +262,8 @@ const StatusCard = ({ label, status, text }) => (
   <div>
     <h3 className="font-semibold text-gray-700 dark:text-gray-200">{label}</h3>
     <p
-      className={`text-sm font-bold ${
-        status ? "text-green-600" : "text-red-600"
-      }`}
+      className={`text-sm font-bold ${status ? "text-green-600" : "text-red-600"
+        }`}
     >
       {text || (status ? "Active ✅" : "Inactive ❌")}
     </p>

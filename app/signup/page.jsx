@@ -15,6 +15,8 @@ export default function Signup() {
         gender: "",
         mobileNo: "",
         password: "",
+        group: "",
+        pdscode: ""
     });
     const [errors, setErrors] = useState({});
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -33,6 +35,8 @@ export default function Signup() {
             if (!formData.mobileNo.trim() || formData.mobileNo.length < 12)
                 newErrors.mobileNo = "Enter a valid 10-digit mobile number";
             if (!formData.gender) newErrors.gender = "Please select a gender";
+            if (!formData.group) newErrors.gender = "Please select a Group";
+            if (!formData.pdscode) newErrors.pdscode = "Please Enter Referral";
             if (!formData.password.trim()) newErrors.password = "Password is required";
             else if (formData.password.length < 6)
                 newErrors.password = "Password must be at least 6 characters";
@@ -130,6 +134,20 @@ export default function Signup() {
                                     <option value="Other">Other</option>
                                 </select>
                                 {errors.gender && <p className="text-red-500 text-xs">{errors.gender}</p>}
+                            </div>
+                            <div>
+                                <label className="text-gray-700 text-sm font-semibold">Group</label>
+                                <select name="group" value={formData.group} onChange={handleChange} className="block w-full px-4 py-3 text-gray-500 bg-white border border-gray-200 rounded-md appearance-none placeholder:text-gray-400 focus:border-[#161950] focus:outline-none focus:ring-[#161950] sm:text-sm">
+                                    <option value="" disabled>Select</option>
+                                    <option value="SAO">SAO</option>
+                                    <option value="SGO">SGO</option>
+                                </select>
+                                {errors.group && <p className="text-red-500 text-xs">{errors.group}</p>}
+                            </div>
+                            <div>
+                                <label className="text-gray-700 text-sm font-semibold">Reference Ds Id.</label>
+                                <input type="text" name="pdscode" value={formData.pdscode} onChange={handleChange} className="block w-full px-4 py-3 text-gray-500 bg-white border border-gray-200 rounded-md appearance-none placeholder:text-gray-400 focus:border-[#161950] focus:outline-none focus:ring-[#161950] sm:text-sm" required />
+                                {errors.pdscode && <p className="text-red-500 text-xs">{errors.pdscode}</p>}
                             </div>
                             <div>
                                 <label className="text-gray-700 text-sm font-semibold">Password</label>

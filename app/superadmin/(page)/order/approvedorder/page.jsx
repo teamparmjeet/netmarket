@@ -7,6 +7,8 @@ import OrderDetails from "@/components/OrderDetails/OrderDetails";
 export default function PendingOrders() {
     const [dateFrom, setDateFrom] = useState("");
     const [dateTo, setDateTo] = useState("");
+    const [orderNoFilter, setOrderNoFilter] = useState("");
+    const [dscodeFilter, setDscodeFilter] = useState("");
     const [allOrders, setAllOrders] = useState([]);
     const [filteredOrders, setFilteredOrders] = useState([]);
     const [loadingOrders, setLoadingOrders] = useState(true);
@@ -34,7 +36,14 @@ export default function PendingOrders() {
     const applyFilter = () => {
         const filtered = allOrders.filter((order) => {
             const orderDate = order.date.split("T")[0];
-            return orderDate >= dateFrom && orderDate <= dateTo;
+            const matchesDate = (!dateFrom || orderDate >= dateFrom) && 
+                              (!dateTo || orderDate <= dateTo);
+            const matchesOrderNo = !orderNoFilter || 
+                                 order.orderNo.toLowerCase().includes(orderNoFilter.toLowerCase());
+            const matchesDscode = !dscodeFilter || 
+                                order.dscode.toLowerCase().includes(dscodeFilter.toLowerCase());
+            
+            return matchesDate && matchesOrderNo && matchesDscode;
         });
         setFilteredOrders(filtered);
     };
@@ -59,18 +68,51 @@ export default function PendingOrders() {
     return (
         <div className="mx-auto lg:p-6 p-2 bg-white dark:bg-gray-700 shadow-lg rounded-lg text-gray-700 dark:text-white">
             <h2 className="text-2xl font-semibold mb-4 text-center">Approved Order List</h2>
-            <div className="grid grid-cols-3 gap-4 mb-6 items-end">
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6 items-end">
                 <div>
                     <label className="block text-sm font-medium">Date From</label>
-                    <input type="date" value={dateFrom} onChange={(e) => setDateFrom(e.target.value)}
-                        className="border rounded-lg p-2 w-full bg-white dark:bg-gray-700 text-gray-700 dark:text-white" />
+                    <input 
+                        type="date" 
+                        value={dateFrom} 
+                        onChange={(e) => setDateFrom(e.target.value)}
+                        className="border rounded-lg p-2 w-full bg-white dark:bg-gray-700 text-gray-700 dark:text-white" 
+                    />
                 </div>
                 <div>
                     <label className="block text-sm font-medium">Date To</label>
-                    <input type="date" value={dateTo} onChange={(e) => setDateTo(e.target.value)}
-                        className="border rounded-lg p-2 w-full bg-white dark:bg-gray-700 text-gray-700 dark:text-white" />
+                    <input 
+                        type="date" 
+                        value={dateTo} 
+                        onChange={(e) => setDateTo(e.target.value)}
+                        className="border rounded-lg p-2 w-full bg-white dark:bg-gray-700 text-gray-700 dark:text-white" 
+                    />
                 </div>
-                <button onClick={applyFilter} className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 w-full">Show</button>
+                <div>
+                    <label className="block text-sm font-medium">Order No</label>
+                    <input 
+                        type="text" 
+                        value={orderNoFilter} 
+                        onChange={(e) => setOrderNoFilter(e.target.value)}
+                        className="border rounded-lg p-2 w-full bg-white dark:bg-gray-700 text-gray-700 dark:text-white"
+                        placeholder="Filter by order number"
+                    />
+                </div>
+                <div>
+                    <label className="block text-sm font-medium">DsCode</label>
+                    <input 
+                        type="text" 
+                        value={dscodeFilter} 
+                        onChange={(e) => setDscodeFilter(e.target.value)}
+                        className="border rounded-lg p-2 w-full bg-white dark:bg-gray-700 text-gray-700 dark:text-white"
+                        placeholder="Filter by dscode"
+                    />
+                </div>
+                <button 
+                    onClick={applyFilter} 
+                    className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 w-full"
+                >
+                    Show
+                </button>
             </div>
 
             {loadingOrders ? (
@@ -114,13 +156,18 @@ export default function PendingOrders() {
                             ))
                         ) : (
                             <tr>
-                                <td colSpan="5" className="text-center p-4 text-gray-500">No orders found</td>
+                                <td colSpan="7" className="text-center p-4 text-gray-500">No orders found</td>
                             </tr>
                         )}
                     </tbody>
                 </table>
             )}
-            <button onClick={exportToExcel} className="mt-4 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 w-40">Export to Excel</button>
+            <button 
+                onClick={exportToExcel} 
+                className="mt-4 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 w-40"
+            >
+                Export to Excel
+            </button>
 
             {/* Modal */}
             {selectedOrder && (

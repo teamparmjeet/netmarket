@@ -7,37 +7,37 @@ import { imageOptimizer } from "next/dist/server/image-optimizer";
 export default function Home() {
   return (
     <>
-        <Header />
-        <Mainbanner />
-        <ContentCard
-          title="Our Revolutionary Products Range"
-          description="Asclepius Wellness is above all a family company. We lead a diverse global management team that supports Independent Business Owners and their goals. Hone in on your goals with the best product combinations for targeted results."
-        />
-        <Limagecard
-          title="Latest Products"
-          description="We are a Health Products Selling company founded by business professionals. At Asclepius Wellness, we create dynamic entrepreneurs through the promotion of high-quality wellness products."
-          viewmore="/"
-          image="/images/homepage/wel-cat1.jpg"
-          sideimage="/images/homepage/wel-side1.jpg"
-        />
-        <Rimagecard
-          title="Latest Products"
-          description="We are a Health Products Selling company founded by business professionals. At Asclepius Wellness, we create dynamic entrepreneurs through the promotion of high-quality wellness products."
-          viewmore="/"
-          image="/images/homepage/wel-cat1.jpg"
-          sideimage="/images/homepage/wel-side1.jpg"
-        />
-        <ContentBtnCard
-          title="About Asclepius Wellness"
-          description="We are a Health Products Selling Company founded by business professionals. At Asclepius Wellness, we empower dynamic entrepreneurs by promoting high-quality wellness products. Our products are crafted with scientific formulations, green ingredients, and modern manufacturing processes. We believe in delivering knowledge and education to help consumers make healthy, informed choices."
-          knowMoreLink="/"
-          contactUsLink="/"
-        />
-        <ContentCard
-          title="Latest Products"
-          description="We are a Health Products Selling company founded by business professionals. At Asclepius Wellness, we create dynamic entrepreneurs through the promotion of high-quality wellness products."
-        />
-        <Footer />
+      <Header />
+      <Mainbanner />
+      <ContentCard
+        title="Our Revolutionary Products Range"
+        description="Asclepius Wellness is above all a family company. We lead a diverse global management team that supports Independent Business Owners and their goals. Hone in on your goals with the best product combinations for targeted results."
+      />
+      <Limagecard
+        title="Latest Products"
+        description="We are a Health Products Selling company founded by business professionals. At Asclepius Wellness, we create dynamic entrepreneurs through the promotion of high-quality wellness products."
+        viewmore="/"
+        image="/images/homepage/wel-cat1.jpg"
+        sideimage="/images/homepage/wel-side1.jpg"
+      />
+      <Rimagecard
+        title="Latest Products"
+        description="We are a Health Products Selling company founded by business professionals. At Asclepius Wellness, we create dynamic entrepreneurs through the promotion of high-quality wellness products."
+        viewmore="/"
+        image="/images/homepage/wel-cat1.jpg"
+        sideimage="/images/homepage/wel-side1.jpg"
+      />
+      <ContentBtnCard
+        title="About Asclepius Wellness"
+        description="We are a Health Products Selling Company founded by business professionals. At Asclepius Wellness, we empower dynamic entrepreneurs by promoting high-quality wellness products. Our products are crafted with scientific formulations, green ingredients, and modern manufacturing processes. We believe in delivering knowledge and education to help consumers make healthy, informed choices."
+        knowMoreLink="/"
+        contactUsLink="/"
+      />
+      <ContentCard
+        title="Latest Products"
+        description="We are a Health Products Selling company founded by business professionals. At Asclepius Wellness, we create dynamic entrepreneurs through the promotion of high-quality wellness products."
+      />
+      <Footer />
     </>
   );
 }
@@ -46,7 +46,7 @@ const ContentCard = ({ title, description }) => (
   <div className="flex justify-center py-10">
     <div className="p-8 max-w-4xl text-center">
       <h2 className="text-4xl font-extrabold text-gray-900">{title}</h2>
-      <p className="mt-4 text-xl text-gray-700 font-fira ">{description}</p>
+      <p className="mt-4 text-xl text-gray-700  ">{description}</p>
       <div className="mt-6 w-20 h-1 bg-blue-600 mx-auto rounded-full"></div>
     </div>
   </div>
@@ -61,7 +61,7 @@ const ContentBtnCard = ({
   <div className="flex justify-center py-10">
     <div className="p-8 max-w-4xl text-center">
       <h2 className="text-4xl font-extrabold text-gray-900">{title}</h2>
-      <p className="mt-4 text-xl text-gray-700 font-fira">{description}</p>
+      <p className="mt-4 text-xl text-gray-700 ">{description}</p>
       <div className="mt-6 w-20 h-1 bg-blue-600 mx-auto rounded-full"></div>
       <div className="mt-6 flex justify-center space-x-4">
         <Link href={knowMoreLink}>

@@ -55,7 +55,7 @@ export default function page() {
         <div className="mt-6 border-t pt-4">
           {data.length === 1 ? (
             <p className="text-center text-gray-600 text-lg font-medium">
-              No Data Found..
+              No Data Found...
             </p>
           ) : (
             <div className="overflow-x-auto mt-4">

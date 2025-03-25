@@ -47,6 +47,9 @@ export default function Page() {
                                 <th className="py-2 px-3 font-medium">Name</th>
                                 <th className="py-2 px-3 font-medium">Email</th>
                                 <th className="py-2 px-3 font-medium">Group</th>
+                                <th className="py-2 px-3 font-medium">SAO Sp</th>
+                                <th className="py-2 px-3 font-medium">SGO Sp</th>
+                                <th className="py-2 px-3 font-medium">Total Sp</th>
                                 <th className="py-2 px-3 font-medium">Status</th>
                                 <th className="py-2 px-3 font-medium"></th>
                             </tr>
@@ -72,6 +75,15 @@ export default function Page() {
                                         </td>
                                         <td className="py-2 px-3 text-gray-600 dark:text-gray-300 font-light">
                                             {user.group}
+                                        </td>
+                                        <td className="py-2 px-3 text-gray-600 dark:text-gray-300 font-light">
+                                            {user.saosp}
+                                        </td>
+                                        <td className="py-2 px-3 text-gray-600 dark:text-gray-300 font-light">
+                                            {user.sgosp}
+                                        </td>
+                                        <td className="py-2 px-3 text-gray-600 dark:text-gray-300 font-light">
+                                            {user.earnsp}
                                         </td>
                                         <td
                                             className={`py-2 px-3 font-medium ${user.usertype === "0"

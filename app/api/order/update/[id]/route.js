@@ -3,16 +3,14 @@ import OrderModel from "@/model/Order";
 import mongoose from "mongoose";
 import UserModel from "@/model/User";
 
-
-
 export async function PATCH(req, { params }) {
     await dbConnect();
 
     try {
         const { id } = params;
         const data = await req.json();
-        
-        // Start a transaction to ensure atomic updates
+
+        // Start a transaction
         const session = await mongoose.startSession();
         session.startTransaction();
 
@@ -39,37 +37,53 @@ export async function PATCH(req, { params }) {
             }).session(session);
 
             if (user) {
-                // Convert earnsp and totalsp to numbers for calculation
+                // Convert values to numbers for calculation
                 let currentEarnsp = parseFloat(user.earnsp) || 0;
+                let currentSaosp = parseFloat(user.saosp) || 0;
+                let currentSgosp = parseFloat(user.sgosp) || 0;
                 const orderTotalSp = parseFloat(updatedOrder.totalsp) || 0;
 
-                // Update user's earnsp based on status
+                // Check status and update values accordingly
                 if (data.status !== undefined) {
                     if (data.status === true) {
-                        // Add totalsp to earnsp when status becomes true
                         currentEarnsp += orderTotalSp;
+                        if (updatedOrder.salegroup === "SAO") {
+                            currentSaosp += orderTotalSp;
+                        } else if (updatedOrder.salegroup === "SGO") {
+                            currentSgosp += orderTotalSp;
+                        }
                     } else if (data.status === false) {
-                        // Subtract totalsp from earnsp when status becomes false
                         currentEarnsp -= orderTotalSp;
-                        // Ensure earnsp doesn't go below 0
+                        if (updatedOrder.salegroup === "SAO") {
+                            currentSaosp -= orderTotalSp;
+                        } else if (updatedOrder.salegroup === "SGO") {
+                            currentSgosp -= orderTotalSp;
+                        }
+                        // Ensure values don't go below 0
                         currentEarnsp = Math.max(currentEarnsp, 0);
+                        currentSaosp = Math.max(currentSaosp, 0);
+                        currentSgosp = Math.max(currentSgosp, 0);
                     }
-                    
-                    // Update user with new earnsp value
+
+                    // Update user
                     await UserModel.updateOne(
                         { dscode: updatedOrder.dscode },
-                        { earnsp: currentEarnsp.toString() },
+                        {
+                            earnsp: currentEarnsp.toString(),
+                            saosp: currentSaosp.toString(),
+                            sgosp: currentSgosp.toString()
+                        },
                         { session }
                     );
                 }
             }
 
-            // Commit the transaction
+            // Commit transaction
             await session.commitTransaction();
             session.endSession();
 
             return Response.json({
-                message: "order updated successfully",
+                message: "Order updated successfully",
                 success: true,
                 data: updatedOrder
             }, { status: 200 });

@@ -11,7 +11,7 @@ export default function Footer() {
   }, []);
 
   return (
-    <footer className="bg-gray-900 text-gray-400 text-center py-4 mt-10">
+    <footer className="bg-gray-200 text-gray-400 text-center py-4 mt-10">
       <p className="text-sm">
         Copyright © {new Date().getFullYear()} Asclepius Wellness Private Limited | All Rights Reserved.
       </p>

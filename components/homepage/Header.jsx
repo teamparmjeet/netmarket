@@ -2,19 +2,22 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { Menu, X, Search, LogIn, ChevronDown, UserPlus } from "lucide-react";
+import { Menu, X, LogIn, ChevronDown, UserPlus } from "lucide-react";
+import ProductModal from "./ProductModal ";
+
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isFixed, setIsFixed] = useState(false);
   const [products, setProducts] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   useEffect(() => {
     // Fetch products dynamically
     const fetchProducts = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/Product/Product/fetch/AllProduct");
+        const response = await fetch("/api/Product/Product/fetch/AllProduct");
         const data = await response.json();
         if (data.success) setProducts(data.data);
       } catch (error) {
@@ -63,24 +66,27 @@ export default function Header() {
             
             {/* Dropdown Menu */}
             {showDropdown && (
-              <div className="absolute left-0 mt-0 w-60 bg-white/70 border border-gray-300 shadow-lg rounded-lg p-2 z-50">
-                {products.length > 0 ? (
-                  <ul className="space-y-2">
-                    {products.slice(0,10).map((product) => (
-                      <li key={product._id}>
-                        <Link 
-                          href={`/product/${product._id}`} 
-                          className="block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md transition"
-                        >
-                          {product.productname}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p className="text-center text-gray-500 p-2">Loading...</p>
-                )}
-              </div>
+               <div className="absolute left-0 mt-0 w-60 bg-white/90 border border-gray-300 shadow-lg rounded-lg p-2 z-50">
+               {products.length > 0 ? (
+                 <ul className="space-y-2">
+                   {products.slice(0, 10).map((product) => (
+                     <li key={product._id}>
+                       <button
+                         onClick={() => {
+                           setSelectedProduct(product);
+                           setShowDropdown(false);
+                         }}
+                         className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md transition"
+                       >
+                         {product.productname}
+                       </button>
+                     </li>
+                   ))}
+                 </ul>
+               ) : (
+                 <p className="text-center text-gray-500 p-2">Loading...</p>
+               )}
+             </div>
             )}
           </div>
 
@@ -107,14 +113,6 @@ export default function Header() {
         </div>
 
         <div className="flex items-center justify-end space-x-4 ">
-          <div className="hidden lg:block relative">
-            <input
-              type="text"
-              placeholder="Search product..."
-              className="p-2 pl-10 pr-4 border rounded-md bg-gray-100 focus:outline-none focus:ring-0 active:ring-0"
-            />
-            <Search className="absolute left-3 top-2.5 w-5 h-5 text-gray-500" />
-          </div>
 
           <Link href="/signin">
             <button className="px-6 py-3 text-lg font-semibold text-white bg-gradient-to-r from-green-700 to-green-600 rounded-full shadow-md border-2 border-transparent transition-all duration-300 hover:from-green-800 hover:to-green-700 hover:border-green-800 focus:ring-2 focus:ring-green-400 flex items-center gap-2 hidden md:flex">
@@ -176,18 +174,10 @@ export default function Header() {
               </li>
             </ul>
           </nav>
-          <div className="p-4">
-            <div className="relative">
-              <input
-                type="text"
-                placeholder="Search product..."
-                className="w-full p-2 pl-10 pr-4 border rounded-md bg-gray-100 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-              />
-              <Search className="absolute left-3 top-2.5 w-5 h-5 text-gray-500" />
-            </div>
-          </div>
         </div>
       </div>
+
+      {selectedProduct && <ProductModal product={selectedProduct} onClose={() => setSelectedProduct(null)} />}
     </>
   );
 }

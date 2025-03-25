@@ -4,7 +4,7 @@ import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronLeft, ChevronRight } from "lucide-react"; 
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export default function Mainbanner() {
   const imagePath = "/images/homepage/Shiitake-Shake.jpg";
@@ -22,28 +22,28 @@ export default function Mainbanner() {
   const CustomLeftArrow = ({ onClick }) => (
     <button
       onClick={onClick}
-      className={`absolute left-4 top-1/2 -translate-y-1/2 z-10 text-black text-3xl transition-opacity duration-300 ${
+      className={`absolute left-4 top-1/2 -translate-y-1/2 z-10 text-white bg-black/30 p-2 rounded-full transition-all ${
         hover ? "opacity-100" : "opacity-0"
       }`}
     >
-      <ChevronLeft size={40} />
+      <ChevronLeft size={32} />
     </button>
   );
 
   const CustomRightArrow = ({ onClick }) => (
     <button
       onClick={onClick}
-      className={`absolute right-4 top-1/2 -translate-y-1/2 z-10 text-black text-3xl transition-opacity duration-300 ${
+      className={`absolute right-4 top-1/2 -translate-y-1/2 z-10 text-white bg-black/30 p-2 rounded-full transition-all ${
         hover ? "opacity-100" : "opacity-0"
       }`}
     >
-      <ChevronRight size={40} />
+      <ChevronRight size={32} />
     </button>
   );
 
   return (
     <div
-      className="w-full mx-auto p-0 relative group"
+      className="w-full mx-auto p-0 relative group "
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
     >
@@ -53,11 +53,11 @@ export default function Mainbanner() {
         autoPlay
         autoPlaySpeed={3000}
         keyBoardControl
-        afterChange={(currentSlide) => setActiveIndex(currentSlide)} 
+        afterChange={(currentSlide) => setActiveIndex(currentSlide)}
         removeArrowOnDeviceType={["tablet", "mobile"]}
         containerClass="carousel-container"
-        customLeftArrow={<CustomLeftArrow />} 
-        customRightArrow={<CustomRightArrow />} 
+        customLeftArrow={<CustomLeftArrow />}
+        customRightArrow={<CustomRightArrow />}
       >
         {images.map((img, index) => (
           <div key={index} className="h-full w-full p-0 relative">
@@ -65,21 +65,22 @@ export default function Mainbanner() {
               <Image
                 src={img}
                 alt={`Image ${index + 1}`}
-                width={1500}
-                height={500}
-                className="rounded-lg object-cover w-full z-0"
+                width={800}
+                height={313}
+                className="rounded-lg object-cover w-full min-h-[300px] md:min-h-[450px] lg:min-h-[550px]"
               />
             </Link>
           </div>
         ))}
       </Carousel>
 
-      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+      {/* Dot Indicators */}
+      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-3">
         {images.map((_, idx) => (
           <span
             key={idx}
-            className={`w-3 h-3 rounded-full transition-all duration-300 ${
-              activeIndex % images.length === idx ? "bg-gray-700" : "bg-gray-300"
+            className={`w-4 h-4 rounded-full transition-all duration-300 ${
+              activeIndex % images.length === idx ? "bg-gray-900" : "bg-gray-400"
             }`}
           ></span>
         ))}

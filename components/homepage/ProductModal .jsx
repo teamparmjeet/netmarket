@@ -49,18 +49,6 @@ const ProductModal = ({ product, onClose }) => {
             <p className="text-sm sm:text-md font-medium text-gray-700">S.P. : ₹{product.sp}</p>
           </div>
 
-          {/* Action Buttons */}
-          <div className="mt-5 sm:mt-6 flex justify-center space-x-3 sm:space-x-4">
-            <button className="px-5 sm:px-6 py-2 sm:py-3 text-sm sm:text-lg font-semibold text-white bg-gradient-to-r from-green-700 to-green-500 rounded-full shadow-md hover:from-green-800 hover:to-green-600 transition">
-              Add to Cart
-            </button>
-            <button
-              onClick={onClose}
-              className="px-5 sm:px-6 py-2 sm:py-3 text-sm sm:text-lg font-semibold text-gray-700 border border-gray-400 rounded-full shadow-md hover:bg-gray-200 transition"
-            >
-              Close
-            </button>
-          </div>
         </div>
       </div>
     </div>

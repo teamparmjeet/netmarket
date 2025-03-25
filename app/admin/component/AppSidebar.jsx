@@ -4,7 +4,7 @@ import { useSidebar } from '@/app/context/SidebarContext'
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { Grid2X2, UserCircle, UsersRound, Medal, FileUser, BookOpenText, NotebookText, KeyRound, MailPlus, Trophy, ScrollText, ChevronDown } from "lucide-react";
+import { Grid2X2, UserCircle,NotepadText, UsersRound, Medal, FileUser, BookOpenText, NotebookText, KeyRound, MailPlus, Trophy, ScrollText, ChevronDown } from "lucide-react";
 const navItems = [
     {
         icon: <Grid2X2 />,
@@ -60,6 +60,11 @@ const navItems = [
             { name: "My Approved Orders", path: "/admin/OrderForm/approvedorder", pro: false },
             { name: "Product List", path: "/admin/OrderForm/productlist", pro: false },
         ],
+    },
+    {
+        icon: <NotepadText />,
+        name: "Agreement",
+        path: "/admin/agreement",
     },
     {
         icon: <NotebookText />,

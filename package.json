@@ -13,6 +13,7 @@
     "bcryptjs": "^3.0.2",
     "cloudinary": "^2.5.1",
     "file-saver": "^2.0.5",
+    "jspdf": "^3.0.1",
     "lucide-react": "^0.476.0",
     "mongoose": "^8.11.0",
     "next": "15.2.0",

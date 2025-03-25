@@ -4,7 +4,7 @@ import axios from "axios";
 
 export default function Order({ id }) {
     const [showTable, setShowTable] = useState(false);
-    const [orders, setOrders] = useState([]); // Ensure this is always an array
+    const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
@@ -13,28 +13,27 @@ export default function Order({ id }) {
             setLoading(true);
             try {
                 const response = await axios.get(`/api/order/userall/${id}`);
-                // Ensure we set an array even if the response structure is unexpected
                 setOrders(Array.isArray(response.data.data) ? response.data.data : []);
                 setError(null);
             } catch (err) {
                 setError("Failed to fetch orders. Please try again later.");
                 console.error("Error fetching orders:", err);
-                setOrders([]); // Reset to empty array on error
+                setOrders([]);
             } finally {
                 setLoading(false);
             }
         };
 
-        if (showTable && id) { // Added id check to prevent fetch with undefined id
+        if (showTable && id) {
             fetchOrders();
         }
     }, [id, showTable]);
 
     return (
-        <div className="p-6 bg-gray-50">
+        <div className=" bg-gray-50">
             {!showTable ? (
                 <button
-                    className="w-full bg-gradient-to-r from-blue-500 to-indigo-600 text-white py-1 px-4 rounded-lg shadow-md hover:from-blue-600 hover:to-indigo-700 transition-all duration-300"
+                    className="w-full sm:w-auto bg-gradient-to-r from-blue-500 to-indigo-600 text-white py-2 px-6 rounded-lg shadow-md hover:from-blue-600 hover:to-indigo-700 transition-all duration-300"
                     onClick={() => setShowTable(true)}
                 >
                     Show Orders
@@ -42,7 +41,7 @@ export default function Order({ id }) {
             ) : (
                 <div className="space-y-4">
                     <button
-                        className="w-full bg-gradient-to-r from-gray-500 to-gray-600 text-white py-1 px-4 rounded-lg shadow-md hover:from-gray-600 hover:to-gray-700 transition-all duration-300"
+                        className="w-full sm:w-auto bg-gradient-to-r from-gray-500 to-gray-600 text-white py-2 px-6 rounded-lg shadow-md hover:from-gray-600 hover:to-gray-700 transition-all duration-300"
                         onClick={() => setShowTable(false)}
                     >
                         Hide Orders
@@ -56,36 +55,40 @@ export default function Order({ id }) {
                     )}
 
                     {!loading && !error && orders.length > 0 && (
-                        <div className="overflow-x-auto shadow-lg rounded-lg">
-                            <table className="w-full bg-white rounded-lg">
-                                <thead className="bg-blue-600 text-white">
+                        <div className="overflow-x-auto bg-white shadow-lg rounded-lg">
+                            <table className="w-full min-w-[800px]">
+                                <thead className="bg-blue-600 text-white text-sm sm:text-base">
                                     <tr>
-                                        <th className="px-3 py-1 text-left">OrderNo</th>
-                                        <th className="px-3 py-1 text-left">Date</th>
-                                        <th className="px-3 py-1 text-left">Product Details</th>
-                                        <th className="px-3 py-1 text-left">Group</th>
-                                        <th className="px-3 py-1 text-left">Sp</th>
-                                        <th className="px-3 py-1 text-left">Amount</th>
-                                        <th className="px-3 py-1 text-left">Status</th>
+                                        <th className="px-3 py-2 text-left">Order No</th>
+                                        <th className="px-3 py-2 text-left">Date</th>
+                                        <th className="px-3 py-2 text-left">Product Details</th>
+                                        <th className="px-3 py-2 text-left">Group</th>
+                                        <th className="px-3 py-2 text-left">Sp</th>
+                                        <th className="px-3 py-2 text-left">Amount</th>
+                                        <th className="px-3 py-2 text-left">Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {orders.map((order, index) => (
                                         <tr
                                             key={order._id}
-                                            className={`hover:bg-gray-100 transition-colors duration-200 ${index % 2 === 0 ? "bg-gray-50" : "bg-white"}`}
+                                            className={`hover:bg-gray-100 transition-colors duration-200 ${
+                                                index % 2 === 0 ? "bg-gray-50" : "bg-white"
+                                            }`}
                                         >
-                                            <td className="p-3 border-b">{order.orderNo}</td>
-                                            <td className="p-3 border-b">
+                                            <td className="p-3 border-b text-sm sm:text-base">
+                                                {order.orderNo}
+                                            </td>
+                                            <td className="p-3 border-b text-sm sm:text-base">
                                                 {new Date(order.date).toLocaleDateString("en-GB", {
                                                     day: "2-digit",
                                                     month: "2-digit",
                                                     year: "numeric",
                                                 })}
                                             </td>
-                                            <td className="p-3 border-b">
-                                                {order.productDetails.map((detail, index) => (
-                                                    <div key={detail._id}>
+                                            <td className="p-3 border-b text-sm sm:text-base">
+                                                {order.productDetails.map((detail) => (
+                                                    <div key={detail._id} className="mb-1">
                                                         <span className="font-medium text-indigo-600">
                                                             {detail.product}
                                                         </span>{" "}
@@ -96,12 +99,16 @@ export default function Order({ id }) {
                                                     </div>
                                                 ))}
                                             </td>
-                                            <td className="p-3 border-b">{order.salegroup}</td>
-                                            <td className="p-3 border-b">{order.totalsp}</td>
-                                            <td className="p-3 border-b font-semibold text-gray-800">
+                                            <td className="p-3 border-b text-sm sm:text-base">
+                                                {order.salegroup}
+                                            </td>
+                                            <td className="p-3 border-b text-sm sm:text-base">
+                                                {order.totalsp}
+                                            </td>
+                                            <td className="p-3 border-b text-sm sm:text-base font-semibold text-gray-800">
                                                 {order.netamount}
                                             </td>
-                                            <td className="p-3 border-b">
+                                            <td className="p-3 border-b text-sm sm:text-base">
                                                 {order.status ? (
                                                     <span className="text-green-500">Verified</span>
                                                 ) : (
@@ -115,7 +122,7 @@ export default function Order({ id }) {
                         </div>
                     )}
 
-                    {!loading && !error && (!orders || orders.length === 0) && (
+                    {!loading && !error && orders.length === 0 && (
                         <p className="text-center text-gray-500 bg-gray-100 p-4 rounded-lg">
                             No orders found.
                         </p>

@@ -48,20 +48,22 @@ export default function UserProfile() {
   }
 
   return (
-    <div className=" mx-auto p-6 bg-white dark:bg-gray-800 dark:shadow-none dark:border shadow-lg rounded-lg mt-6">
-      <div className="flex items-center gap-6 border-b pb-4 mb-4">
-        <Image
-          src={userData.image || "/images/user/icon-5359553_640.webp"}
-          alt="Profile"
-          width={200}
-          height={200}
-          className="w-24 h-24 rounded-full border object-cover shadow-md"
-        />
+    <div className=" mx-auto p-1 lg:p-2 bg-white dark:bg-gray-800 dark:shadow-none dark:border shadow-lg rounded-lg mt-6">
+      <div className="flex flex-wrap items-center gap-6 border-b pb-4 mb-4">
+        <div className=" flex justify-center items-center w-full lg:w-fit">
+          <Image
+            src={userData.image || "/images/user/icon-5359553_640.webp"}
+            alt="Profile"
+            width={200}
+            height={200}
+            className="w-24 h-24 rounded-full border object-cover shadow-md"
+          />
+        </div>
         <div className="order-3 xl:order-2 bg-white dark:bg-gray-800">
           <h4 className="mb-3 text-xl font-semibold text-center xl:text-left text-gray-900 dark:text-white">
             {userData?.name || "Unknown"}
           </h4>
-          <div className="flex flex-wrap gap-2 items-center  xl:justify-start space-x-3">
+          <div className="flex flex-wrap gap-2 items-center  xl:justify-start justify-center space-x-3">
             <h2 className="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 font-medium px-3 py-1 rounded-lg text-sm shadow">
               DsId : {userData?.dscode}
             </h2>
@@ -73,7 +75,7 @@ export default function UserProfile() {
           </div>
         </div>
       </div>
-   
+
       <Order id={userData?.dscode} />
 
       <Section title="Personal Details">

@@ -4,7 +4,7 @@ import { useSidebar } from '@/app/context/SidebarContext'
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { Grid2X2, UserCircle, UsersRound ,Medal , FileUser , BookOpenText ,NotebookText,KeyRound ,MailPlus ,Trophy  ,ScrollText, ChevronDown } from "lucide-react";
+import { Grid2X2, UserCircle, UsersRound, Medal, FileUser, BookOpenText, NotebookText, KeyRound, MailPlus, Trophy, ScrollText, ChevronDown } from "lucide-react";
 const navItems = [
     {
         icon: <Grid2X2 />,
@@ -44,7 +44,7 @@ const navItems = [
         ],
     },
     {
-        icon: <Medal  />,
+        icon: <Medal />,
         name: "Trip/Bonanza",
         subItems: [
             // { name: "Spring Bonanza", path: "/admin/Trips/springbonanza", pro: false },
@@ -52,7 +52,7 @@ const navItems = [
         ],
     },
     {
-        icon: <BookOpenText  />,
+        icon: <BookOpenText />,
         name: "Order Form",
         subItems: [
             { name: "New Order Form", path: "/admin/OrderForm/neworder", pro: false },
@@ -65,15 +65,6 @@ const navItems = [
         icon: <NotebookText />,
         name: "Statement",
         path: "/admin/Statement",
-    },
-    {
-        icon: <MailPlus />,
-        name: "Grievance",
-        subItems: [
-            { name: "Add", path: "/admin/Grievance/Add", pro: false },
-            { name: "View", path: "/admin/Grievance/View", pro: false },
-            { name: "Call/Mail Us", path: "/admin/Grievance/Callus", pro: false },
-        ],
     },
     {
         icon: <KeyRound />,
@@ -270,15 +261,14 @@ const AppSidebar = () => {
             onMouseEnter={() => !isExpanded && setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
         >
-            <div className={`py-8 flex ${!isExpanded && !isHovered ? "lg:justify-center" : "justify-start"}`}>
+            <div className={`py-4 flex ${!isExpanded && !isHovered ? "lg:justify-center" : "justify-start"}`}>
                 <Link href="/admin">
                     {isExpanded || isHovered || isMobileOpen ? (
                         <>
-                            <Image className="block dark:hidden" src="/images/logo/logo.svg" alt="Logo" width={150} height={40} />
-                            <Image className="hidden dark:block" src="/images/logo/logo-dark.svg" alt="Logo" width={150} height={40} />
+                            <div className="hidden lg:block"> <Image src="/images/logo/logo-blank.png" alt="Logo" width={80} height={80} /></div>
                         </>
                     ) : (
-                        <Image src="/images/logo/logo-icon.svg" alt="Logo" width={32} height={32} />
+                        <Image src="/images/logo/logo-blank.png" alt="Logo" width={80} height={80} />
                     )}
                 </Link>
             </div>

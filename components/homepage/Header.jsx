@@ -2,47 +2,95 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { Menu, X, Search, ShoppingCart, Truck } from "lucide-react";
+import { Menu, X, Search, LogIn, ChevronDown, UserPlus } from "lucide-react";
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isFixed, setIsFixed] = useState(false);
-  const [language, setLanguage] = useState("Products");
+  const [products, setProducts] = useState([]);
+  const [showDropdown, setShowDropdown] = useState(false);
 
   useEffect(() => {
+    // Fetch products dynamically
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/api/Product/Product/fetch/AllProduct");
+        const data = await response.json();
+        if (data.success) setProducts(data.data);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+
+    fetchProducts();
+
+    // Handle sticky header
     const handleScroll = () => {
       setIsFixed(window.scrollY > 100);
     };
+
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  return (
+  return(
     <>
       <header
-        className={`bg-white shadow-md py-4 px-6 grid grid-cols-3 items-center justify-between w-full z-50 transition-transform duration-800 ${
+        className={`bg-white shadow-md py-1 px-6 grid grid-cols-3 items-center justify-between w-full z-50 transition-transform duration-800 ${
           isFixed ? "fixed top-0 left-0 right-0 translate-y-0" : "relative"
         }`}
       >
-
-        <div className="flex items-center space-x-4 ">
+        <div className="flex items-center gap-4">
+          {/* Mobile Menu Button */}
           <button
             onClick={() => setMenuOpen(true)}
-            className="lg:hidden p-2 text-gray-700 focus:outline-none"
+            className="lg:hidden p-3 text-gray-800 rounded-md hover:bg-gray-200 transition"
           >
             <Menu size={28} />
           </button>
-          <div className="hidden lg:flex space-x-4">
-            <select
-              className="appearance-none p-2 border border-gray-300 text-gray-700 cursor-pointer rounded-md"
-              value={language}
-              onChange={(e) => setLanguage(e.target.value)}
-            >
-              <option>English</option>
-              <option>Spanish</option>
-              <option>French</option>
-            </select>
-            <p className="p-2 text-gray-700 cursor-pointer">Register Now</p>
+
+          {/* Desktop Navigation */}
+          <div className="hidden lg:flex items-center gap-6">
+            {/* Language Dropdown */}
+            <div 
+            className="relative"
+            onMouseEnter={() => setShowDropdown(true)}
+            onMouseLeave={() => setShowDropdown(false)}
+          >
+            <button className="flex items-center p-2 text-gray-700 font-medium hover:text-green-600 transition">
+              Products <ChevronDown size={18} className="ml-1" />
+            </button>
+            
+            {/* Dropdown Menu */}
+            {showDropdown && (
+              <div className="absolute left-0 mt-0 w-60 bg-white/70 border border-gray-300 shadow-lg rounded-lg p-2 z-50">
+                {products.length > 0 ? (
+                  <ul className="space-y-2">
+                    {products.slice(0,10).map((product) => (
+                      <li key={product._id}>
+                        <Link 
+                          href={`/product/${product._id}`} 
+                          className="block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md transition"
+                        >
+                          {product.productname}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="text-center text-gray-500 p-2">Loading...</p>
+                )}
+              </div>
+            )}
+          </div>
+
+            {/* Register Button */}
+            <Link href="/signup">
+              <button className="px-5 py-2 text-lg font-medium  border-green-700 rounded-full shadow-md border-2  flex items-center gap-2">
+                <UserPlus size={20} />
+                Register Now
+              </button>
+            </Link>
           </div>
         </div>
 
@@ -51,31 +99,29 @@ export default function Header() {
             <Image
               src="/images/logo/logo-blank.png"
               alt="Logo"
-              width={60}
-              height={60}
+              width={70}
+              height={70}
               className="hover:opacity-80 transition"
             />
           </Link>
         </div>
 
-    
         <div className="flex items-center justify-end space-x-4 ">
           <div className="hidden lg:block relative">
             <input
               type="text"
               placeholder="Search product..."
-              className="p-2 pl-10 pr-4 border rounded-md bg-gray-100 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              className="p-2 pl-10 pr-4 border rounded-md bg-gray-100 focus:outline-none focus:ring-0 active:ring-0"
             />
             <Search className="absolute left-3 top-2.5 w-5 h-5 text-gray-500" />
           </div>
 
           <Link href="/signin">
-            <button className="px-4 py-2 border rounded-md bg-blue-500 text-white hover:bg-blue-600 transition hidden md:block">
+            <button className="px-6 py-3 text-lg font-semibold text-white bg-gradient-to-r from-green-700 to-green-600 rounded-full shadow-md border-2 border-transparent transition-all duration-300 hover:from-green-800 hover:to-green-700 hover:border-green-800 focus:ring-2 focus:ring-green-400 flex items-center gap-2 hidden md:flex">
+              <LogIn className="w-5 h-5" />
               Login
             </button>
           </Link>
-          <ShoppingCart className="w-6 h-6 text-gray-700 hover:text-blue-600 cursor-pointer transition" />
-          <Truck className="w-6 h-6 text-gray-700 hover:text-blue-600 cursor-pointer transition" />
         </div>
       </header>
 
@@ -91,7 +137,6 @@ export default function Header() {
           }`}
           onClick={(e) => e.stopPropagation()}
         >
-
           <div className="flex justify-between items-center p-4 border-b">
             <h2 className="text-lg font-semibold">Menu</h2>
             <button

@@ -1,10 +1,43 @@
-import Link from "next/link";
-import Header from "./pages/Header/page";
-import Footer from "./pages/Footer/page";
-import Mainbanner from "./pages/Mainbanner/page";
+"use client";
+
+import { useState, useEffect } from "react";
 import Image from "next/image";
-import { imageOptimizer } from "next/dist/server/image-optimizer";
+import {
+  ChevronUp,
+  ThumbsUp,
+  Facebook,
+  Twitter,
+  Instagram,
+  Linkedin,
+} from "lucide-react";
+import Header from "@/components/homepage/Header";
+import Footer from "@/components/homepage/Footer";
+import Mainbanner from "@/components/homepage/Mainbanner";
+import Rimagecard from "@/components/homepage/Rimagecard";
+import Limagecard from "@/components/homepage/Limagecard";
+import ProductCard from "@/components/homepage/Productcard";
+import ContentBtnCard from "@/components/homepage/ContentBtncard";
+import ContentCard from "@/components/homepage/ContentCard";
+import SecCard from "@/components/homepage/SecCard";
+
 export default function Home() {
+  const [showScroll, setShowScroll] = useState(false);
+  const [showSocialIcons, setShowSocialIcons] = useState(false);
+  const [hasMounted, setHasMounted] = useState(false);
+
+  useEffect(() => {
+    setHasMounted(true);
+
+    const handleScroll = () => {
+      setShowScroll(window.scrollY > 150);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  if (!hasMounted) return null;
+
   return (
     <>
       <Header />
@@ -14,15 +47,29 @@ export default function Home() {
         description="Asclepius Wellness is above all a family company. We lead a diverse global management team that supports Independent Business Owners and their goals. Hone in on your goals with the best product combinations for targeted results."
       />
       <Limagecard
-        title="Latest Products"
-        description="We are a Health Products Selling company founded by business professionals. At Asclepius Wellness, we create dynamic entrepreneurs through the promotion of high-quality wellness products."
+        title="Hair Care Range"
+        description="Our Hair Care Products are produced using scientific formulations, green ingredients and modern manufacturing processes."
         viewmore="/"
         image="/images/homepage/wel-cat1.jpg"
         sideimage="/images/homepage/wel-side1.jpg"
       />
       <Rimagecard
-        title="Latest Products"
-        description="We are a Health Products Selling company founded by business professionals. At Asclepius Wellness, we create dynamic entrepreneurs through the promotion of high-quality wellness products."
+        title="Beauty Care Range"
+        description="Our Beauty Care Products are produced using scientific formulations, green ingredients and modern manufacturing processes."
+        viewmore="/"
+        image="/images/homepage/wel-cat1.jpg"
+        sideimage="/images/homepage/wel-side1.jpg"
+      />
+      <Limagecard
+        title="Wellness Care Range"
+        description="Our Wellness Care Products are produced using scientific formulations, green ingredients and modern manufacturing processes."
+        viewmore="/"
+        image="/images/homepage/wel-cat1.jpg"
+        sideimage="/images/homepage/wel-side1.jpg"
+      />
+      <Rimagecard
+        title="Food Product Range"
+        description="Our Food Products are produced using scientific formulations, green ingredients and modern manufacturing processes."
         viewmore="/"
         image="/images/homepage/wel-cat1.jpg"
         sideimage="/images/homepage/wel-side1.jpg"
@@ -34,125 +81,75 @@ export default function Home() {
         contactUsLink="/"
       />
       <ContentCard
+        title="Product Reviews"
+        description="We are a Health Products Selling company founded by business professionals. At Asclepius Wellness we create dynamic entrepreneurs through the promotion of high quality wellness products."
+      />
+      <ContentCard
         title="Latest Products"
         description="We are a Health Products Selling company founded by business professionals. At Asclepius Wellness, we create dynamic entrepreneurs through the promotion of high-quality wellness products."
       />
+      <ProductCard />
+
       <Footer />
+
+      <div className="fixed left-4 bottom-20 w-48">
+        <Image
+          src="/images/homepage/customer-care.png"
+          alt="Customer Care"
+          width={200}
+          height={100}
+        />
+      </div>
+
+      <div className="fixed right-6 bottom-24 flex flex-col items-center justify-center">
+        {/* Main Button */}
+        <button
+          onClick={() => setShowSocialIcons(!showSocialIcons)}
+          className="p-4 bg-green-600 text-white rounded-full shadow-lg transition-all duration-300 hover:scale-110 flex items-center justify-center"
+        >
+          <ThumbsUp size={28} />
+        </button>
+
+        <div
+          className={`absolute right-16 flex gap-3 items-center transition-all duration-500 ${
+            showSocialIcons ? "opacity-100 scale-100" : "opacity-0 scale-0"
+          }`}
+        >
+          <a
+            href="#"
+            className="bg-blue-600 p-3 rounded-full text-white hover:bg-blue-700 transition"
+          >
+            <Facebook size={24} />
+          </a>
+          <a
+            href="#"
+            className="bg-blue-500 p-3 rounded-full text-white hover:bg-blue-600 transition"
+          >
+            <Twitter size={24} />
+          </a>
+          <a
+            href="#"
+            className="bg-pink-500 p-3 rounded-full text-white hover:bg-pink-600 transition"
+          >
+            <Instagram size={24} />
+          </a>
+          <a
+            href="#"
+            className="bg-blue-800 p-3 rounded-full text-white hover:bg-blue-900 transition"
+          >
+            <Linkedin size={24} />
+          </a>
+        </div>
+      </div>
+
+      {showScroll && (
+        <button
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          className="fixed right-4 bottom-4 p-3 border-2 border-green-800 text-green-900 rounded-full shadow-lg transition"
+        >
+          <ChevronUp size={24} />
+        </button>
+      )}
     </>
   );
 }
-
-const ContentCard = ({ title, description }) => (
-  <div className="flex justify-center py-10">
-    <div className="p-8 max-w-4xl text-center">
-      <h2 className="text-4xl font-extrabold text-gray-900">{title}</h2>
-      <p className="mt-4 text-xl text-gray-700  ">{description}</p>
-      <div className="mt-6 w-20 h-1 bg-blue-600 mx-auto rounded-full"></div>
-    </div>
-  </div>
-);
-
-const ContentBtnCard = ({
-  title,
-  description,
-  knowMoreLink = "#",
-  contactUsLink = "#",
-}) => (
-  <div className="flex justify-center py-10">
-    <div className="p-8 max-w-4xl text-center">
-      <h2 className="text-4xl font-extrabold text-gray-900">{title}</h2>
-      <p className="mt-4 text-xl text-gray-700 ">{description}</p>
-      <div className="mt-6 w-20 h-1 bg-blue-600 mx-auto rounded-full"></div>
-      <div className="mt-6 flex justify-center space-x-4">
-        <Link href={knowMoreLink}>
-          <button className="px-6 py-2 text-lg font-semibold text-white bg-blue-600 rounded-lg shadow-md hover:bg-blue-700 transition">
-            Know More
-          </button>
-        </Link>
-        <Link href={contactUsLink}>
-          <button className="px-6 py-2 text-lg font-semibold text-blue-600 border border-blue-600 rounded-lg shadow-md hover:bg-blue-100 transition">
-            Contact Us
-          </button>
-        </Link>
-      </div>
-    </div>
-  </div>
-);
-
-const Limagecard = ({ title, description, viewmore, image, sideimage }) => (
-  <div className="relative overflow-hidden shadow-lg bg-white rounded-lg">
-    <div className="grid grid-cols-1 md:grid-cols-2">
-      {/* Main Image */}
-      <div className="w-full">
-        <Image
-          src={image}
-          width={500}
-          height={500}
-          className="w-full h-full object-cover rounded-t-lg md:rounded-l-lg md:rounded-t-none"
-          alt={title || "Main Image"}
-        />
-      </div>
-
-      {/* Content Section */}
-      <div className="flex flex-col justify-center items-center p-6 text-center md:text-left">
-        <h2 className="text-xl font-bold text-gray-900">{title}</h2>
-        <p className="text-gray-600 mt-2">{description}</p>
-        <Link href={viewmore}>
-          <button className="mt-4 px-6 py-2 text-lg font-semibold text-white bg-blue-600 rounded-lg shadow-md hover:bg-blue-700 transition">
-            Know More
-          </button>
-        </Link>
-      </div>
-    </div>
-
-    {/* Side Image (Only on larger screens) */}
-    {sideimage && (
-      <div className="absolute top-4 right-4 w-20 h-20 md:w-40 md:h-40 lg:w-56 lg:h-72">
-        <Image
-          src={sideimage}
-          width={200}
-          height={200}
-          className="w-full h-full object-cover rounded-lg shadow-md"
-          alt="Side Image"
-        />
-      </div>
-    )}
-  </div>
-);
-
-const Rimagecard = ({ title, description, viewmore, image, sideimage }) => (
-  <div className="relative overflow-hidden shadow-lg bg-white rounded-lg">
-    <div className="grid grid-cols-1 md:grid-cols-2">
-      <div className="order-2 md:order-1 flex flex-col justify-center items-center p-6 text-center md:text-left">
-        <h2 className="text-xl font-bold text-gray-900">{title}</h2>
-        <p className="text-gray-600 mt-2">{description}</p>
-        <Link href={viewmore}>
-          <button className="mt-4 px-6 py-2 text-lg font-semibold text-white bg-blue-600 rounded-lg shadow-md hover:bg-blue-700 transition">
-            Know More
-          </button>
-        </Link>
-      </div>
-      <div className="order-1 md:order-2 w-full">
-        <Image
-          src={image}
-          width={500}
-          height={500}
-          className="w-full h-full object-cover rounded-b-lg md:rounded-r-lg md:rounded-b-none"
-          alt={title || "Main Image"}
-        />
-      </div>
-    </div>
-
-    {sideimage && (
-      <div className="absolute top-4 left-4 w-20 h-20 md:w-40 md:h-40 lg:w-56 lg:h-72">
-        <Image
-          src={sideimage}
-          width={200}
-          height={200}
-          className="w-full h-full object-cover rounded-lg shadow-md"
-          alt="Side Image"
-        />
-      </div>
-    )}
-  </div>
-);

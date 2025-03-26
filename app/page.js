@@ -50,7 +50,7 @@ export default function Home() {
         sideimage="/images/homepage/wel-side1.jpg"
       />
       <ContentBtnCard
-        title="About Asclepius Wellness"
+        title="ABOUT ANAADIPRO WELLNESS"
         description="We are a Health Products Selling Company founded by business professionals. At Asclepius Wellness, we empower dynamic entrepreneurs by promoting high-quality wellness products. Our products are crafted with scientific formulations, green ingredients, and modern manufacturing processes. We believe in delivering knowledge and education to help consumers make healthy, informed choices."
         knowMoreLink="/"
         contactUsLink="/"

@@ -17,7 +17,14 @@ const ProductCard = () => {
       setError("");
       try {
         const response = await axios.get("/api/Product/Product/fetch/s");
-        setProducts(response.data.data || []);
+        let fetchedProducts = response.data.data || [];
+
+        // Sort products from newest to oldest
+        fetchedProducts = fetchedProducts.sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        );
+
+        setProducts(fetchedProducts);
       } catch (error) {
         setError(error.response?.data?.message || "Failed to fetch products.");
       } finally {
@@ -79,7 +86,7 @@ const ProductCard = () => {
       </div>
 
       {/* Product Modal */}
-      <ProductModal product={selectedProduct} onClose={() => setSelectedProduct(null)} />
+      {selectedProduct && <ProductModal product={selectedProduct} onClose={() => setSelectedProduct(null)} />}
     </div>
   );
 };

@@ -23,7 +23,7 @@ export default function FloatingActions() {
   return (
     <>
       {/* Floating Social Media Buttons */}
-      <div className="fixed right-6 bottom-24 flex flex-col items-center justify-center z-30">
+      <div className="fixed right-4 bottom-24 flex flex-col items-center justify-center z-30">
         <button
           onClick={() => setShowSocialIcons(!showSocialIcons)}
           className="p-4 bg-green-600 text-white rounded-full shadow-lg transition-transform duration-300 hover:scale-110 flex items-center justify-center"

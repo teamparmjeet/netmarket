@@ -58,13 +58,13 @@ export default function Page() {
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-6 bg-white shadow-lg rounded-xl mt-10 border border-gray-200">
+    <div className="max-w-6xl mx-auto p-6 bg-white dark:bg-gray-800 shadow-lg rounded-xl mt-10 border border-gray-200">
       <Toaster />
-      <h2 className="text-2xl font-bold mb-4 text-center text-gray-800">Add Level</h2>
+      <h2 className="text-2xl font-bold mb-4 text-center text-gray-800 dark:text-gray-200">Add Level</h2>
       <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {/* Level Name Field */}
         <div className="flex flex-col lg:col-span-2">
-          <label className="text-gray-700 text-sm font-medium mb-1">Level Name</label>
+          <label className="text-gray-700 dark:text-gray-200  text-sm font-medium mb-1">Level Name</label>
           <input
             type="text"
             name="level_name"
@@ -81,7 +81,7 @@ export default function Page() {
         {/* Numeric Fields */}
         {['sao', 'sgo', 'binary_income', 'bonus_income', 'performance_income'].map((field) => (
           <div key={field} className="flex flex-col">
-            <label className="text-gray-700 text-sm font-medium mb-1 uppercase">
+            <label className="text-gray-700 dark:text-gray-200 text-sm font-medium mb-1 uppercase">
               {field.charAt(0).toUpperCase() + field.slice(1)}
             </label>
             <input
@@ -101,7 +101,7 @@ export default function Page() {
 
         {/* Bonus field (Optional) */}
         <div className="flex flex-col lg:col-span-2">
-          <label className="text-gray-700 text-sm font-medium mb-1">Bonus (Optional)</label>
+          <label className="text-gray-700 dark:text-gray-200 text-sm font-medium mb-1">Bonus (Optional)</label>
           <input
             type="text"
             name="bonus"
@@ -113,11 +113,11 @@ export default function Page() {
         </div>
 
         {/* Submit Button */}
-        <div className="lg:col-span-2">
+        <div className="lg:col-span-2 mx-auto">
           <button
             type="submit"
             disabled={isSubmitting}
-            className={`w-full py-2 text-sm font-medium rounded-md transition ${
+            className={`w-42  py-2 text-sm font-medium rounded-md transition ${
               isSubmitting ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 text-white hover:bg-blue-700'
             }`}
           >

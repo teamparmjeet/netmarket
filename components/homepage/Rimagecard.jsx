@@ -40,7 +40,7 @@ const Rimagecard = ({
 
       {/* Left Section - Content */}
       <div className="relative flex flex-col justify-center items-end p-10 md:p-14 w-full md:w-1/2 bg-gradient-to-br from-gray-50 to-white rounded-l-3xl">
-        <h2 className="text-4xl font-extrabold text-gray-900 leading-tight z-20">
+        <h2 className="text-4xl font-extrabold text-gray-900 leading-tight z-20n">
           {title}
         </h2>
         <p className="mt-4 text-lg text-gray-700 text-end">{description}</p>

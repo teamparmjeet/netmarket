@@ -36,13 +36,9 @@ export default function PendingOrders() {
     const applyFilter = () => {
         const filtered = allOrders.filter((order) => {
             const orderDate = order.date.split("T")[0];
-            const matchesDate = (!dateFrom || orderDate >= dateFrom) && 
-                              (!dateTo || orderDate <= dateTo);
-            const matchesOrderNo = !orderNoFilter || 
-                                 order.orderNo.toLowerCase().includes(orderNoFilter.toLowerCase());
-            const matchesDscode = !dscodeFilter || 
-                                order.dscode.toLowerCase().includes(dscodeFilter.toLowerCase());
-            
+            const matchesDate = (!dateFrom || orderDate >= dateFrom) && (!dateTo || orderDate <= dateTo);
+            const matchesOrderNo = !orderNoFilter || order.orderNo.toLowerCase().includes(orderNoFilter.toLowerCase());
+            const matchesDscode = !dscodeFilter || order.dscode.toLowerCase().includes(dscodeFilter.toLowerCase());
             return matchesDate && matchesOrderNo && matchesDscode;
         });
         setFilteredOrders(filtered);
@@ -66,9 +62,11 @@ export default function PendingOrders() {
     };
 
     return (
-        <div className="mx-auto lg:p-6 p-2 bg-white dark:bg-gray-700 shadow-lg rounded-lg text-gray-700 dark:text-white">
+        <div className="max-w-7xl mx-auto lg:p-6 p-3 bg-white dark:bg-gray-700 shadow-lg rounded-lg text-gray-700 dark:text-white">
             <h2 className="text-2xl font-semibold mb-4 text-center">Approved Order List</h2>
-            <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6 items-end">
+
+            {/* Filters */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
                 <div>
                     <label className="block text-sm font-medium">Date From</label>
                     <input 
@@ -115,6 +113,7 @@ export default function PendingOrders() {
                 </button>
             </div>
 
+            {/* Orders Table */}
             {loadingOrders ? (
                 <div className="animate-pulse">
                     {Array(5).fill(0).map((_, index) => (
@@ -122,54 +121,45 @@ export default function PendingOrders() {
                     ))}
                 </div>
             ) : (
-                <table className="w-full border-collapse border border-gray-300 rounded-lg overflow-hidden">
-                    <thead>
-                        <tr className="bg-gray-100 dark:bg-gray-600">
-                            <th className="border border-gray-300 px-4 py-2">Order No</th>
-                            <th className="border border-gray-300 px-4 py-2">DsId</th>
-                            <th className="border border-gray-300 px-4 py-2">Mobile Number</th>
-                            <th className="border border-gray-300 px-4 py-2">Amount</th>
-                            <th className="border border-gray-300 px-4 py-2">Payment Mode</th>
-                            <th className="border border-gray-300 px-4 py-2">Date</th>
-                            <th className="border border-gray-300 px-4 py-2">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {filteredOrders.length > 0 ? (
-                            filteredOrders.map((order) => (
-                                <tr key={order._id} className="text-center bg-white dark:bg-gray-800">
-                                    <td className="border border-gray-300 px-4 py-2">{order.orderNo}</td>
-                                    <td className="border border-gray-300 px-4 py-2">{order.dscode}</td>
-                                    <td className="border border-gray-300 px-4 py-2">{order.mobileno}</td>
-                                    <td className="border border-gray-300 px-4 py-2">{order.netamount}</td>
-                                    <td className="border border-gray-300 px-4 py-2">{order.paymentmod}</td>
-                                    <td className="border border-gray-300 px-4 py-2">{new Date(order.date).toLocaleDateString("en-GB")}</td>
-                                    <td className="border border-gray-300 px-4 py-2">
-                                        <button
-                                            onClick={() => openModal(order)}
-                                            className="text-blue-500 hover:text-blue-700"
-                                        >
-                                            View
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))
-                        ) : (
-                            <tr>
-                                <td colSpan="7" className="text-center p-4 text-gray-500">No orders found</td>
+                <div className="overflow-x-auto">
+                    <table className="w-full border-collapse border border-gray-300 rounded-lg overflow-hidden">
+                        <thead>
+                            <tr className="bg-gray-100 dark:bg-gray-600 text-sm md:text-base">
+                                <th className="border border-gray-300 px-2 md:px-4 py-2">Order No</th>
+                                <th className="border border-gray-300 px-2 md:px-4 py-2">DsId</th>
+                                <th className="border border-gray-300 px-2 md:px-4 py-2">Mobile Number</th>
+                                <th className="border border-gray-300 px-2 md:px-4 py-2">Amount</th>
+                                <th className="border border-gray-300 px-2 md:px-4 py-2">Payment Mode</th>
+                                <th className="border border-gray-300 px-2 md:px-4 py-2">Date</th>
+                                <th className="border border-gray-300 px-2 md:px-4 py-2">Action</th>
                             </tr>
-                        )}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {filteredOrders.length > 0 ? (
+                                filteredOrders.map((order) => (
+                                    <tr key={order._id} className="text-center bg-white dark:bg-gray-800 text-sm md:text-base">
+                                        <td className="border border-gray-300 px-2 md:px-4 py-2">{order.orderNo}</td>
+                                        <td className="border border-gray-300 px-2 md:px-4 py-2">{order.dscode}</td>
+                                        <td className="border border-gray-300 px-2 md:px-4 py-2">{order.mobileno}</td>
+                                        <td className="border border-gray-300 px-2 md:px-4 py-2">{order.netamount}</td>
+                                        <td className="border border-gray-300 px-2 md:px-4 py-2">{order.paymentmod}</td>
+                                        <td className="border border-gray-300 px-2 md:px-4 py-2">{new Date(order.date).toLocaleDateString("en-GB")}</td>
+                                        <td className="border border-gray-300 px-2 md:px-4 py-2">
+                                            <button onClick={() => openModal(order)} className="text-blue-500 hover:text-blue-700">View</button>
+                                        </td>
+                                    </tr>
+                                ))
+                            ) : (
+                                <tr>
+                                    <td colSpan="7" className="text-center p-4 text-gray-500">No orders found</td>
+                                </tr>
+                            )}
+                        </tbody>
+                    </table>
+                </div>
             )}
-            <button 
-                onClick={exportToExcel} 
-                className="mt-4 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 w-40"
-            >
-                Export to Excel
-            </button>
 
-            {/* Modal */}
+            <button onClick={exportToExcel} className="mt-4 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 w-full md:w-40">Export to Excel</button>
             {selectedOrder && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                     <div className="bg-white dark:bg-gray-800 w-full h-full p-6 overflow-auto relative">

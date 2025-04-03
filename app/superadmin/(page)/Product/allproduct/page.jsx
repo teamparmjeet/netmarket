@@ -62,7 +62,7 @@ export default function Page() {
   }, [selectedGroup, selectedProduct, mindp, maxdp, products]);
 
   return (
-    <div className="mx-auto p-8 bg-white dark:bg-gray-900 shadow-xl rounded-lg border border-gray-200 dark:border-gray-700">
+    <div className="mx-auto lg:p-8 p-3 bg-white dark:bg-gray-900 shadow-xl rounded-lg border border-gray-200 dark:border-gray-700">
       <h2 className="text-3xl font-semibold text-center text-gray-800 dark:text-gray-200 mb-8">
         🛍️ Product List
       </h2>
@@ -132,14 +132,14 @@ export default function Page() {
           <table className="w-full border-collapse bg-white dark:bg-gray-800 shadow-md rounded-lg overflow-hidden">
             <thead className="bg-indigo-600 text-white dark:bg-indigo-700">
               <tr>
-                <th className="py-4 px-6 text-left">Sn</th>
-                <th className="py-4 px-6 text-left">Image</th>
-                <th className="py-4 px-6 text-left">Product Name</th>
-                <th className="py-4 px-6 text-left">Group</th>
-                <th className="py-4 px-6 text-left">Sp</th>
-                <th className="py-4 px-6 text-left">Mrp</th>
-                <th className="py-4 px-6 text-left">Discount Price</th>
-                <th className="py-4 px-6 text-left">Action</th>
+                <th className="py-4 px-6 text-sm text-left">Sn</th>
+                <th className="py-4 px-6 text-sm text-left">Image</th>
+                <th className="py-4 px-6 text-sm text-left">Product Name</th>
+                <th className="py-4 px-6 text-sm text-left">Group</th>
+                <th className="py-4 px-6 text-sm text-left">Sp</th>
+                <th className="py-4 px-6 text-sm text-left">Mrp</th>
+                <th className="py-4 px-6 text-sm text-left">Discount Price</th>
+                <th className="py-4 px-6 text-sm text-left">Action</th>
               </tr>
             </thead>
             <tbody>
@@ -161,11 +161,11 @@ export default function Page() {
                       />
                     </Link>
                   </td>
-                  <td className="py-4 px-6 text-gray-800 dark:text-gray-200">{product.productname}</td>
-                  <td className="py-4 px-6 text-gray-800 dark:text-gray-200">{product.group}</td>
-                  <td className="py-4 px-6 text-gray-800 dark:text-gray-200">{product.sp}</td>
-                  <td className="py-4 px-6 text-gray-800 dark:text-gray-200">{product.mrp}</td>
-                  <td className="py-4 px-6 font-semibold text-indigo-700 dark:text-indigo-400">
+                  <td className="py-4 px-6 text-sm text-gray-800 dark:text-gray-200">{product.productname}</td>
+                  <td className="py-4 px-6 text-sm text-gray-800 dark:text-gray-200">{product.group}</td>
+                  <td className="py-4 px-6 text-sm text-gray-800 dark:text-gray-200">{product.sp}</td>
+                  <td className="py-4 px-6 text-sm text-gray-800 dark:text-gray-200">{product.mrp}</td>
+                  <td className="py-4 px-6 text-sm font-semibold text-indigo-700 dark:text-indigo-400">
                     ₹{product.dp}
                   </td>
                   <td className="py-4 px-6 text-gray-800 dark:text-gray-200">

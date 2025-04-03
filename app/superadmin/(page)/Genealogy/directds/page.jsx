@@ -105,10 +105,10 @@ export default function Page() {
                                     <td className="p-3 border">{searchResult?.user?.name}</td>
                                     <td className="p-3 border">{searchResult?.user?.createdAt ? new Date(searchResult.user?.createdAt).toLocaleDateString("en-GB") : "N/A"}</td>
                                     <td className="p-3 border">{searchResult?.user?.sponsorDscode}</td>
-                                    <td className="p-3 border">{searchResult?.user?.selfSp || "-"}</td>
+                                    <td className="p-3 border">{searchResult?.user?.earnsp || "-"}</td>
                                     <td className="p-3 border">{searchResult?.user?.totalSp || "-"}</td>
                                     <td className="p-3 border">{searchResult?.user?.currTotalSp || "-"}</td>
-                                    <td className="p-3 border">{searchResult?.user?.saleGroup || "-"}</td>
+                                    <td className="p-3 border">{searchResult?.user?.group || "-"}</td>
                                     <td className="p-3 border">{searchResult?.user?.currSelfRsp || "-"}</td>
                                     <td className="p-3 border">{searchResult?.user?.currTotalRsp || "-"}</td>
                                 </tr>
@@ -121,11 +121,11 @@ export default function Page() {
                                     <td className="p-3 border">{member?.dscode}</td>
                                     <td className="p-3 border">{member?.name}</td>
                                     <td className="p-3 border">{member?.createdAt ? new Date(member.createdAt).toLocaleDateString("en-GB") : "N/A"}</td>
-                                    <td className="p-3 border">{member?.sponsorDscode}</td>
-                                    <td className="p-3 border">{member?.selfSp || "-"}</td>
+                                    <td className="p-3 border">{member?.pdscode}</td>
+                                    <td className="p-3 border">{member?.earnsp || "-"}</td>
                                     <td className="p-3 border">{member?.totalSp || "-"}</td>
                                     <td className="p-3 border">{member?.currTotalSp || "-"}</td>
-                                    <td className="p-3 border">{member?.saleGroup || "-"}</td>
+                                    <td className="p-3 border">{member?.group || "-"}</td>
                                     <td className="p-3 border">{member?.currSelfRsp || "-"}</td>
                                     <td className="p-3 border">{member?.currTotalRsp || "-"}</td>
                                 </tr>

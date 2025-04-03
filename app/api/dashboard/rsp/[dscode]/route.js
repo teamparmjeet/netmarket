@@ -25,7 +25,8 @@ export async function GET(request, { params }) {
         }
 
         // Fetch the oldest order to exclude
-        const oldestOrder = await OrderModel.findOne()
+        // Fetch the oldest order for this specific dscode
+        const oldestOrder = await OrderModel.findOne({ dscode })
             .sort({ createdAt: 1 })
             .select("_id")
             .lean();
@@ -33,6 +34,7 @@ export async function GET(request, { params }) {
         if (oldestOrder) {
             filter._id = { $ne: oldestOrder._id };
         }
+
 
         // Get current week's start (Monday) and end (Sunday)
         const weekStart = moment().startOf("isoWeek").toDate();

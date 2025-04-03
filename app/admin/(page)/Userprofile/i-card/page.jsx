@@ -43,14 +43,14 @@ export default function page() {
                 </button>
             </div>
 
-            <div ref={contentRef} className="flex flex-col items-center justify-center min-h-screen p-6 bg-white dark:bg-gray-800">
+            <div ref={contentRef} className="flex flex-col items-center min-h-screen p-6 bg-white dark:bg-gray-800">
                 <div className="relative w-[350px] md:w-[400px] border border-gray-300 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 shadow-lg p-6 print:p-4">
                     <div className="text-center">
                         <h2 className="text-lg font-bold text-gray-900 dark:text-white">
-                            Asclepius Wellness Pvt. Ltd.
+                            ANAADIPRO  Wellness Pvt. Ltd.
                         </h2>
                         <p className="text-xs text-gray-600 dark:text-gray-400">
-                            Reg. No. U51909RJ2014PTC084662
+                            Reg. No. {data?._id}
                         </p>
                     </div>
 
@@ -60,7 +60,7 @@ export default function page() {
                         <p><strong>Name:</strong> {data?.name}</p>
                         <p><strong>Address:</strong> {data?.address?.addressLine1}</p>
                         <p><strong>Mobile No.:</strong> {data?.mobileNo}</p>
-                        <p><strong>DS Code:</strong> {data?.mobileNo}</p>
+                        <p><strong>DS Code:</strong> {data?.dscode}</p>
                     </div>
 
                     <div className="border-t my-4 border-gray-300 dark:border-gray-700"></div>
@@ -71,9 +71,9 @@ export default function page() {
 
                     <div className="mt-4 text-center text-xs text-gray-600 dark:text-gray-400">
                         <p>Registered Office:</p>
-                        <p>Third Floor, Plot No. B-1/7, Main Gandhipath, Jaipur, Rajasthan, 302021</p>
-                        <p>Website: www.asclepiuswellness.com</p>
-                        <p>Contact: +91 11 28031568 | info@asclepiuswellness.com</p>
+                        <p>Hore  Chandra nagar. DTR P9 NOEL SCHOOL GIRD GWALIOR FORT GWALIOR</p>
+                        <p>Website: www.ANAADIPRO wellness.com</p>
+                        <p>Contact: +91 11 28031568 | info@ANAADIPRO wellness.com</p>
                     </div>
                 </div>
             </div>

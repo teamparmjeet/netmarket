@@ -44,7 +44,7 @@ export default function Dashboard1() {
     if (error) return <p className="text-red-500 text-center font-semibold">{error}</p>;
 
     return (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-6 bg-gray-50 dark:bg-gray-900">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4 bg-gray-50 dark:bg-gray-900">
             <DashboardGroup title="Team SP">
                 <DashboardCard title="SAO Team SP" value={data?.totalSaoSP || 0} />
                 <DashboardCard title="SGO Team SP" value={data?.totalSgoSP || 0} />
@@ -65,7 +65,7 @@ export default function Dashboard1() {
 
 function DashboardGroup({ title, children }) {
     return (
-        <div className="bg-white dark:bg-gray-800 p-5 rounded-xl shadow-lg border">
+        <div className="">
             <h2 className="text-lg font-bold text-gray-800 dark:text-gray-200 mb-4">{title}</h2>
             <div className="space-y-4">{children}</div>
         </div>
@@ -74,7 +74,7 @@ function DashboardGroup({ title, children }) {
 
 function DashboardCard({ title, value }) {
     return (
-        <div className="relative p-6 bg-white dark:bg-gray-800 rounded-xl shadow-md border overflow-hidden">
+        <div className="relative p-4 bg-white dark:bg-gray-800 rounded-xl shadow-md border overflow-hidden">
             <div className="absolute top-0 right-0 w-0 h-0 border-l-[40px] border-l-transparent border-t-[40px] border-t-sky-500"></div>
             <p className="text-gray-700 dark:text-gray-200 font-semibold">{title}:</p>
             <p className="text-xl font-bold text-blue-600 dark:text-blue-400">{value}</p>
@@ -84,7 +84,7 @@ function DashboardCard({ title, value }) {
 
 function DashboardCard2({ title, value, value1 }) {
     return (
-        <div className="relative p-6 bg-white dark:bg-gray-800 rounded-xl shadow-md border overflow-hidden">
+        <div className="relative p-4 bg-white dark:bg-gray-800 rounded-xl shadow-md border overflow-hidden">
             <div className="absolute top-0 right-0 w-0 h-0 border-l-[40px] border-l-transparent border-t-[40px] border-t-sky-500"></div>
             <p className="text-gray-700 dark:text-gray-200 font-semibold">{title}:</p>
             <div className="flex gap-2 items-center">

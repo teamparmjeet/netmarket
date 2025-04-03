@@ -25,8 +25,8 @@ export default function Dashboard2() {
     }, [session?.user?.email]);
 
     return (
-        <div className="p-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-white dark:bg-gray-900 rounded-lg shadow-md p-4">
+        <div className="">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-white dark:bg-gray-900 rounded-lg shadow-md ">
                 {/* Account Status */}
                 <div className="p-4 bg-gray-100 dark:bg-gray-800 rounded-md">
                     <h2 className="text-base font-semibold text-gray-800 dark:text-white mb-3">Account Status</h2>

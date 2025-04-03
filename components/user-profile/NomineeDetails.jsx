@@ -211,7 +211,7 @@ export default function NomineeDetails() {
                         onClick={() => setIsModalOpen(false)}
                     >
                         <div
-                            className="relative max-w-xl w-full bg-white dark:bg-gray-900 shadow-2xl rounded-3xl p-6 lg:p-10"
+                            className="relative max-w-xl w-full bg-white dark:bg-gray-900 shadow-2xl rounded-3xl p-6 lg:p-10 max-h-[90vh] overflow-y-auto"
                             onClick={(e) => e.stopPropagation()}
                         >
                             <button

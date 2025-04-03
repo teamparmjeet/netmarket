@@ -24,7 +24,7 @@ export default function Page() {
     }, []);
 
     return (
-        <div className="p-6">
+        <div className="lg:p-6 p-2">
             <h2 className="text-2xl font-semibold text-gray-700 dark:text-white text-center mb-6">Level List</h2>
 
             {loading ? (

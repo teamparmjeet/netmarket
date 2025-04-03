@@ -80,7 +80,7 @@ export default function Dashboard3() {
     if (error) return <p className="text-red-500 text-center font-semibold">{error}</p>;
 
     return (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-6 bg-gray-50 dark:bg-gray-900">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4  bg-gray-50 dark:bg-gray-900">
 
 
             <div className="relative p-5 bg-white dark:bg-gray-800 rounded-lg shadow-lg border overflow-hidden">

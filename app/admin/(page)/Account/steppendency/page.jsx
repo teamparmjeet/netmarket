@@ -56,7 +56,7 @@ export default function Page() {
   }, []);
 
   return (
-    <div className="p-6 max-w-6xl mx-auto bg-white dark:bg-gray-800 shadow-lg rounded-lg">
+    <div className="lg:p-6  mx-auto bg-white dark:bg-gray-800 shadow-lg rounded-lg">
       <h2 className="text-2xl font-bold text-center text-gray-700 dark:text-white mb-6">
         Step Pending
       </h2>
@@ -65,12 +65,12 @@ export default function Page() {
         <p className="text-center text-gray-600">Loading...</p>
       ) : (
         <div className="overflow-x-auto rounded-lg border border-gray-200 shadow-sm">
-          <div className="overflow-x-auto p-4 bg-gray-100 rounded-xl shadow-md">
+          <div className="overflow-x-auto lg:p-4 bg-gray-100 rounded-xl shadow-md">
             <table className="min-w-full bg-white rounded-lg shadow-md overflow-hidden border border-gray-200">
               <thead className="bg-blue-600 text-white text-sm uppercase sticky top-0">
                 <tr>
                   {thdata.map((header, index) => (
-                    <th key={index} className="p-4 border-b border-gray-300 text-center font-semibold">
+                    <th key={index} className="lg:p-4 p-2 border-b border-gray-300 text-center text-sm font-semibold">
                       {header}
                     </th>
                   ))}
@@ -104,7 +104,7 @@ export default function Page() {
                         <td className="p-3 border text-right font-semibold text-blue-600">{sgo.toFixed(2)}</td>
                         <td className="p-3 border text-right text-orange-500">{remainSAOSP.toFixed(2)}</td>
                         <td className="p-3 border text-right text-orange-500">{remainSGOSP.toFixed(2)}</td>
-                        <td className={`p-3 border text-center font-bold rounded-lg ${status === "Complete" ? "text-green-600 bg-green-100" : "text-red-600 bg-red-100"}`}
+                        <td className={`p-3 border text-center font-bold rounded-lg ${status === "Complete" ? "text-green-600 " : "text-red-600 "}`}
                         >
                           {status}
                         </td>

@@ -57,7 +57,7 @@ export default function page() {
         <section className="text-center mb-12">
           <h2 className="text-4xl font-bold text-green-700">Our Journey</h2>
           <p className="mt-4 text-lg text-gray-700 max-w-3xl mx-auto">
-            Asclepius Wellness Private Limited started in 2014 as a direct
+            ANAADIPRO  Wellness Private Limited started in 2014 as a direct
             selling entity, committed to ethical business practices and growth
             opportunities.
           </p>
@@ -113,7 +113,7 @@ export default function page() {
           </h2>
           <p className="text-lg text-gray-700 mt-4">
             Experience the power of quality products and financial freedom. Be a
-            part of Asclepius Wellness today!
+            part of ANAADIPRO  Wellness today!
           </p>
           <a
             href="/contact"

@@ -5,7 +5,13 @@ const BonanzaSchema = new Schema(
     {
         image: { type: String, required: true },
         title: { type: String, required: true },
-        description: { type: String, required: true,default:"null" },
+        description: { type: String, required: true, default: "null" },
+        achiversDetails: [
+            {
+                dscode: { type: String, },
+                date: { type: String, },
+            }
+        ],
         defaultdata: { type: String, required: true, default: "Bonanza" }
 
     },
@@ -13,6 +19,6 @@ const BonanzaSchema = new Schema(
 );
 
 const BonanzaModel =
-    mongoose.models.Bonanzatest2 || mongoose.model("Bonanzatest2", BonanzaSchema);
+    mongoose.models.Bonanzatest3 || mongoose.model("Bonanzatest3", BonanzaSchema);
 
 export default BonanzaModel

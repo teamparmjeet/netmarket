@@ -181,26 +181,6 @@ const AppSidebar = () => {
 
     const isActive = useCallback((path) => path === pathname, [pathname]);
 
-    // useEffect(() => {
-    //     let submenuMatched = false;
-    //     ["main", "others"].forEach((menuType) => {
-    //         const items = menuType === "main" ? navItems : othersItems;
-    //         items.forEach((nav, index) => {
-    //             if (nav.subItems) {
-    //                 nav.subItems.forEach((subItem) => {
-    //                     if (isActive(subItem.path)) {
-    //                         setOpenSubmenu({ type: menuType, index });
-    //                         submenuMatched = true;
-    //                     }
-    //                 });
-    //             }
-    //         });
-    //     });
-    //     if (!submenuMatched) {
-    //         setOpenSubmenu(null);
-    //     }
-    // }, [pathname, isActive]);
-
 
     useEffect(() => {
         if (openSubmenu !== null) {

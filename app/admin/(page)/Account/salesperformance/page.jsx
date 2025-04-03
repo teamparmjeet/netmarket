@@ -119,10 +119,10 @@ export default function Statement() {
         <table className="w-full border-collapse border border-gray-300 rounded-lg overflow-hidden mt-4">
           <thead>
             <tr className="bg-gray-100 dark:bg-gray-600">
-              <th className="border border-gray-300 px-4 py-2">SN NO.</th>
-              <th className="border border-gray-300 px-4 py-2">Date</th>
-              <th className="border border-gray-300 px-4 py-2">Total Sp</th>
-              <th className="border border-gray-300 px-4 py-2">Total Income</th>
+              <th className="border border-gray-300 px-1 text-sm py-2">SN</th>
+              <th className="border border-gray-300 px-1 text-sm py-2">Date</th>
+              <th className="border border-gray-300 px-1 text-sm py-2">Total Sp</th>
+              <th className="border border-gray-300 px-1 text-sm py-2">Total Income</th>
             </tr>
           </thead>
           <tbody>

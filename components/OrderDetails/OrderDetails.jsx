@@ -36,11 +36,9 @@ export default function OrderDetails({ data }) {
     };
 
     return (
-        <div className="p-8 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 min-h-screen text-gray-800 dark:text-gray-200">
+        <div className="lg:p-8  min-h-screen text-gray-800 dark:text-gray-200">
             <div className="max-w-4xl mx-auto">
-                <h2 className="text-3xl font-extrabold mb-8 text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400">
-                    Order #{data.orderNo}
-                </h2>
+               
 
                 {/* Order Information Card */}
                 <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mb-6 transform hover:scale-[1.02] transition-transform duration-300">

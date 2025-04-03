@@ -45,6 +45,6 @@ OrderSchema.pre("save", async function (next) {
     next();
 });
 const OrderModel =
-    mongoose.models.Ordertest1111 || mongoose.model("Ordertest1111", OrderSchema);
+    mongoose.models.Ordertest111 || mongoose.model("Ordertest111", OrderSchema);
 
 export default OrderModel

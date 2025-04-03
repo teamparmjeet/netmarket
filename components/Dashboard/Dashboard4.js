@@ -12,6 +12,7 @@ export default function Dashboard4() {
     const { data: session } = useSession();
     const [dsid, setDsid] = useState("");
     const [data, setData] = useState(null);
+    const [rspData, setRspData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -30,11 +31,20 @@ export default function Dashboard4() {
 
     useEffect(() => {
         if (!dsid) return;
+
         const fetchData = async () => {
             setLoading(true);
+            setError(null);
+
             try {
-                const response = await axios.get(`/api/dashboard/teamsp/${dsid}`);
-                setData(response.data);
+                // Fetch both APIs simultaneously
+                const [teamResponse, rspResponse] = await Promise.all([
+                    axios.get(`/api/dashboard/teamsp/${dsid}`),
+                    axios.get(`/api/dashboard/rsp/${dsid}`)
+                ]);
+
+                setData(teamResponse.data);
+                setRspData(rspResponse.data);
             } catch (error) {
                 console.error("Error fetching data:", error);
                 setError("Failed to load data.");
@@ -42,6 +52,7 @@ export default function Dashboard4() {
                 setLoading(false);
             }
         };
+
         fetchData();
     }, [dsid]);
 
@@ -72,8 +83,8 @@ export default function Dashboard4() {
                         <div className="p-2 rounded-lg bg-gray-100 dark:bg-gray-700"><TrendingUp className="text-purple-500" /></div>
                         <p className="text-gray-700 dark:text-white font-semibold">Current RSP</p>
                     </div>
-                    <p className="text-gray-700 dark:text-white font-semibold">Self RSP:{" "}</p>
-                    <p className="text-gray-700 dark:text-white font-semibold">Team RSP:{" "}</p>
+                    <p className="text-gray-700 dark:text-white font-semibold">Self RSP:{rspData.currentWeekTotal}</p>
+                    <p className="text-gray-700 dark:text-white font-semibold">Team RSP:{rspData.teamCurrentWeekTotal}</p>
                 </div>
 
                 <div className="relative p-5 bg-white dark:bg-gray-800 rounded-lg shadow-lg border overflow-hidden">
@@ -82,8 +93,8 @@ export default function Dashboard4() {
                         <div className="p-2 rounded-lg bg-gray-100 dark:bg-gray-700"><Star className="text-purple-500" /></div>
                         <p className="text-gray-700 dark:text-white font-semibold">Total RSP</p>
                     </div>
-                    <p className="text-gray-700 dark:text-white font-semibold">Self RSP:{" "}</p>
-                    <p className="text-gray-700 dark:text-white font-semibold">Team RSP:{" "}</p>
+                    <p className="text-gray-700 dark:text-white font-semibold">Self RSP: {rspData.totalsp}</p>
+                    <p className="text-gray-700 dark:text-white font-semibold">Team RSP: {rspData.teamTotalsp}</p>
                 </div>
 
                 <div className="relative p-5 bg-white dark:bg-gray-800 rounded-lg shadow-lg border overflow-hidden">

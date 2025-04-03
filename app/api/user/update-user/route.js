@@ -7,7 +7,8 @@ export async function PATCH(req) {
 
     try {
         const data = await req.json();
-        console.log(data,"ok")
+        console.log(data, "ok");
+
         if (!data.id) {
             return new Response(
                 JSON.stringify({ success: false, message: "User ID is required!" }),
@@ -29,9 +30,23 @@ export async function PATCH(req) {
             data.password = await bcrypt.hash(data.password, 10);
         }
 
+        const updateFields = { ...data };
+
+        // If `level` is updated, store it in `LevelDetails` with existing `saosp` and `sgosp`
+        if (data.level) {
+            updateFields.LevelDetails = [
+                ...user.LevelDetails, // Keep existing levels
+                {
+                    levelName: data.level,
+                    sao: user.saosp || "", // Use existing saosp value
+                    sgo: user.sgosp || "", // Use existing sgosp value
+                },
+            ];
+        }
+
         await UserModel.updateOne(
             { _id: data.id },
-            { $set: data }
+            { $set: updateFields }
         );
 
         return new Response(

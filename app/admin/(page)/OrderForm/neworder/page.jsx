@@ -78,7 +78,6 @@ export default function OrderForm() {
     shippingmobile: "",
     shippinpPincode: "",
     paymentmod: "",
-    cftype: "",
     salegroup: "",
     productDetails: [{ productgroup: "", product: "", quantity: "" }],
     shippingcharge: "",
@@ -137,104 +136,78 @@ export default function OrderForm() {
     const { name, value } = e.target;
 
     setFormData((prev) => {
-      let updatedData = { ...prev };
+        let updatedData = { ...prev };
 
-      if (index !== null) {
-        const updatedProductDetails = [...prev.productDetails];
-        updatedProductDetails[index] = {
-          ...updatedProductDetails[index],
-          [name]: value,
-        };
-
-        // Handle product selection
-        if (name === "product") {
-          const selectedProduct = products.find((p) => p.productname === value);
-          if (selectedProduct) {
+        if (index !== null) {
+            const updatedProductDetails = [...prev.productDetails];
             updatedProductDetails[index] = {
-              ...updatedProductDetails[index],
-              product: value,
-              quantity: updatedProductDetails[index].quantity || 1, // Default quantity = 1
-              netamount:
-                selectedProduct.dp *
-                (updatedProductDetails[index].quantity || 1),
-              sp: selectedProduct.sp || 0, // Store selling price
+                ...updatedProductDetails[index],
+                [name]: value,
             };
-          }
+
+            // Handle product selection
+            if (name === "product") {
+                const selectedProduct = products.find((p) => p.productname === value);
+                if (selectedProduct) {
+                    updatedProductDetails[index] = {
+                        ...updatedProductDetails[index],
+                        product: value,
+                        quantity: updatedProductDetails[index].quantity || 1, // Default quantity = 1
+                        netamount: selectedProduct.dp * (updatedProductDetails[index].quantity || 1),
+                        sp: selectedProduct.sp || 0, // Store selling price
+                    };
+                }
+            }
+
+            // Handle quantity change
+            if (name === "quantity") {
+                const selectedProduct = products.find(
+                    (p) => p.productname === updatedProductDetails[index].product
+                );
+                if (selectedProduct) {
+                    updatedProductDetails[index] = {
+                        ...updatedProductDetails[index],
+                        quantity: value,
+                        netamount: selectedProduct.dp * value,
+                        sp: selectedProduct.sp || 0, // Ensure selling price is stored
+                    };
+                }
+            }
+
+            updatedData.productDetails = updatedProductDetails;
+
+            // ✅ Calculate total net amount
+            const totalNetAmount = updatedProductDetails.reduce(
+                (sum, item) => sum + (parseFloat(item.netamount) || 0),
+                0
+            );
+
+            // ✅ Calculate total SP (Selling Price)
+            const totalSp = updatedProductDetails.reduce(
+                (sum, item) =>
+                    sum + (parseFloat(item.sp) || 0) * (parseInt(item.quantity) || 0),
+                0
+            );
+
+            // ✅ Calculate shipping charge
+            const shippingCharge = totalNetAmount < 2000 ? 70 : 0;
+
+            // ✅ Update netamount to include shipping charge
+            updatedData.netamount = totalNetAmount + shippingCharge;
+            updatedData.shippingcharge = shippingCharge;
+            updatedData.totalsp = totalSp;
+
+        } else {
+            updatedData[name] = value;
         }
 
-        // Handle quantity change
-        if (name === "quantity") {
-          const selectedProduct = products.find(
-            (p) => p.productname === updatedProductDetails[index].product
-          );
-          if (selectedProduct) {
-            updatedProductDetails[index] = {
-              ...updatedProductDetails[index],
-              quantity: value,
-              netamount: selectedProduct.dp * value,
-              sp: selectedProduct.sp || 0, // Ensure selling price is stored
-            };
-          }
-        }
-
-        updatedData.productDetails = updatedProductDetails;
-
-        // ✅ Calculate total net amount
-        const totalNetAmount = updatedProductDetails.reduce(
-          (sum, item) => sum + (parseFloat(item.netamount) || 0),
-          0
-        );
-
-        // ✅ Calculate total SP (Selling Price)
-        const totalSp = updatedProductDetails.reduce(
-          (sum, item) =>
-            sum + (parseFloat(item.sp) || 0) * (parseInt(item.quantity) || 0),
-          0
-        );
-
-        updatedData.netamount = totalNetAmount;
-        updatedData.shippingcharge = totalNetAmount < 2000 ? 70 : 0; // ✅ Shipping logic
-        updatedData.totalsp = totalSp; // ✅ Total Selling Price
-
-      } else {
-        updatedData[name] = value;
-      }
-
-      return updatedData;
+        return updatedData;
     });
-  };
+};
 
 
 
-  const handleProductChange = (index, field, value) => {
-    setFormData((prev) => {
-      const updatedProducts = [...prev.productDetails];
-      updatedProducts[index] = { ...updatedProducts[index], [field]: value };
-
-      // Auto-update netamount if product and quantity are selected
-      if (field === "product") {
-        const selectedProduct = products.find((p) => p.productname === value);
-        if (selectedProduct) {
-          updatedProducts[index].netamount =
-            updatedProducts[index].quantity && selectedProduct.dp
-              ? selectedProduct.dp * updatedProducts[index].quantity
-              : "";
-        }
-      }
-
-      if (field === "quantity") {
-        const selectedProduct = products.find(
-          (p) => p.productname === updatedProducts[index].product
-        );
-        if (selectedProduct) {
-          updatedProducts[index].netamount = selectedProduct.dp * value;
-        }
-      }
-
-      return { ...prev, productDetails: updatedProducts };
-    });
-  };
-
+ 
   // Add more products
   const addProductRow = () => {
     setFormData((prev) => ({
@@ -307,7 +280,6 @@ export default function OrderForm() {
         <InputField label="Shipping Mobile" name="shippingmobile" type="tel" onChange={handleChange} required />
         <InputField label="Shipping Pincode" name="shippinpPincode" onChange={handleChange} required />
         <SelectField label="Medium of Payment" name="paymentmod" options={["Online", "Cash"]} onChange={handleChange} required />
-        <SelectField label="C&F Type" name="cftype" options={["Type A", "Type B"]} onChange={handleChange} required />
         <div className="w-full bg-gray-100  dark:bg-gray-900 py-4 flex flex-wrap gap-y-4">
           {formData.productDetails.map((detail, index) => (
             <div key={index} className="w-full flex flex-wrap gap-y-4 items-center">

@@ -14,7 +14,6 @@ const OrderSchema = new Schema(
         shippingmobile: { type: String, required: true },
         shippinpPincode: { type: String, required: true },
         paymentmod: { type: String, required: true },
-        cftype: { type: String, required: true },
         productDetails: [
             {
                 productgroup: { type: String, required: true },
@@ -46,6 +45,6 @@ OrderSchema.pre("save", async function (next) {
     next();
 });
 const OrderModel =
-    mongoose.models.Ordertest111 || mongoose.model("Ordertest111", OrderSchema);
+    mongoose.models.Ordertest1111 || mongoose.model("Ordertest1111", OrderSchema);
 
 export default OrderModel

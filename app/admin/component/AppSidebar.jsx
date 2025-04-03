@@ -38,7 +38,6 @@ const navItems = [
         subItems: [
             { name: "Sales Performance", path: "/admin/Account/salesperformance", pro: false },
             { name: "My Regular Sales Comission", path: "/admin/Account/regularsales", pro: false },
-            { name: "Trip/Bonanzo Comission", path: "/admin/Account/tripcomission", pro: false },
             { name: "My Repurchase Payments", path: "/admin/Account/repurchasepayments", pro: false },
             { name: "Step Pendency", path: "/admin/Account/steppendency", pro: false },
         ],

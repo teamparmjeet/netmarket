@@ -57,6 +57,13 @@ const UserSchema = new Schema(
       proofType: { type: String, enum: ["Aadhar Card", "PAN Card", "Passport", "Voter ID", "Driving License"] },
       documentNo: { type: String },
     },
+    LevelDetails: [
+      {
+        levelName: { type: String, },
+        sao: { type: String, },
+        sgo: { type: String, }
+      }
+    ],
     branchName: { type: String },
     nomineebankName: { type: String },
     nomineeacnumber: { type: String },
@@ -91,6 +98,6 @@ UserSchema.pre("save", async function (next) {
 
 
 
-const UserModel = mongoose.models.usertest1112 || mongoose.model("usertest1112", UserSchema);
+const UserModel = mongoose.models.usertest11123 || mongoose.model("usertest11123", UserSchema);
 
 export default UserModel;

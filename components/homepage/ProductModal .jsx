@@ -18,9 +18,9 @@ const ProductModal = ({ product, onClose }) => {
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-3 right-3 text-gray-600 hover:text-red-500 transition"
+          className="absolute top-3 z-50 right-3 w-10 h-10 flex items-center justify-center rounded-full bg-gray-200 hover:bg-red-500 hover:text-white transition-all duration-300"
         >
-          <X size={26} />
+          <X size={22} />
         </button>
 
         {/* Product Image */}

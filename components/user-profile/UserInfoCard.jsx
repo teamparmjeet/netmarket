@@ -88,91 +88,115 @@ export default function UserInfocard() {
     }
     return (
         <div>
-            <div className="p-5 border border-gray-200 rounded-2xl dark:border-gray-200 lg:p-6">
+            <div className="p-5 border border-gray-200 rounded dark:border-gray-200 lg:p-6">
                 <div className="flex flex-col gap-5 xl:flex-row xl:items-start xl:justify-between">
                     <div>
                         <h4 className="text-lg font-semibold text-gray-800 dark:text-white/90 lg:mb-6">
                             Personal Information
                         </h4>
 
-                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-7 2xl:gap-x-32">
+                        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 2xl:gap-x-32">
+                            {/* DS Name */}
                             <div>
-                                <p className="mb-2 text-md leading-normal text-gray-500 dark:text-gray-400">
-                                    DS Name *
-                                </p>
-                                <div className="flex">
-
-                                    <p className="text-md font-medium text-gray-800 dark:text-white/90">
-                                        {data?.name}
+                                <label className="block mb-1 text-sm font-semibold text-gray-600 dark:text-gray-300">
+                                    DS Name <span className="text-red-500">*</span>
+                                </label>
+                                <div className="px-4 py-2 rounded-md bg-gray-50 dark:bg-white/5 border border-gray-300 dark:border-white/10">
+                                    <p className="text-sm text-gray-800 dark:text-white">
+                                        {data?.name || "N/A"}
                                     </p>
                                 </div>
                             </div>
+
+                            {/* D.O.B. */}
                             <div>
-                                <p className="mb-2 text-md leading-normal text-gray-500 dark:text-gray-400">
+                                <label className="block mb-1 text-sm font-semibold text-gray-600 dark:text-gray-300">
                                     D.O.B.
-                                </p>
-                                <p className="text-md font-medium text-gray-800 dark:text-white/90">
-                                    {data?.dob ? new Date(data.dob).toLocaleDateString("en-GB") : "N/A"}
-                                </p>
+                                </label>
+                                <div className="px-4 py-2 rounded-md bg-gray-50 dark:bg-white/5 border border-gray-300 dark:border-white/10">
+                                    <p className="text-sm text-gray-800 dark:text-white">
+                                        {data?.dob ? new Date(data.dob).toLocaleDateString("en-GB") : "N/A"}
+                                    </p>
+                                </div>
                             </div>
 
+                            {/* Email */}
                             <div>
-                                <p className="mb-2 text-md leading-normal text-gray-500 dark:text-gray-400">
+                                <label className="block mb-1 text-sm font-semibold text-gray-600 dark:text-gray-300">
                                     Email address
-                                </p>
-                                <p className="text-md font-medium text-gray-800 dark:text-white/90">
-                                    {data?.email}
-                                </p>
+                                </label>
+                                <div className="px-4 py-2 rounded-md bg-gray-50 dark:bg-white/5 border border-gray-300 dark:border-white/10">
+                                    <p className="text-sm text-gray-800 dark:text-white">
+                                        {data?.email || "N/A"}
+                                    </p>
+                                </div>
                             </div>
+
+                            {/* Phone */}
                             <div>
-                                <p className="mb-2 text-md leading-normal text-gray-500 dark:text-gray-400">
+                                <label className="block mb-1 text-sm font-semibold text-gray-600 dark:text-gray-300">
                                     Phone
-                                </p>
-                                <p className="text-md font-medium text-gray-800 dark:text-white/90">
-                                    {data?.mobileNo}
-                                </p>
+                                </label>
+                                <div className="px-4 py-2 rounded-md bg-gray-50 dark:bg-white/5 border border-gray-300 dark:border-white/10">
+                                    <p className="text-sm text-gray-800 dark:text-white">
+                                        {data?.mobileNo || "N/A"}
+                                    </p>
+                                </div>
                             </div>
-                            <div>
-                                <p className="mb-2 text-md leading-normal text-gray-500 dark:text-gray-400">
-                                    Father&apos; Husband&apos; Name *
-                                </p>
 
-                                <p className="text-md font-medium text-gray-800 dark:text-white/90">
-                                    {data?.fatherOrHusbandName || "Not Provided"}
-                                </p>
-                            </div>
+                            {/* Father/Husband Name */}
                             <div>
-                                <p className="mb-2 text-md leading-normal text-gray-500 dark:text-gray-400">
+                                <label className="block mb-1 text-sm font-semibold text-gray-600 dark:text-gray-300">
+                                    Father&apos;s / Husband&apos;s Name <span className="text-red-500">*</span>
+                                </label>
+                                <div className="px-4 py-2 rounded-md bg-gray-50 dark:bg-white/5 border border-gray-300 dark:border-white/10">
+                                    <p className="text-sm text-gray-800 dark:text-white">
+                                        {data?.fatherOrHusbandName || "Not Provided"}
+                                    </p>
+                                </div>
+                            </div>
+
+                            {/* Gender */}
+                            <div>
+                                <label className="block mb-1 text-sm font-semibold text-gray-600 dark:text-gray-300">
                                     Gender
-                                </p>
-                                <p className="text-md font-medium text-gray-800 dark:text-white/90">
-                                    {data?.gender}
-                                </p>
+                                </label>
+                                <div className="px-4 py-2 rounded-md bg-gray-50 dark:bg-white/5 border border-gray-300 dark:border-white/10">
+                                    <p className="text-sm text-gray-800 dark:text-white">
+                                        {data?.gender || "N/A"}
+                                    </p>
+                                </div>
                             </div>
+
+                            {/* Profession */}
                             <div>
-                                <p className="mb-2 text-md leading-normal text-gray-500 dark:text-gray-400">
+                                <label className="block mb-1 text-sm font-semibold text-gray-600 dark:text-gray-300">
                                     Profession
-                                </p>
-                                <p className="text-md font-medium text-gray-800 dark:text-white/90">
-                                    {data?.profession || "Not Provided"}
-                                </p>
+                                </label>
+                                <div className="px-4 py-2 rounded-md bg-gray-50 dark:bg-white/5 border border-gray-300 dark:border-white/10">
+                                    <p className="text-sm text-gray-800 dark:text-white">
+                                        {data?.profession || "Not Provided"}
+                                    </p>
+                                </div>
                             </div>
+
+                            {/* Marital Status */}
                             <div>
-                                <p className="mb-2 text-md leading-normal text-gray-500 dark:text-gray-400">
+                                <label className="block mb-1 text-sm font-semibold text-gray-600 dark:text-gray-300">
                                     Marital Status
-                                </p>
-                                <p className="text-md font-medium text-gray-800 dark:text-white/90">
-                                    {data?.maritalStatus || "Not Provided"}
-
-                                </p>
-
+                                </label>
+                                <div className="px-4 py-2 rounded-md bg-gray-50 dark:bg-white/5 border border-gray-300 dark:border-white/10">
+                                    <p className="text-sm text-gray-800 dark:text-white">
+                                        {data?.maritalStatus || "Not Provided"}
+                                    </p>
+                                </div>
                             </div>
-
                         </div>
+
                     </div>
                     <button
                         onClick={() => setIsModalOpen(true)}
-                        className="flex w-full items-center justify-center gap-2 rounded-full border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200 lg:inline-flex lg:w-auto"
+                        className="flex w-full items-center justify-center gap-2 rounded border border-gray-300 bg-white px-4 py-1 text-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200 lg:inline-flex lg:w-auto"
                     >
                         Edit
                     </button>
@@ -246,7 +270,7 @@ export default function UserInfocard() {
                             <div className="flex justify-end gap-3 mt-4">
                                 <button
                                     type="button"
-                                    className="border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-100 transition"
+                                    className="border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-50 transition"
                                     onClick={() => setIsModalOpen(false)}
                                 >
                                     Close

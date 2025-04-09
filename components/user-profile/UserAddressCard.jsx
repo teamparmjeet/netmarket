@@ -87,32 +87,30 @@ export default function UserAddressCard() {
     }
     return (
         <div>
-            <div className="p-6 border border-gray-200 bg-white rounded-2xl dark:bg-gray-800 dark:border-gray-700 lg:p-8">
+            <div className="p-5 border border-gray-200 rounded dark:border-gray-200 lg:p-6">
                 <div className="flex flex-col gap-6 xl:flex-row xl:items-start xl:justify-between">
                     <div className="w-full">
                         <h4 className="text-xl font-semibold text-gray-800 dark:text-white/90">
                             Address
                         </h4>
 
+                        {/* Address Lines */}
                         <div className="grid grid-cols-1 gap-6 my-6 lg:grid-cols-2">
-                            <div className="p-6 border border-gray-200 rounded-2xl dark:border-gray-700">
-                                <p className="mb-2 text-sm font-medium text-gray-500 dark:text-gray-400">
-                                    Address 1
-                                </p>
-                                <p className="text-md font-semibold text-gray-800 dark:text-white/90">
+                            <div className="px-4 py-3 rounded-md bg-gray-50 dark:bg-white/5 border border-gray-300 dark:border-white/10">
+                                <p className="mb-1 text-sm font-semibold text-gray-600 dark:text-gray-300">Address 1</p>
+                                <p className="text-sm text-gray-800 dark:text-white">
                                     {data?.address?.addressLine1 || "Not Provided"}
                                 </p>
                             </div>
-                            <div className="p-6 border border-gray-200 rounded-2xl dark:border-gray-700">
-                                <p className="mb-2 text-sm font-medium text-gray-500 dark:text-gray-400">
-                                    Address 2
-                                </p>
-                                <p className="text-md font-semibold text-gray-800 dark:text-white/90">
+                            <div className="px-4 py-3 rounded-md bg-gray-50 dark:bg-white/5 border border-gray-300 dark:border-white/10">
+                                <p className="mb-1 text-sm font-semibold text-gray-600 dark:text-gray-300">Address 2</p>
+                                <p className="text-sm text-gray-800 dark:text-white">
                                     {data?.address?.addressLine2 || "Not Provided"}
                                 </p>
                             </div>
                         </div>
 
+                        {/* City, Landmark, Pin Code, State */}
                         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                             {[
                                 { label: "City", value: data?.address?.city },
@@ -120,22 +118,25 @@ export default function UserAddressCard() {
                                 { label: "Pin Code", value: data?.address?.pinCode },
                                 { label: "State", value: data?.address?.state },
                             ].map((item, index) => (
-                                <div key={index}>
-                                    <p className="mb-2 text-sm font-medium text-gray-500 dark:text-gray-400">
+                                <div
+                                    key={index}
+                                    className="px-4 py-3 rounded-md bg-gray-50 dark:bg-white/5 border border-gray-300 dark:border-white/10"
+                                >
+                                    <p className="mb-1 text-sm font-semibold text-gray-600 dark:text-gray-300">
                                         {item.label}
                                     </p>
-                                    <p className="text-md font-semibold text-gray-800 dark:text-white/90">
+                                    <p className="text-sm text-gray-800 dark:text-white">
                                         {item.value || "Not Provided"}
                                     </p>
                                 </div>
                             ))}
                         </div>
-
                     </div>
+
 
                     <button
                         onClick={() => setIsModalOpen(true)}
-                        className="flex w-full items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-5 py-2 text-sm font-medium text-gray-700 shadow-sm transition-all hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 lg:w-auto"
+                        className="flex w-full items-center justify-center gap-2 rounded     border border-gray-300 bg-white px-4 py-1 text-sm font-medium text-gray-700 shadow-sm transition-all hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 lg:w-auto"
                     >
                         Edit
                     </button>
@@ -191,7 +192,7 @@ export default function UserAddressCard() {
                             <div className="flex justify-end gap-3 mt-4">
                                 <button
                                     type="button"
-                                    className="border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-100 transition"
+                                    className="border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-50 transition"
                                     onClick={() => setIsModalOpen(false)}
                                 >
                                     Close

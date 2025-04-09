@@ -73,6 +73,7 @@ const UserSchema = new Schema(
     password: { type: String, required: true },
     status: { type: String, enum: ["0", "1"], default: "0", required: true },
     usertype: { type: String, enum: ["0", "1", "2"], default: "0", required: true },
+    activesp: { type: String },
     defaultdata: { type: String, required: true, default: "user" },
   },
   { timestamps: true }
@@ -98,6 +99,6 @@ UserSchema.pre("save", async function (next) {
 
 
 
-const UserModel = mongoose.models.usertest11123 || mongoose.model("usertest11123", UserSchema);
+const UserModel = mongoose.models.user || mongoose.model("user", UserSchema);
 
 export default UserModel;

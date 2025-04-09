@@ -28,7 +28,7 @@ export default function NomineeDetails() {
                 const response = await axios.get(`/api/user/find-admin-byemail/${session.user.email}`);
                 if (response.data?._id) {
                     setData(response.data); // Store full user data
-                  
+
                     setFormData({
                         nomineeName: response.data.nomineeName || "",
                         nomineeRelation: response.data.nomineeRelation || "",
@@ -36,7 +36,7 @@ export default function NomineeDetails() {
                         nomineebankName: response.data.nomineebankName || "",
                         nomineeacnumber: response.data.nomineeacnumber || "",
                         nomineeifscCode: response.data.nomineeifscCode || "",
-                        nomineeipanno: response.data.nomineeipanno|| "",
+                        nomineeipanno: response.data.nomineeipanno || "",
                         nomineeiaadharno: response.data.nomineeiaadharno || "",
                     });
                 }
@@ -91,114 +91,78 @@ export default function NomineeDetails() {
     }
     return (
         <div>
-            <div className="p-5 border bg-white dark:bg-gray-800 border-gray-200 rounded-2xl dark:border-gray-200  lg:p-6">
+            <div className="p-5 border border-gray-200 rounded dark:border-gray-200 lg:p-6">
                 <div className="flex flex-col gap-5 xl:flex-row xl:items-start xl:justify-between">
-                    <div className="w-full">
-                        <div>
-                            <h4 className="text-lg font-semibold text-gray-800 dark:text-white/90 lg:mb-6">
-                                Co-Applicant&apos;s/Nominee Details
-                            </h4>
+                <div className="w-full space-y-8">
 
-                            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3  lg:gap-7 2xl:gap-x-14">
-                                <div>
-                                    <p className="mb-2 text-md leading-normal text-gray-500 dark:text-gray-400">
-                                        Nominee Name
-                                    </p>
-                                    <p className="text-md font-medium text-gray-800 dark:text-white/90">
-                                        {data?.nomineeName || "Not Provided"}
-                                    </p>
-                                </div>
+{/* Nominee Details */}
+<div>
+  <h4 className="text-xl font-semibold text-gray-800 dark:text-white/90">Co-Applicant's/Nominee Details</h4>
+  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6 2xl:gap-x-10 mt-4">
+    {[
+      { label: "Nominee Name", value: data?.nomineeName },
+      { label: "Relation", value: data?.nomineeRelation },
+      {
+        label: "DOB",
+        value: data?.nomineeDOB
+          ? new Date(data.nomineeDOB).toLocaleDateString("en-GB")
+          : "Not Provided",
+      },
+    ].map((item, index) => (
+      <div
+        key={index}
+        className="px-4 py-3 rounded-md bg-gray-50 dark:bg-white/5 border border-gray-300 dark:border-white/10"
+      >
+        <p className="mb-1 text-sm font-semibold text-gray-600 dark:text-gray-300">{item.label}</p>
+        <p className="text-sm text-gray-800 dark:text-white">{item.value || "Not Provided"}</p>
+      </div>
+    ))}
+  </div>
+</div>
 
-                                <div>
-                                    <p className="mb-2 text-md leading-normal text-gray-500 dark:text-gray-400">
-                                        Relation
-                                    </p>
-                                    <p className="text-md font-medium text-gray-800 dark:text-white/90">
-                                        {data?.nomineeRelation || "Not Provided"}
+{/* Payment Details */}
+<div>
+  <h4 className="text-xl font-semibold text-gray-800 dark:text-white/90">Payment Details</h4>
+  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6 2xl:gap-x-10 mt-4">
+    {[
+      { label: "Bank Name", value: data?.nomineebankName },
+      { label: "Account No", value: data?.nomineeacnumber },
+      { label: "IFSC Code", value: data?.nomineeifscCode },
+    ].map((item, index) => (
+      <div
+        key={index}
+        className="px-4 py-3 rounded-md bg-gray-50 dark:bg-white/5 border border-gray-300 dark:border-white/10"
+      >
+        <p className="mb-1 text-sm font-semibold text-gray-600 dark:text-gray-300">{item.label}</p>
+        <p className="text-sm text-gray-800 dark:text-white">{item.value || "Not Provided"}</p>
+      </div>
+    ))}
+  </div>
+</div>
 
-                                    </p>
-                                </div>
+{/* KYC Details */}
+<div>
+  <h4 className="text-xl font-semibold text-gray-800 dark:text-white/90">KYC Details</h4>
+  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6 2xl:gap-x-10 mt-4">
+    {[
+      { label: "PAN No", value: data?.nomineeipanno },
+      { label: "Aadhar No", value: data?.nomineeiaadharno },
+    ].map((item, index) => (
+      <div
+        key={index}
+        className="px-4 py-3 rounded-md bg-gray-50 dark:bg-white/5 border border-gray-300 dark:border-white/10"
+      >
+        <p className="mb-1 text-sm font-semibold text-gray-600 dark:text-gray-300">{item.label}</p>
+        <p className="text-sm text-gray-800 dark:text-white">{item.value || "Not Provided"}</p>
+      </div>
+    ))}
+  </div>
+</div>
+</div>
 
-                                <div>
-                                    <p className="mb-2 text-md leading-normal text-gray-500 dark:text-gray-400">
-                                        DOB
-                                    </p>
-                                    <p className="text-md font-medium text-gray-800 dark:text-white/90">
-                                        {data?.nomineeDOB ? new Date(data.dob).toLocaleDateString("en-GB") : "N/A"}
-
-                                    </p>
-                                </div>
-
-                            </div>
-                        </div>
-                        <div>
-                            <h4 className="text-lg font-semibold text-gray-800 dark:text-white/90 my-3 lg:my-6">
-                                Payment Details
-                            </h4>
-
-                            <div className="grid grid-cols-2 gap-4 lg:grid-cols-3 lg:gap-7 2xl:gap-x-12">
-                                <div>
-                                    <p className="mb-2 text-md leading-normal text-gray-500 dark:text-gray-400">
-                                        Bank Name
-                                    </p>
-                                    <p className="text-md font-medium text-gray-800 dark:text-white/90">
-                                        {data?.nomineebankName || "Not Provided"}
-
-                                    </p>
-                                </div>
-
-                                <div>
-                                    <p className="mb-2 text-md leading-normal text-gray-500 dark:text-gray-400">
-                                        Account No
-                                    </p>
-                                    <p className="text-md font-medium text-gray-800 dark:text-white/90">
-                                        {data?.nomineeacnumber || "Not Provided"}
-
-                                    </p>
-                                </div>
-                                <div>
-                                    <p className="mb-2 text-md leading-normal text-gray-500 dark:text-gray-400">
-                                        IFSC Code
-                                    </p>
-                                    <p className="text-md font-medium text-gray-800 dark:text-white/90">
-                                        {data?.nomineeifscCode || "Not Provided"}
-
-                                    </p>
-                                </div>
-
-                            </div>
-                        </div>
-                        <div>
-                            <h4 className="text-lg font-semibold text-gray-800 dark:text-white/90 my-3 lg:my-6">
-                                Kyc Detail&apos;s
-                            </h4>
-
-                            <div className="grid grid-cols-2 gap-4 lg:grid-cols-3 lg:gap-7 2xl:gap-x-14">
-                                <div>
-                                    <p className="mb-2 text-md leading-normal text-gray-500 dark:text-gray-400">
-                                        Pan No
-                                    </p>
-                                    <p className="text-md font-medium text-gray-800 dark:text-white/90">
-                                        {data?.nomineeipanno || "Not Provided"}
-
-                                    </p>
-                                </div>
-
-                                <div>
-                                    <p className="mb-2 text-md leading-normal text-gray-500 dark:text-gray-400">
-                                        Addhar No.
-                                    </p>
-                                    <p className="text-md font-medium text-gray-800 dark:text-white/90">
-                                        {data?.nomineeiaadharno || "Not Provided"}
-                                    </p>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
                     <button
                         onClick={() => setIsModalOpen(true)}
-                        className="flex w-full items-center justify-center gap-2 rounded-full border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200 lg:inline-flex lg:w-auto"
+                        className="flex w-full items-center justify-center gap-2 rounded border border-gray-300 bg-white px-4 py-1 text-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200 lg:inline-flex lg:w-auto"
                     >
                         Edit
                     </button>
@@ -272,7 +236,7 @@ export default function NomineeDetails() {
                                 <div className="flex justify-end gap-3 mt-4">
                                     <button
                                         type="button"
-                                        className="border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-100 transition"
+                                        className="border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-50 transition"
                                         onClick={() => setIsModalOpen(false)}
                                     >
                                         Close

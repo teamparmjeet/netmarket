@@ -3,6 +3,7 @@ import React, { useEffect, useState, useMemo } from "react";
 import Image from "next/image";
 import axios from "axios";
 import { useSession } from "next-auth/react";
+import Active from "../Active/Active";
 
 export default function UserMetaCard() {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -12,7 +13,7 @@ export default function UserMetaCard() {
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(false);
     const [fetching, setFetching] = useState(true);
-
+    const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -94,7 +95,7 @@ export default function UserMetaCard() {
 
     return (
         <div>
-            <div className="p-5 border border-gray-200 rounded-2xl dark:border-gray-200 lg:p-6">
+            <div className="p-5 border border-gray-200 rounded dark:border-gray-200 lg:p-6">
                 <div className="flex flex-col gap-5 xl:flex-row xl:items-center xl:justify-between">
                     <div className="flex flex-col items-center w-full gap-6 xl:flex-row">
 
@@ -113,14 +114,32 @@ export default function UserMetaCard() {
                             <h4 className="mb-3 text-xl font-semibold text-center xl:text-left text-gray-900 dark:text-white">
                                 {fetching ? "Loading..." : data?.name || "Unknown"}
                             </h4>
-                            <div className="flex items-center justify-center xl:justify-start space-x-3">
-                                <h2 className="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 font-medium px-3 py-1 rounded-lg text-sm shadow">
-                                    DsId : {data?.dscode}
-                                </h2>
-                                <span className="bg-red-600 text-white px-3 py-1 rounded-lg text-sm font-medium shadow-md">
-                                    Not Approved
-                                </span>
+                            <div className="flex gap-4 flex-wrap items-center justify-center xl:justify-start space-x-3">
+                                <div>
+                                    <h2 className="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 font-medium px-3 py-1 rounded text-sm shadow">
+                                        DsId : {data?.dscode}
+                                    </h2>
+                                </div>
+                                <div
+                                    className={`px-3 py-1 rounded text-sm font-medium shadow-md ${data?.kycVerification?.isVerified
+                                        ? "bg-green-600 text-white"
+                                        : "bg-red-600 text-white"
+                                        }`}
+                                >
+                                    KYC = {data?.kycVerification?.isVerified ? "DONE" : "PENDING"}
+                                </div>
+
+                                {data?.kycVerification?.isVerified && (
+                                    <button
+                                        onClick={() => setShowModal(true)}
+                                        className="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1 rounded text-sm font-medium shadow-md"
+                                    >
+                                        Active
+                                    </button>
+                                )}
+
                             </div>
+
                         </div>
 
                     </div>
@@ -128,7 +147,7 @@ export default function UserMetaCard() {
 
                     <button
                         onClick={() => setIsModalOpen(true)}
-                        className="flex w-full items-center justify-center gap-2 rounded-full border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200 lg:inline-flex lg:w-auto"
+                        className="flex w-full items-center justify-center gap-2 rounded border border-gray-300 bg-white px-4 py-1 text-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200 lg:inline-flex lg:w-auto"
                     >
                         Edit
                     </button>
@@ -203,6 +222,22 @@ export default function UserMetaCard() {
                                 </button>
                             </div>
                         </form>
+                    </div>
+                </div>
+            )}
+
+
+            {showModal && (
+                <div className="fixed inset-0 z-50 bg-white">
+                    <div className=" flex justify-end p-2"><button
+                        className="px-4 py-1 rounded-md bg-gray-300 dark:bg-gray-700 text-gray-900 dark:text-white text-sm font-medium"
+                        onClick={() => setShowModal(false)}
+                    >
+                        Cancel
+                    </button></div>
+                    <div className=" flex justify-center p-2">
+
+                        <Active userData={data} />
                     </div>
                 </div>
             )}

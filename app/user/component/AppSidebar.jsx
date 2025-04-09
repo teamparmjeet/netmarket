@@ -16,7 +16,7 @@ const navItems = [
     {
         icon: <BookOpenText />, name: "Order Form",
         subItems: [
-            { name: "New Order Form", path: "/user/OrderForm/neworder", pro: false },
+            { name: "New Order Form", path: "/user/OrderForm/Order/CreateOrder", pro: false },
             { name: "Pending Orders", path: "/user/OrderForm/pendingorder", pro: false },
             { name: "My Approved Orders", path: "/user/OrderForm/approvedorder", pro: false },
             { name: "Product List", path: "/user/OrderForm/productlist", pro: false },

@@ -27,7 +27,7 @@ export default function UserLayout({ children }) {
 
   return (
     <>
-      <div className="min-h-screen xl:flex">
+      <div className="min-h-screen xl:flex bg-white dark:bg-gray-800">
         <AppSidebar />
         <div
           className={`${geistSans.variable} ${geistMono.variable} antialiased flex-1 transition-all  duration-300 ease-in-out ${mainContentMargin}`}

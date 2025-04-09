@@ -17,6 +17,7 @@ export default function Page() {
     const { data: session } = useSession();
     const [dsid, setDsid] = useState("");
     const [userdata, setUserdata] = useState(null);
+    const [submitting, setSubmitting] = useState(false);
     const [formData, setFormData] = useState({
         date: new Date().toISOString().split("T")[0],
         transactionId: "",
@@ -133,7 +134,7 @@ export default function Page() {
 
     const handleSubmit = async () => {
         setFormError("");
-
+        setSubmitting(true);
         const requiredFields = [
             "date", "dscode", "dsname", "address", "mobileno",
             "shippingAddress", "shippingmobile", "shippinpPincode",
@@ -174,6 +175,8 @@ export default function Page() {
         } catch (err) {
             console.error(err);
             setFormError("Something went wrong while submitting the form.");
+        } finally {
+            setSubmitting(false);
         }
     };
 
@@ -234,10 +237,13 @@ export default function Page() {
 
                     <button
                         onClick={handleSubmit}
-                        className="mt-4 px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-all"
+                        disabled={submitting}
+                        className={`mt-4 px-6 py-2 rounded transition-all ${submitting ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700 text-white'
+                            }`}
                     >
-                        Submit Order
+                        {submitting ? "Submitting..." : "Submit Order"}
                     </button>
+
                 </div>
             </div>
         </div>

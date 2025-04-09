@@ -11,6 +11,7 @@ import {
 export default function Dashboard4() {
     const { data: session } = useSession();
     const [dsid, setDsid] = useState("");
+    const [wallet, setWallet] = useState("");
     const [data, setData] = useState(null);
     const [rspData, setRspData] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -22,6 +23,7 @@ export default function Dashboard4() {
             try {
                 const response = await axios.get(`/api/user/find-admin-byemail/${session.user.email}`);
                 setDsid(response.data.dscode);
+                setWallet(response.data.WalletDetails);
             } catch (error) {
                 console.error("Failed to fetch user data:", error);
             }
@@ -55,7 +57,30 @@ export default function Dashboard4() {
 
         fetchData();
     }, [dsid]);
+    const [totalCommission, setTotalCommission] = useState(0);
+    const [totalGrowth, setTotalGrowth] = useState(0);
+    const [totalPerformance, setTotalPerformance] = useState(0);
+    const [totalIncome, setTotalIncome] = useState(0);
 
+    // In useEffect after wallet is set
+    useEffect(() => {
+        if (wallet?.length > 0) {
+            let commission = 0;
+            let growth = 0;
+            let performance = 0;
+
+            wallet.forEach(item => {
+                commission += parseFloat(item.salecommission || 0);
+                growth += parseFloat(item.salesgrowth || 0);
+                performance += parseFloat(item.performance || 0);
+            });
+
+            setTotalCommission(commission);
+            setTotalGrowth(growth);
+            setTotalPerformance(performance);
+            setTotalIncome(commission + growth + performance);
+        }
+    }, [wallet]);
 
 
     if (loading) return <SkeletonLoader />;
@@ -98,7 +123,7 @@ export default function Dashboard4() {
                 </div>
 
                 <div className="flex justify-center lg:col-span-3 w-full">
-                    <div className="relative p-6 w-full lg:w-1/3 bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden transition-transform hover:scale-[1.02] duration-300">
+                    <div className="relative p-6 w-full lg:w-1/3 bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden ">
 
                         {/* Decorative Ribbon */}
                         <div className="absolute top-0 right-0 w-0 h-0 border-l-[50px] border-l-transparent border-t-[50px] border-t-purple-500"></div>
@@ -114,23 +139,28 @@ export default function Dashboard4() {
                         {/* Info Rows */}
                         <div className="space-y-2 text-sm">
                             <p className="text-gray-600 dark:text-gray-300">
-                                <span className="font-semibold">Sales Commission:</span> <span className="ml-2 text-gray-800 dark:text-white">10</span>
+                                <span className="font-semibold">Sales Commission:</span>
+                                <span className="ml-2 text-gray-800 dark:text-white">{totalCommission}</span>
                             </p>
                             <p className="text-gray-600 dark:text-gray-300">
-                                <span className="font-semibold">Sales Growth:</span> <span className="ml-2 text-gray-800 dark:text-white">10</span>
+                                <span className="font-semibold">Sales Growth:</span>
+                                <span className="ml-2 text-gray-800 dark:text-white">{totalGrowth}</span>
                             </p>
                             <p className="text-gray-600 dark:text-gray-300">
-                                <span className="font-semibold">Sales Performance:</span> <span className="ml-2 text-gray-800 dark:text-white">10</span>
+                                <span className="font-semibold">Sales Performance:</span>
+                                <span className="ml-2 text-gray-800 dark:text-white">{totalPerformance}</span>
                             </p>
                         </div>
 
-                        {/* Total Income */}
                         <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 text-md">
                             <p className="text-gray-700 dark:text-white font-semibold">
-                                {/* Total Income: <span className="text-blue-700 dark:text-blue-400 ms-2">{data?.totalIncome || 0}</span> */}
-                                Total Income: <span className="text-blue-700 dark:text-blue-400 ms-2">30</span>
+                                Total Income:
+                                <span className="text-blue-700 dark:text-blue-400 ms-2">{totalIncome}</span>
                             </p>
                         </div>
+
+
+                       
                     </div>
                 </div>
 

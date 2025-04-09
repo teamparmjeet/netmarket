@@ -32,8 +32,6 @@ const navItems = [
         subItems: [
             { name: "Sales Team", path: "/superadmin/Genealogy/salesteam", pro: false },
             { name: "Direct DS Code", path: "/superadmin/Genealogy/directds", pro: false },
-            { name: "Downline Printing", path: "/superadmin/Genealogy/downlineprinting", pro: false },
-            { name: "Depth Downline", path: "/superadmin/Genealogy/depthdownline", pro: false },
         ],
     },
     {

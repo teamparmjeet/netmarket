@@ -100,7 +100,7 @@ export default function Dashboard3() {
                     <p className="text-gray-700 dark:text-white font-semibold">Current Level</p>
                 </div>
                 <p className="text-xl font-bold text-gray-900 dark:text-gray-300 mt-2">{data?.level ?? "N/A"}</p>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{data?.saosp}</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{data?.level}.</p>
                 <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Level Next Target: {nextLevelTarget}</p>
 
             </div>

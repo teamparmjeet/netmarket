@@ -43,7 +43,6 @@ export async function PATCH(req, { params }) {
                 let currentSgosp = parseFloat(user.sgosp) || 0;
                 const orderTotalSp = parseFloat(updatedOrder.totalsp) || 0;
 
-                // Check status and update values accordingly
                 if (data.status !== undefined) {
                     if (data.status === true) {
                         currentEarnsp += orderTotalSp;
@@ -65,7 +64,7 @@ export async function PATCH(req, { params }) {
                         currentSgosp = Math.max(currentSgosp, 0);
                     }
 
-                    // Update user
+                    // Update user SP values
                     await UserModel.updateOne(
                         { dscode: updatedOrder.dscode },
                         {
@@ -75,6 +74,33 @@ export async function PATCH(req, { params }) {
                         },
                         { session }
                     );
+
+                    // ----- 💸 Handle WalletDetails for 100 SP matching -----
+                    const lastMatchedSP = parseInt(user.lastMatchedSP || "0", 10);
+                    const newMinSP = Math.min(currentSaosp, currentSgosp);
+                    const matchedSPs = Math.floor(newMinSP / 100) * 100;
+                    const newMatches = Math.floor((matchedSPs - lastMatchedSP) / 100);
+
+                    if (newMatches > 0) {
+                        const today = new Date().toISOString().split("T")[0];
+
+                        const newWalletEntries = Array.from({ length: newMatches }).map(() => ({
+                            salecommission: "1000",
+                            salesgrowth: "",
+                            performance: "",
+                            date: today
+                        }));
+
+                        await UserModel.updateOne(
+                            { dscode: updatedOrder.dscode },
+                            {
+                                $push: { WalletDetails: { $each: newWalletEntries } },
+                                lastMatchedSP: matchedSPs.toString()
+                            },
+                            { session }
+                        );
+                    }
+                    // -------------------------------------------------------
                 }
             }
 
@@ -89,7 +115,6 @@ export async function PATCH(req, { params }) {
             }, { status: 200 });
 
         } catch (error) {
-            // Rollback transaction on error
             await session.abortTransaction();
             session.endSession();
             throw error;

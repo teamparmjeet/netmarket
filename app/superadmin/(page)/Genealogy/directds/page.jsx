@@ -101,7 +101,7 @@ export default function Page() {
                                     <td className="p-3 border">{searchResult?.user?.dscode}</td>
                                     <td className="p-3 border">{searchResult?.user?.name}</td>
                                     <td className="p-3 border">{searchResult?.user?.createdAt ? new Date(searchResult.user?.createdAt).toLocaleDateString("en-GB") : "N/A"}</td>
-                                    <td className="p-3 border">{searchResult?.user?.sponsorDscode}</td>
+                                    <td className="p-3 border">{searchResult?.user?.pdscode}</td>
                                     <td className="p-3 border">{searchResult?.user?.selfSp || "-"}</td>
                                     <td className="p-3 border">{searchResult?.user?.totalSp || "-"}</td>
                                     <td className="p-3 border">{searchResult?.user?.currTotalSp || "-"}</td>

@@ -45,8 +45,8 @@ export default function Page() {
                                 <th className="py-3 px-4 border-r">Level Name</th>
                                 <th className="py-3 px-4 border-r">Sao</th>
                                 <th className="py-3 px-4 border-r">Sgo</th>
-                                <th className="py-3 px-4 border-r">Binary Income</th>
-                                <th className="py-3 px-4">Bonus Income</th>
+                                <th className="py-3 px-4 border-r">Sales Commision </th>
+                                <th className="py-3 px-4">Sales Growth </th>
                                 <th className="py-3 px-4">Performance Income</th>
                                 <th className="py-3 px-4">Prize</th>
                             </tr>
@@ -65,9 +65,9 @@ export default function Page() {
                                             <td className="py-3 text-sm font-medium px-4 border-r">{data.level_name}</td>
                                             <td className="py-3 text-sm font-medium px-4 border-r">{data.sao}</td>
                                             <td className="py-3 text-sm font-medium px-4 border-r">{data.sgo}</td>
-                                            <td className="py-3 text-sm font-medium px-4 border-r">{data.binary_income}</td>
-                                            <td className="py-3 text-sm font-medium px-4 border-r">{data.bonus_income}</td>
-                                            <td className="py-3 text-sm font-medium px-4 border-r">{data.performance_income}</td>
+                                            <td className="py-3 text-sm font-medium px-4 border-r">{data.binary_income} ₹</td>
+                                            <td className="py-3 text-sm font-medium px-4 border-r">{data.bonus_income} ₹</td>
+                                            <td className="py-3 text-sm font-medium px-4 border-r">{data.performance_income} ₹</td>
                                             <td className="py-3 text-sm font-medium px-4 border-r">{data.bonus}</td>
                                         </tr>
                                     ))

@@ -64,6 +64,16 @@ const UserSchema = new Schema(
         sgo: { type: String, }
       }
     ],
+    WalletDetails: [
+      {
+        salecommission: { type: String, },
+        salesgrowth: { type: String, },
+        performance: { type: String, },
+        date: { type: String }
+      }
+    ],
+    wallet: { type: String,default: "0"  },
+    lastMatchedSP: { type: String, default: "0" },
     branchName: { type: String },
     nomineebankName: { type: String },
     nomineeacnumber: { type: String },
@@ -99,6 +109,6 @@ UserSchema.pre("save", async function (next) {
 
 
 
-const UserModel = mongoose.models.user || mongoose.model("user", UserSchema);
+const UserModel = mongoose.models.user2 || mongoose.model("user2", UserSchema);
 
 export default UserModel;

@@ -4,7 +4,7 @@ import { saveAs } from "file-saver";
 import * as XLSX from "xlsx";
 import { useSession } from "next-auth/react";
 import axios from "axios";
-
+import OrderDetailsuser from "@/components/OrderDetailsuser/OrderDetailsuser";
 export default function PendingOrders() {
   const { data: session } = useSession();
   const [dateFrom, setDateFrom] = useState("");
@@ -14,6 +14,7 @@ export default function PendingOrders() {
   const [data, setData] = useState(null);
   const [fetching, setFetching] = useState(true);
   const [loadingOrders, setLoadingOrders] = useState(true);
+  const [selectedOrder, setSelectedOrder] = useState(null);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -68,39 +69,50 @@ export default function PendingOrders() {
     const data = new Blob([excelBuffer], { type: "application/octet-stream" });
     saveAs(data, "PendingOrders.xlsx");
   };
+  const openModal = (order) => {
+    setSelectedOrder(order);
+  };
+
+  const closeModal = () => {
+    setSelectedOrder(null);
+  };
 
   return (
-    <div className="mx-auto lg:p-6 p-2 bg-white dark:bg-gray-700 shadow-lg rounded-lg text-gray-700 dark:text-white">
+    <div className="mx-auto lg:p-6 p-2 bg-white dark:bg-gray-700 shadow-lg  text-gray-700 dark:text-white">
       <h2 className="text-2xl font-semibold mb-4 text-center">My Pending Order List</h2>
       <div className="grid grid-cols-3 gap-4 mb-6 items-end">
         <div>
           <label className="block text-sm font-medium">Date From</label>
           <input type="date" value={dateFrom} onChange={(e) => setDateFrom(e.target.value)}
-            className="border rounded-lg p-2 w-full bg-white dark:bg-gray-700 text-gray-700 dark:text-white" />
+            className="border  p-2 w-full bg-white dark:bg-gray-700 text-gray-700 dark:text-white" />
         </div>
         <div>
           <label className="block text-sm font-medium">Date To</label>
           <input type="date" value={dateTo} onChange={(e) => setDateTo(e.target.value)}
-            className="border rounded-lg p-2 w-full bg-white dark:bg-gray-700 text-gray-700 dark:text-white" />
+            className="border  p-2 w-full bg-white dark:bg-gray-700 text-gray-700 dark:text-white" />
         </div>
-        <button onClick={applyFilter} className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 w-full">Show</button>
+        <button onClick={applyFilter} className="bg-blue-500 text-white px-4 py-2  hover:bg-blue-600 w-full">Show</button>
       </div>
 
       {loadingOrders ? (
         <div className="animate-pulse">
           {Array(5).fill(0).map((_, index) => (
-            <div key={index} className="h-10 bg-gray-300 dark:bg-gray-600 my-2 rounded"></div>
+            <div key={index} className="h-10 bg-gray-300 dark:bg-gray-600 my-2 "></div>
           ))}
         </div>
       ) : (
-        <table className="w-full border-collapse border border-gray-300 rounded-lg overflow-hidden">
+        <table className="w-full border-collapse border border-gray-300  overflow-hidden">
           <thead>
             <tr className="bg-gray-100 dark:bg-gray-600">
               <th className="border border-gray-300 px-4 py-2">Order No</th>
-              <th className="border border-gray-300 px-4 py-2">Amount</th>
+              <th className="border border-gray-300 px-4 py-2">Mobile</th>
               <th className="border border-gray-300 px-4 py-2">Payment Mode</th>
+              <th className="border border-gray-300 px-4 py-2">Sale Group</th>
+              <th className="border border-gray-300 px-4 py-2">Total Amount</th>
+              <th className="border border-gray-300 px-4 py-2">Total Sp</th>
               <th className="border border-gray-300 px-4 py-2">Date</th>
               <th className="border border-gray-300 px-4 py-2">Status</th>
+              <th className="border border-gray-300 px-4 py-2">Action</th>
             </tr>
           </thead>
           <tbody>
@@ -108,10 +120,16 @@ export default function PendingOrders() {
               filteredOrders.map((order) => (
                 <tr key={order._id} className="text-center bg-white dark:bg-gray-800">
                   <td className="border border-gray-300 px-4 py-2">{order.orderNo}</td>
-                  <td className="border border-gray-300 px-4 py-2">{order.netamount}</td>
+                  <td className="border border-gray-300 px-4 py-2">{order.mobileno}</td>
                   <td className="border border-gray-300 px-4 py-2">{order.paymentmod}</td>
+                  <td className="border border-gray-300 px-4 py-2">{order.salegroup}</td>
+                  <td className="border border-gray-300 px-4 py-2">{order.netamount}</td>
+                  <td className="border border-gray-300 px-4 py-2">{order.totalsp}</td>
                   <td className="border border-gray-300 px-4 py-2">{new Date(order.date).toLocaleDateString("en-GB")}</td>
                   <td className="border border-gray-300 px-4 py-2">{order.status ? "Approved" : "Pending"}</td>
+                  <td className="border border-gray-300 px-2 md:px-4 py-2">
+                    <button onClick={() => openModal(order)} className="text-blue-500 hover:text-blue-700">View</button>
+                  </td>
                 </tr>
               ))
             ) : (
@@ -122,7 +140,21 @@ export default function PendingOrders() {
           </tbody>
         </table>
       )}
-      <button onClick={exportToExcel} className="mt-4 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 w-40">Export to Excel</button>
+      <button onClick={exportToExcel} className="mt-4 bg-green-500 text-white px-4 py-2  hover:bg-green-600 w-40">Export to Excel</button>
+      {selectedOrder && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white dark:bg-gray-800 w-full h-full p-6 overflow-auto relative">
+            <button
+              onClick={closeModal}
+              className="absolute top-4 right-4 text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white text-2xl"
+            >
+              ×
+            </button>
+            <h2 className="text-2xl font-semibold mb-4">Order Details - {selectedOrder.orderNo}</h2>
+            <OrderDetailsuser data={selectedOrder} />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

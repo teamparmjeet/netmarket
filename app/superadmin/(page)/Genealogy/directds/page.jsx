@@ -51,13 +51,9 @@ export default function Page() {
         handleSearch();
     }, [data]);
 
-    const handlePrint = () => {
-        window.print();
-    };
-
     return (
-        <div className="lg:p-6 p-2 max-w-6xl mx-auto bg-white dark:bg-gray-800 shadow-lg dark:shadow-none rounded-lg border border-white dark:border-gray-600">
-            <h2 className="text-2xl font-bold text-center text-gray-700 dark:text-white mb-6">Downline Direct DS</h2>
+        <div className="lg:p-6 p-2 max-w-6xl mx-auto bg-white shadow-lg rounded-lg">
+            <h2 className="text-2xl font-bold text-center text-gray-700 mb-6">Downline Direct DS</h2>
 
             {/* Skeleton Loader */}
             {loading && (
@@ -74,8 +70,8 @@ export default function Page() {
             {/* Display Table */}
             {!loading && searchResult && (
                 <div className="overflow-x-auto rounded-lg border border-gray-200 shadow-sm">
-                    <table className="min-w-full bg-white dark:bg-gray-800 border-collapse">
-                        <thead className="bg-blue-600 text-white dark:text-gray-200 text-sm uppercase sticky top-0">
+                    <table className="min-w-full bg-white border-collapse">
+                        <thead className="bg-blue-600 text-white text-sm uppercase sticky top-0">
                             <tr>
                                 {[
                                     "S.No",
@@ -89,6 +85,7 @@ export default function Page() {
                                     "Sale Group",
                                     "Curr. Self RSP",
                                     "Curr. Total RSP",
+                                    "Status",
                                 ].map((header, index) => (
                                     <th key={index} className="p-3 border border-gray-300 text-center">
                                         {header}
@@ -99,33 +96,41 @@ export default function Page() {
                         <tbody>
                             {/* Main User Row */}
                             {searchResult.user && (
-                                <tr className="text-center bg-gray-100 dark:bg-gray-800 font-semibold text-gray-800 dark:text-gray-400">
+                                <tr className="text-center bg-gray-100 font-semibold">
                                     <td className="p-3 border">1</td>
                                     <td className="p-3 border">{searchResult?.user?.dscode}</td>
                                     <td className="p-3 border">{searchResult?.user?.name}</td>
                                     <td className="p-3 border">{searchResult?.user?.createdAt ? new Date(searchResult.user?.createdAt).toLocaleDateString("en-GB") : "N/A"}</td>
                                     <td className="p-3 border">{searchResult?.user?.sponsorDscode}</td>
-                                    <td className="p-3 border">{searchResult?.user?.earnsp || "-"}</td>
+                                    <td className="p-3 border">{searchResult?.user?.selfSp || "-"}</td>
                                     <td className="p-3 border">{searchResult?.user?.totalSp || "-"}</td>
                                     <td className="p-3 border">{searchResult?.user?.currTotalSp || "-"}</td>
-                                    <td className="p-3 border">{searchResult?.user?.group || "-"}</td>
+                                    <td className="p-3 border">{searchResult?.user?.saleGroup || "-"}</td>
                                     <td className="p-3 border">{searchResult?.user?.currSelfRsp || "-"}</td>
                                     <td className="p-3 border">{searchResult?.user?.currTotalRsp || "-"}</td>
+                                    <td className="p-3 border">
+                                        {searchResult?.user?.usertype === "1" ? (
+                                            <span className="text-green-600 font-semibold">Approved</span>
+                                        ) : searchResult?.user?.usertype === "0" ? (
+                                            <span className="text-yellow-500 font-semibold">Pending</span>
+                                        ) : null}
+                                    </td>
+
                                 </tr>
                             )}
 
                             {/* Downline Members Rows */}
                             {searchResult.members?.map((member, index) => (
-                                <tr key={index} className="text-center border-t text-gray-800 dark:text-gray-200">
+                                <tr key={index} className="text-center border-t">
                                     <td className="p-3 border">{index + 2}</td>
                                     <td className="p-3 border">{member?.dscode}</td>
                                     <td className="p-3 border">{member?.name}</td>
                                     <td className="p-3 border">{member?.createdAt ? new Date(member.createdAt).toLocaleDateString("en-GB") : "N/A"}</td>
-                                    <td className="p-3 border">{member?.pdscode}</td>
-                                    <td className="p-3 border">{member?.earnsp || "-"}</td>
+                                    <td className="p-3 border">{member?.sponsorDscode}</td>
+                                    <td className="p-3 border">{member?.selfSp || "-"}</td>
                                     <td className="p-3 border">{member?.totalSp || "-"}</td>
                                     <td className="p-3 border">{member?.currTotalSp || "-"}</td>
-                                    <td className="p-3 border">{member?.group || "-"}</td>
+                                    <td className="p-3 border">{member?.saleGroup || "-"}</td>
                                     <td className="p-3 border">{member?.currSelfRsp || "-"}</td>
                                     <td className="p-3 border">{member?.currTotalRsp || "-"}</td>
                                 </tr>
@@ -136,7 +141,7 @@ export default function Page() {
             )}
 
 
-            <p className="text-lg font-semibold text-gray-800 dark:text-white text-center mt-4">
+            <p className="text-lg font-semibold text-gray-800 text-center mt-4">
                 Total Direct Seller:{" "}
                 <span className="text-blue-600">{searchResult?.members?.length + 1 || 0}</span>
             </p>

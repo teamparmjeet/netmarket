@@ -4,7 +4,7 @@ import { useSidebar } from '@/app/context/SidebarContext'
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { Grid2X2, UserCircle,NotepadText, UsersRound, Medal, FileUser, BookOpenText, NotebookText, KeyRound, MailPlus, Trophy, ScrollText, ChevronDown } from "lucide-react";
+import { Grid2X2, UserCircle, NotepadText, UsersRound, Medal, FileUser, BookOpenText, NotebookText, KeyRound, MailPlus, Trophy, ScrollText, ChevronDown } from "lucide-react";
 const navItems = [
     {
         icon: <Grid2X2 />,
@@ -28,16 +28,17 @@ const navItems = [
         subItems: [
             { name: "Sales Team", path: "/admin/Genealogy/salesteam", pro: false },
             { name: "Direct DS Code", path: "/admin/Genealogy/directds", pro: false },
-            { name: "Downline Printing", path: "/admin/Genealogy/downlineprinting", pro: false },
-            { name: "Depth Downline", path: "/admin/Genealogy/depthdownline", pro: false },
         ],
     },
     {
         icon: <FileUser />,
         name: "Account",
         subItems: [
-            { name: "Sales Performance", path: "/admin/Account/salesperformance", pro: false },
-            { name: "My Regular Sales Comission", path: "/admin/Account/regularsales", pro: false },
+            { name: "Total Income", path: "/admin/Account/totalincome", pro: false },
+            { name: "Sales Groth Income", path: "/admin/Account/salesgrowth", pro: false },
+            { name: "Monthly Sales Income", path: "/admin/Account/monthlysales", pro: false },
+            { name: "Sales Performance Income", path: "/admin/Account/salesperformance", pro: false },
+            { name: "Tds Deduction Report", path: "/admin/Account/tdsdeduction", pro: false },
             { name: "My Repurchase Payments", path: "/admin/Account/repurchasepayments", pro: false },
             { name: "Step Pendency", path: "/admin/Account/steppendency", pro: false },
         ],
@@ -46,7 +47,6 @@ const navItems = [
         icon: <Medal />,
         name: "Trip/Bonanza",
         subItems: [
-            // { name: "Spring Bonanza", path: "/admin/Trips/springbonanza", pro: false },
             { name: "My Trip list", path: "/admin/Trips/mytriplist", pro: false },
         ],
     },
@@ -54,7 +54,8 @@ const navItems = [
         icon: <BookOpenText />,
         name: "Order Form",
         subItems: [
-            { name: "New Order Form", path: "/admin/OrderForm/neworder", pro: false },
+            { name: "New Order Form", path: "/admin/OrderForm/Order/CreateOrder", pro: false },
+            { name: "Cart", path: "/admin/OrderForm/Order/Cart", pro: false },
             { name: "Pending Orders", path: "/admin/OrderForm/pendingorder", pro: false },
             { name: "My Approved Orders", path: "/admin/OrderForm/approvedorder", pro: false },
             { name: "Product List", path: "/admin/OrderForm/productlist", pro: false },

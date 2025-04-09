@@ -85,6 +85,7 @@ export default function Page() {
                                     "Sale Group",
                                     "Curr. Self RSP",
                                     "Curr. Total RSP",
+                                    "Status",
                                 ].map((header, index) => (
                                     <th key={index} className="p-3 border border-gray-300 text-center">
                                         {header}
@@ -107,6 +108,14 @@ export default function Page() {
                                     <td className="p-3 border">{searchResult?.user?.saleGroup || "-"}</td>
                                     <td className="p-3 border">{searchResult?.user?.currSelfRsp || "-"}</td>
                                     <td className="p-3 border">{searchResult?.user?.currTotalRsp || "-"}</td>
+                                    <td className="p-3 border">
+                                        {searchResult?.user?.usertype === "1" ? (
+                                            <span className="text-green-600 font-semibold">Approved</span>
+                                        ) : searchResult?.user?.usertype === "0" ? (
+                                            <span className="text-yellow-500 font-semibold">Pending</span>
+                                        ) : null}
+                                    </td>
+
                                 </tr>
                             )}
 

@@ -4,7 +4,7 @@ import { useSidebar } from '@/app/context/SidebarContext'
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { Grid2X2, UserCircle, BookOpenText, KeyRound, Trophy, ScrollText, ChevronDown } from "lucide-react";
+import { Grid2X2, UserCircle, BookOpenText, KeyRound, Trophy, ScrollText, ChevronDown,  } from "lucide-react";
 const navItems = [
     {
         icon: <UserCircle />, name: "User Profile",
@@ -17,6 +17,7 @@ const navItems = [
         icon: <BookOpenText />, name: "Order Form",
         subItems: [
             { name: "New Order Form", path: "/user/OrderForm/Order/CreateOrder", pro: false },
+            { name: "Cart", path: "/user/OrderForm/Order/Cart", pro: false },
             { name: "Pending Orders", path: "/user/OrderForm/pendingorder", pro: false },
             { name: "My Approved Orders", path: "/user/OrderForm/approvedorder", pro: false },
             { name: "Product List", path: "/user/OrderForm/productlist", pro: false },

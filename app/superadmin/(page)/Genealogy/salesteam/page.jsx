@@ -72,15 +72,15 @@ export default function Page() {
 
     return (
         <div className="p-6 max-w-5xl mx-auto">
-            <div className="bg-white rounded-xl shadow-md p-6 mb-8">
-                <h2 className="text-2xl font-semibold mb-4 text-gray-800">Search D.S. Network</h2>
+            <div className=" rounded-xl shadow-md p-6 mb-8">
+                <h2 className="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">Search D.S. Network</h2>
                 <div className="flex items-center space-x-3">
                     <input
                         type="text"
                         value={dsId || ""}
                         onChange={(e) => setDsId(e.target.value)}
                         placeholder="Enter D.S. ID..."
-                        className="border border-gray-300 p-2 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        className="border border-gray-300 p-2 rounded-lg w-full text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-400"
                         onKeyDown={handleKeyPress}
                     />
                     <button
@@ -102,100 +102,105 @@ export default function Page() {
             {error && <p className="text-red-500">{error}</p>}
 
             {searchResult && (
-                <div className="space-y-10 px-4 sm:px-6 lg:px-8">
+  <div className="space-y-6 px-4 sm:px-6 lg:px-8">
 
-                    {/* Main User Box */}
-                    <div className="border border-gray-400 p-4 shadow bg-gray-100 rounded-md">
-                        <h2 className="text-lg font-bold mb-4 text-blue-700">Main User</h2>
-                        <div className="flex flex-col md:flex-row md:items-start md:space-x-4 space-y-4 md:space-y-0">
-                            {searchResult.user?.image ? (
-                                <Image
-                                    src={searchResult.user.image}
-                                    alt="User"
-                                    width={64}
-                                    height={64}
-                                    className="w-16 h-16 object-cover border border-gray-400 rounded"
-                                />
-                            ) : (
-                                <User className="w-16 h-16 text-blue-600 border border-gray-400 p-2 rounded" />
-                            )}
+    {/* Main User Box */}
+    <div className="border border-gray-300 dark:border-gray-600 p-4 shadow-sm bg-white dark:bg-gray-800 rounded-lg hover:shadow-md transition">
+      <h2 className="text-base font-semibold mb-3 text-blue-700 dark:text-blue-400 border-b border-gray-200 dark:border-gray-600 pb-1">
+        Main User
+      </h2>
+      <div className="flex flex-col md:flex-row md:items-start md:space-x-4 space-y-3 md:space-y-0">
+        {searchResult.user?.image ? (
+          <Image
+            src={searchResult.user.image}
+            alt="User"
+            width={48}
+            height={48}
+            className="w-12 h-12 object-cover border border-gray-300 dark:border-gray-500 rounded-full"
+          />
+        ) : (
+          <User className="w-12 h-12 text-blue-600 dark:text-blue-400 border border-gray-300 dark:border-gray-500 p-2 rounded-full" />
+        )}
 
-                            <table className="text-sm text-left w-full">
-                                <tbody>
-                                    <tr><td className="font-medium w-32">Name:</td><td>{searchResult.user.name || "-"}</td></tr>
-                                    <tr><td className="font-medium">Email:</td><td>{searchResult.user.email || "-"}</td></tr>
-                                    <tr><td className="font-medium">Mobile:</td><td>{searchResult.user.mobileNo || "-"}</td></tr>
-                                    <tr><td className="font-medium">Address:</td><td>{searchResult.user?.address?.addressLine1 || "-"}</td></tr>
-                                    <tr>
-                                        <td className="font-medium">DS Code:</td>
-                                        <td className="flex flex-wrap items-center gap-2">
-                                            <span>{searchResult.user.dscode}</span>
-                                            <button
-                                                className="text-blue-600 underline text-xs"
-                                                onClick={() => {
-                                                    setDsId(searchResult.user.dscode);
-                                                    handleSearch(searchResult.user.dscode);
-                                                }}
-                                            >
-                                                Search This
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr><td className="font-medium">Group:</td><td>{searchResult.user.group}</td></tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+        <table className="text-sm w-full text-gray-700 dark:text-gray-300">
+          <tbody className="divide-y divide-gray-200 dark:divide-gray-600">
+            <tr><td className="font-bold w-28 py-1">Name:</td><td>{searchResult.user.name || "-"}</td></tr>
+            <tr><td className="font-bold py-1">Email:</td><td>{searchResult.user.email || "-"}</td></tr>
+            <tr><td className="font-bold py-1">Mobile:</td><td>{searchResult.user.mobileNo || "-"}</td></tr>
+            <tr><td className="font-bold py-1">Address:</td><td>{searchResult.user?.address?.addressLine1 || "-"}</td></tr>
+            <tr>
+              <td className="font-bold py-1">DS Code:</td>
+              <td className="flex flex-wrap items-center gap-2 py-1">
+                <span>{searchResult.user.dscode}</span>
+                <button
+                  className="text-blue-600 dark:text-blue-400 underline text-xs hover:text-blue-800 dark:hover:text-blue-300"
+                  onClick={() => {
+                    setDsId(searchResult.user.dscode);
+                    handleSearch(searchResult.user.dscode);
+                  }}
+                >
+                  Search This
+                </button>
+              </td>
+            </tr>
+            <tr><td className="font-bold py-1">Group:</td><td>{searchResult.user.group}</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
 
-                    {/* Members List */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
-                        {searchResult.members.map((member, index) => (
-                            <div key={index} className="border border-gray-400 p-4 shadow bg-gray-100 rounded-md">
-                                <h3 className="text-md font-bold text-green-700 mb-2">Member</h3>
-                                <div className="flex flex-col md:flex-row md:items-start md:space-x-4 space-y-4 md:space-y-0">
-                                    {member?.image ? (
-                                        <Image
-                                            src={member.image}
-                                            alt="Member"
-                                            width={64}
-                                            height={64}
-                                            className="w-16 h-16 object-cover border border-gray-400 rounded"
-                                        />
-                                    ) : (
-                                        <User className="w-16 h-16 text-blue-600 border border-gray-400 p-2 rounded" />
-                                    )}
-
-                                    <table className="text-sm text-left w-full">
-                                        <tbody>
-                                            <tr><td className="font-medium w-32">Name:</td><td>{member.name || "-"}</td></tr>
-                                            <tr><td className="font-medium">Email:</td><td>{member.email || "-"}</td></tr>
-                                            <tr><td className="font-medium">Mobile:</td><td>{member.mobileNo || "-"}</td></tr>
-                                            <tr><td className="font-medium">Address:</td><td>{member?.address?.addressLine1 || "-"}</td></tr>
-                                            <tr>
-                                                <td className="font-medium">DS Code:</td>
-                                                <td className="flex flex-wrap items-center gap-2">
-                                                    <span>{member.dscode}</span>
-                                                    <button
-                                                        className="text-blue-600 underline text-xs"
-                                                        onClick={() => {
-                                                            const ds = member.dscode;
-                                                            setDsId(ds);
-                                                            handleSearch(ds);
-                                                        }}
-                                                    >
-                                                        Search This
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                            <tr><td className="font-medium">Group:</td><td>{member.group}</td></tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
+    {/* Members List */}
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      {searchResult.members.map((member, index) => (
+        <div key={index} className="border border-gray-300 dark:border-gray-600 p-4 shadow-sm bg-white dark:bg-gray-800 rounded-lg hover:shadow-md transition">
+          <h3 className="text-sm font-semibold text-green-700 dark:text-green-400 mb-2 border-b border-gray-200 dark:border-gray-600 pb-1">
+            Member
+          </h3>
+          <div className="flex flex-col md:flex-row md:items-start md:space-x-4 space-y-3 md:space-y-0">
+            {member?.image ? (
+              <Image
+                src={member.image}
+                alt="Member"
+                width={48}
+                height={48}
+                className="w-12 h-12 object-cover border border-gray-300 dark:border-gray-500 rounded-full"
+              />
+            ) : (
+              <User className="w-12 h-12 text-blue-600 dark:text-blue-400 border border-gray-300 dark:border-gray-500 p-2 rounded-full" />
             )}
+
+            <table className="text-sm w-full text-gray-700 dark:text-gray-300">
+              <tbody className="divide-y divide-gray-200 dark:divide-gray-600">
+                <tr><td className="font-bold w-28 py-1">Name:</td><td>{member.name || "-"}</td></tr>
+                <tr><td className="font-bold py-1">Email:</td><td>{member.email || "-"}</td></tr>
+                <tr><td className="font-bold py-1">Mobile:</td><td>{member.mobileNo || "-"}</td></tr>
+                <tr><td className="font-bold py-1">Address:</td><td>{member?.address?.addressLine1 || "-"}</td></tr>
+                <tr>
+                  <td className="font-bold py-1">DS Code:</td>
+                  <td className="flex flex-wrap items-center gap-2 py-1">
+                    <span>{member.dscode}</span>
+                    <button
+                      className="text-blue-600 dark:text-blue-400 underline text-xs hover:text-blue-800 dark:hover:text-blue-300"
+                      onClick={() => {
+                        const ds = member.dscode;
+                        setDsId(ds);
+                        handleSearch(ds);
+                      }}
+                    >
+                      Search This
+                    </button>
+                  </td>
+                </tr>
+                <tr><td className="font-bold py-1">Group:</td><td>{member.group}</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+)}
+
 
         </div>
     );

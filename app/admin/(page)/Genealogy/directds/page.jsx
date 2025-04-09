@@ -126,7 +126,7 @@ export default function Page() {
                                     <td className="p-3 border">{member?.dscode}</td>
                                     <td className="p-3 border">{member?.name}</td>
                                     <td className="p-3 border">{member?.createdAt ? new Date(member.createdAt).toLocaleDateString("en-GB") : "N/A"}</td>
-                                    <td className="p-3 border">{member?.sponsorDscode}</td>
+                                    <td className="p-3 border">{member?.pdscode}</td>
                                     <td className="p-3 border">{member?.selfSp || "-"}</td>
                                     <td className="p-3 border">{member?.totalSp || "-"}</td>
                                     <td className="p-3 border">{member?.currTotalSp || "-"}</td>

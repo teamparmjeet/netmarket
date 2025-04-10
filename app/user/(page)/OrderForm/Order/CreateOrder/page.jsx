@@ -84,22 +84,22 @@ export default function Page() {
 
   const handleChange = (e, index = null) => {
     const { name, value } = e.target;
-  
+
     setFormData((prev) => {
       let updatedData = { ...prev };
-  
+
       if (index !== null) {
         const updatedProductDetails = [...prev.productDetails];
         updatedProductDetails[index] = { ...updatedProductDetails[index], [name]: value };
-  
+
         // Recalculate price, sp, and netamount if product or quantity is changed
         const currentItem = updatedProductDetails[index];
         const selectedProduct = products.find(
           (p) => p.productname === currentItem.product
         );
-  
+
         if (selectedProduct) {
-          const quantity = parseInt(currentItem.quantity) || 1;
+          const quantity = parseInt(currentItem.quantity) || "";
           updatedProductDetails[index] = {
             ...updatedProductDetails[index],
             quantity,
@@ -108,39 +108,45 @@ export default function Page() {
             netamount: selectedProduct.dp * quantity,
           };
         }
-  
+
         updatedData.productDetails = updatedProductDetails;
-  
+
         // Calculate total net amount and total selling price across product rows
         const totalNetAmount = updatedProductDetails.reduce(
           (sum, item) => sum + (parseFloat(item.netamount) || 0),
           0
         );
-  
+
         const totalSp = updatedProductDetails.reduce(
           (sum, item) =>
             sum + (parseFloat(item.sp) || 0) * (parseInt(item.quantity) || 0),
           0
         );
-  
+
         updatedData.netamount = totalNetAmount + (prev.shippingCharge || 0);
         updatedData.totalsp = totalSp;
       } else {
         updatedData[name] = value;
       }
-  
+
       return updatedData;
     });
   };
-  
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (isSubmitting) return;
 
-    const isValid = formData.productDetails.every(item => item.productgroup && item.product && item.quantity);
+    const isValid = formData.productDetails.every(item =>
+      item.productgroup &&
+      item.product &&
+      item.quantity &&
+      parseInt(item.quantity) > 0 // ✅ Quantity must be greater than 0
+    );
+
     if (!isValid) {
-      toast.error("Please fill in all fields before submitting.");
+      toast.error("All fields are required and quantity must be greater than 0.");
       return;
     }
 
@@ -239,7 +245,6 @@ export default function Page() {
                 <input
                   type="number"
                   name="quantity"
-                  min={1}
                   value={item.quantity}
                   onChange={(e) => handleChange(e, index)}
                   className="w-full border  px-3 py-2 text-sm bg-white dark:bg-gray-700 dark:text-white text-gray-800 border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"

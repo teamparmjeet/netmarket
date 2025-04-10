@@ -14,8 +14,8 @@ const UserSchema = new Schema(
     dscode: { type: String, unique: true },
     pdscode: { type: String, required: true, default: "0" },
     level: { type: String },
-    saosp: { typ: String },
-    sgosp: { typ: String },
+    saosp: { type: String },
+    sgosp: { type: String },
     earnsp: { type: String, required: true, default: "0" },
     group: { type: String, enum: ["SAO", "SGO"] },
     name: { type: String, required: true },
@@ -109,6 +109,6 @@ UserSchema.pre("save", async function (next) {
 
 
 
-const UserModel = mongoose.models.user2 || mongoose.model("user2", UserSchema);
+const UserModel = mongoose.models.user3 || mongoose.model("user3", UserSchema);
 
 export default UserModel;

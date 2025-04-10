@@ -7,7 +7,6 @@ export async function PATCH(req) {
 
     try {
         const data = await req.json();
-        console.log(data, "ok");
 
         if (!data.id) {
             return new Response(
@@ -17,7 +16,6 @@ export async function PATCH(req) {
         }
 
         const user = await UserModel.findById(data.id);
-
         if (!user) {
             return new Response(
                 JSON.stringify({ success: false, message: "User not found!" }),
@@ -30,24 +28,51 @@ export async function PATCH(req) {
             data.password = await bcrypt.hash(data.password, 10);
         }
 
-        const updateFields = { ...data };
+        // Convert strings to numbers for calculations
+        const activesp = parseFloat(data.activesp || "0");
+        let earnsp = parseFloat(user.earnsp || "0");
 
-        // If `level` is updated, store it in `LevelDetails` with existing `saosp` and `sgosp`
+        // Apply activesp deduction and parent chain update if usertype is being updated
+        if (data.usertype && data.usertype !== user.usertype) {
+            // Deduct activesp from user earnsp
+            earnsp -= activesp;
+
+            // Update user earnsp
+            data.earnsp = earnsp.toString();
+
+            // Start updating parent chain
+            let currentParentCode = user.pdscode;
+
+            while (currentParentCode && currentParentCode !== "0") {
+                const parent = await UserModel.findOne({ dscode: currentParentCode });
+
+                if (!parent) break;
+
+                if (user.group === "SAO") {
+                    parent.saosp = (parseFloat(parent.saosp || "0") + activesp).toString();
+                } else if (user.group === "SGO") {
+                    parent.sgosp = (parseFloat(parent.sgosp || "0") + activesp).toString();
+                }
+
+                await parent.save();
+
+                currentParentCode = parent.pdscode; // Move up the chain
+            }
+        }
+
+        // Handle level update
         if (data.level) {
-            updateFields.LevelDetails = [
-                ...user.LevelDetails, // Keep existing levels
+            data.LevelDetails = [
+                ...user.LevelDetails,
                 {
                     levelName: data.level,
-                    sao: user.saosp || "", // Use existing saosp value
-                    sgo: user.sgosp || "", // Use existing sgosp value
+                    sao: user.saosp || "",
+                    sgo: user.sgosp || "",
                 },
             ];
         }
 
-        await UserModel.updateOne(
-            { _id: data.id },
-            { $set: updateFields }
-        );
+        await UserModel.updateOne({ _id: data.id }, { $set: data });
 
         return new Response(
             JSON.stringify({ success: true, message: "Updated successfully!" }),

@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import Image from "next/image";
 import Order from "@/components/Order/Order";
 import UserVerify from "@/components/UserVerify/UserVerify";
+import Link from "next/link";
 export default function UserProfile() {
   const { id } = useParams();
   const decodedId = decodeURIComponent(id);
@@ -70,8 +71,11 @@ export default function UserProfile() {
             <h3 className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 font-medium px-3 py-1 rounded-lg text-sm shadow">
               Group : {userData?.group}
             </h3>
+            <Link href={`./UserEdit/${userData.email}`} className=" bg-blue-300 text-sm px-2 py-1 rounded text-white">
+              Edit User
+            </Link>
 
-            <UserVerify data={userData} />
+            {/* <UserVerify data={userData} /> */}
           </div>
         </div>
       </div>

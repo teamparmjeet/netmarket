@@ -144,12 +144,14 @@ export default function Page() {
         for (let field of requiredFields) {
             if (!formData[field]) {
                 setFormError(`Please fill the required field: ${field}`);
+                setSubmitting(false);
                 return;
             }
         }
 
         if (formData.paymentmod === "Online" && !formData.transactionId) {
             setFormError("Transaction ID is required for Online payments.");
+            setSubmitting(false);
             return;
         }
 
@@ -175,6 +177,8 @@ export default function Page() {
         } catch (err) {
             console.error(err);
             setFormError("Something went wrong while submitting the form.");
+            setSubmitting(false);
+
         } finally {
             setSubmitting(false);
         }

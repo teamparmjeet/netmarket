@@ -26,19 +26,7 @@ export default function Page() {
   const [loading, setLoading] = useState(false);
   const [fromDate, setFromDate] = useState(null);
   const [toDate, setToDate] = useState(null);
-  const [levels, setLevels] = useState([]);
-  useEffect(() => {
-    const fetchLevels = async () => {
-      try {
-        const res = await axios.get("/api/level/fetch/level");
-        setLevels(res.data.data);
-      } catch (err) {
-        console.error("Failed to load levels", err);
-      }
-    };
 
-    fetchLevels();
-  }, []);
   useEffect(() => {
     const fetchUserData = async () => {
       if (!session?.user?.email) return;
@@ -62,44 +50,40 @@ export default function Page() {
     const grouped = {};
 
     rawData.forEach(item => {
-      const normDate = normalizeDate(item.date);
-      const amount = parseFloat(item.performance || 0);
+      const normDate = normalizeDate(item.date); // Normalize the date
+      const sg = parseFloat(item.salecommission || 0); // Only use salesgrowth
 
-      const matchingLevel = levels.find(level => parseFloat(level.performance_income) === amount);
-
-      if (!grouped[normDate]) {
-        grouped[normDate] = { total: 0, levels: new Set() };
-      }
-
-      grouped[normDate].total += amount;
-      if (matchingLevel) grouped[normDate].levels.add(matchingLevel.level_name);
+      if (!grouped[normDate]) grouped[normDate] = 0;
+      grouped[normDate] += sg;
     });
 
-    let result = Object.entries(grouped).map(([date, { total, levels }], index) => ({
+    let result = Object.entries(grouped).map(([date, total], index) => ({
       id: index + 1,
       from: date,
       to: date,
       amount: total,
-      levelNames: Array.from(levels),
     }));
 
+    // Optional date filtering
     if (fromDate || toDate) {
       result = result.filter(entry => {
         const entryDate = new Date(entry.from);
         const from = fromDate ? new Date(fromDate) : null;
         const to = toDate ? new Date(toDate) : null;
 
-        if (from) from.setHours(0, 0, 0, 0);
-        if (to) to.setHours(23, 59, 59, 999);
+        if (from) from.setHours(0, 0, 0, 0); // Start of the day
+        if (to) to.setHours(23, 59, 59, 999); // End of the day
 
         return (!from || entryDate >= from) && (!to || entryDate <= to);
       });
     }
 
+    // Sort results by date descending
     result.sort((a, b) => (a.from < b.from ? 1 : -1));
-    setFilteredData(result);
-  }, [rawData, fromDate, toDate, levels]);
 
+    // Update state
+    setFilteredData(result);
+  }, [rawData, fromDate, toDate]);
 
 
   const exportToExcel = () => {
@@ -128,7 +112,7 @@ export default function Page() {
     <div className="p-4 md:p-6 text-sm">
       <Toaster />
       <h1 className="text-xl md:text-2xl text-blue-400  border-b pb-2 mb-4 capitalize ">
-        Performance Income
+        Monthly Sale Commission
       </h1>
 
       <div className="flex flex-wrap gap-4 items-end mb-6">
@@ -186,36 +170,29 @@ export default function Page() {
                 <th className="px-4 py-2 border-r">S. No.</th>
                 <th className="px-4 py-2 border-r">From</th>
                 <th className="px-4 py-2 border-r">To</th>
-                <th className="px-4 py-2 border-r">Bonus</th>
-                <th className="px-4 py-2">Level</th>
+                <th className="px-4 py-2">Bonus</th>
               </tr>
             </thead>
-
             <tbody>
               {filteredData.length === 0 ? (
                 <tr>
-                  <td colSpan="5" className="text-center py-4 text-gray-500">
+                  <td colSpan="4" className="text-center py-4 text-gray-500">
                     No data found
                   </td>
                 </tr>
               ) : (
-                filteredData.map((item, index) => (
+                filteredData.map((item ,index) => (
                   <tr key={item.id} className="border-t border-gray-300 hover:bg-gray-50">
-                    <td className="px-4 py-2 border-r">{index + 1}</td>
+                    <td className="px-4 py-2 border-r">{index+1}</td>
                     <td className="px-4 py-2 border-r">{item.from}</td>
                     <td className="px-4 py-2 border-r">{item.to}</td>
-
                     <td className="px-4 py-2 text-green-700 font-semibold">
                       ₹{item.amount.toLocaleString()}
-                    </td> 
-                    <td className="px-4 py-2 border-r text-blue-700">
-                      {item.levelNames.join(", ") || "—"}
                     </td>
                   </tr>
                 ))
               )}
             </tbody>
-
           </table>
         </div>
       )}

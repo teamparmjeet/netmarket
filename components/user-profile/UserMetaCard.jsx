@@ -129,12 +129,12 @@ export default function UserMetaCard() {
                                     KYC = {data?.kycVerification?.isVerified ? "DONE" : "PENDING"}
                                 </div>
 
-                                {data?.kycVerification?.isVerified  && data?.usertype !== "1" && (
+                                {data?.kycVerification?.isVerified && data?.usertype !== "1" && (
                                     <button
                                         onClick={() => setShowModal(true)}
                                         className="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1 rounded text-sm font-medium shadow-md"
                                     >
-                                        Active 
+                                        Active
                                     </button>
                                 )}
 

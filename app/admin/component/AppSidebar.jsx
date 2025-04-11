@@ -40,7 +40,7 @@ const navItems = [
             { name: "Sales Performance Income", path: "/admin/Account/salesperformance", pro: false },
             { name: "Tds Deduction Report", path: "/admin/Account/tdsdeduction", pro: false },
             { name: "My Repurchase Payments", path: "/admin/Account/repurchasepayments", pro: false },
-            { name: "Step Pendency", path: "/admin/Account/steppendency", pro: false },
+            { name: "Step Pendency", path: "/admin/Account/stepending", pro: false },
         ],
     },
     {

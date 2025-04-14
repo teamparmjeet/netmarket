@@ -20,6 +20,7 @@ const navItems = [
             { name: "Cart", path: "/user/OrderForm/Order/Cart", pro: false },
             { name: "Pending Orders", path: "/user/OrderForm/pendingorder", pro: false },
             { name: "My Approved Orders", path: "/user/OrderForm/approvedorder", pro: false },
+            { name: "My Delivered Orders", path: "/user/OrderForm/deliveredOrder", pro: false },
             { name: "Product List", path: "/user/OrderForm/productlist", pro: false },
         ],
     },

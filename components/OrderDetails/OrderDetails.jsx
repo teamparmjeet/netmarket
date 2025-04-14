@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 export default function OrderDetails({ data }) {
     const [orderStatus, setOrderStatus] = useState(data.status);
     const [isLoading, setIsLoading] = useState(false);
+    const [deliveryStatus, setDeliveryStatus] = useState(data.deliver);
     const o = data._id
     const handleStatusUpdate = async (newStatus) => {
         setIsLoading(true);
@@ -34,11 +35,35 @@ export default function OrderDetails({ data }) {
             setIsLoading(false);
         }
     };
+    const handleDeliveryUpdate = async (newStatus) => {
+        setIsLoading(true);
+        try {
+            const response = await fetch(`/api/order/deliveryupdate/${data._id}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ deliver: newStatus }),
+            });
 
+            const result = await response.json();
+            if (result.success) {
+                setDeliveryStatus(newStatus);
+                alert(`Order marked as ${newStatus ? 'Delivered' : 'Not Delivered'} successfully!`);
+            } else {
+                throw new Error(result.message || 'Failed to update delivery status');
+            }
+        } catch (error) {
+            console.error('Error updating delivery status:', error);
+            alert('Failed to update delivery status. Please try again.');
+        } finally {
+            setIsLoading(false);
+        }
+    };
     return (
         <div className="lg:p-8  min-h-screen text-gray-800 dark:text-gray-200">
             <div className="max-w-4xl mx-auto">
-               
+
 
                 {/* Order Information Card */}
                 <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mb-6 transform hover:scale-[1.02] transition-transform duration-300">
@@ -61,7 +86,18 @@ export default function OrderDetails({ data }) {
                                     {orderStatus ? 'Completed' : 'Pending'}
                                 </span>
                             </p>
+                            <p className="text-sm">
+                                <strong>Delivery Status:</strong>{' '}
+                                <span className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${deliveryStatus ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'}`}>
+                                    {deliveryStatus ? 'Completed' : 'Pending'}
+                                </span>
+                            </p>
+                            <p className="text-sm">
+                                <strong>Delivery Date:</strong>{' '}
+                                {new Date(data.updatedAt).toLocaleDateString("en-GB")}
+                            </p>
                         </div>
+                        
                     </div>
                     {/* Approve/Unapprove Buttons */}
                     <div className="mt-4 flex gap-4">
@@ -75,16 +111,18 @@ export default function OrderDetails({ data }) {
                         >
                             {isLoading && !orderStatus ? 'Approving...' : 'Approve'}
                         </button>
-                        <button
-                            onClick={() => handleStatusUpdate(false)}
-                            disabled={!orderStatus || isLoading}
-                            className={`flex-1 py-2 px-4 rounded-lg text-white font-medium transition-colors duration-200 ${!orderStatus || isLoading
-                                ? 'bg-gray-400 cursor-not-allowed'
-                                : 'bg-red-600 hover:bg-red-700'
-                                }`}
-                        >
-                            {isLoading && orderStatus ? 'Unapproving...' : 'Unapprove'}
-                        </button>
+                        {orderStatus && (
+                            <button
+                                onClick={() => handleDeliveryUpdate(true)}
+                                disabled={deliveryStatus || isLoading}
+                                className={`flex-1 py-2 px-4 rounded-lg text-white font-medium transition-colors duration-200 ${deliveryStatus || isLoading
+                                        ? 'bg-gray-400 cursor-not-allowed'
+                                        : 'bg-blue-600 hover:bg-blue-700'
+                                    }`}
+                            >
+                                {isLoading && !deliveryStatus ? 'Updating...' : 'Mark as Delivered'}
+                            </button>
+                        )}
                     </div>
                 </div>
 

@@ -58,6 +58,7 @@ const navItems = [
             { name: "Cart", path: "/admin/OrderForm/Order/Cart", pro: false },
             { name: "Pending Orders", path: "/admin/OrderForm/pendingorder", pro: false },
             { name: "My Approved Orders", path: "/admin/OrderForm/approvedorder", pro: false },
+            { name: "My Delivered Orders", path: "/admin/OrderForm/deliveredOrder", pro: false },
             { name: "Product List", path: "/admin/OrderForm/productlist", pro: false },
         ],
     },

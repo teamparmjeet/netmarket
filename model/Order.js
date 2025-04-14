@@ -26,6 +26,7 @@ const OrderSchema = new Schema(
         netamount: { type: String, required: true },
         remarks: { type: String, },
         status: { type: Boolean, required: true, default: false },
+        deliver: { type: Boolean, required: true, default: false },
         totalsp: { type: String, required: true },
         defaultdata: { type: String, required: true, default: "Order" }
 
@@ -35,7 +36,7 @@ const OrderSchema = new Schema(
 
 OrderSchema.pre("save", async function (next) {
     if (this.isNew) {
-        const lastorder = await mongoose.model("Ordertest111").findOne({}, {}, { sort: { orderNo: -1 } });
+        const lastorder = await mongoose.model("Orders").findOne({}, {}, { sort: { orderNo: -1 } });
         if (lastorder && lastorder.orderNo) {
             this.orderNo = (parseInt(lastorder.orderNo, 10) + 1).toString();
         } else {
@@ -45,6 +46,6 @@ OrderSchema.pre("save", async function (next) {
     next();
 });
 const OrderModel =
-    mongoose.models.Ordertest111 || mongoose.model("Ordertest111", OrderSchema);
+    mongoose.models.Orders || mongoose.model("Orders", OrderSchema);
 
 export default OrderModel

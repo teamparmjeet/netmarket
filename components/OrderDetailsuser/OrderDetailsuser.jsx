@@ -3,14 +3,16 @@ import React, { useState } from 'react';
 
 export default function OrderDetailsuser({ data }) {
     const [orderStatus, setOrderStatus] = useState(data.status);
+    const [deliveryStatus, setDeliveryStatus] = useState(data.deliver);
+
     const [isLoading, setIsLoading] = useState(false);
     const o = data._id
- 
+
 
     return (
         <div className="lg:p-8  min-h-screen text-gray-800 dark:text-gray-200">
             <div className="max-w-4xl mx-auto">
-               
+
 
                 {/* Order Information Card */}
                 <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mb-6 transform hover:scale-[1.02] transition-transform duration-300">
@@ -33,9 +35,19 @@ export default function OrderDetailsuser({ data }) {
                                     {orderStatus ? 'Completed' : 'Pending'}
                                 </span>
                             </p>
+                            <p className="text-sm">
+                                <strong>Delivery Status:</strong>{' '}
+                                <span className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${deliveryStatus ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'}`}>
+                                    {deliveryStatus ? 'Completed' : 'Pending'}
+                                </span>
+                            </p>
+                            <p className="text-sm">
+                                <strong>Delivery Date:</strong>{' '}
+                                {new Date(data.updatedAt).toLocaleDateString("en-GB")}
+                            </p>
                         </div>
                     </div>
-                 
+
                 </div>
 
                 {/* Customer Information Card */}

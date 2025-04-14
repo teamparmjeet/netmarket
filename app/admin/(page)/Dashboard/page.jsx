@@ -15,7 +15,7 @@ export default function page() {
 
   return (
     <>
-      <Dashboard2 />
+      {/* <Dashboard2 /> */}
       <Dashboard1 />
       <Dashboard3 />
       <Dashboard4 />

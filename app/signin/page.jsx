@@ -5,26 +5,27 @@ import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
-import { Mail, Lock } from "lucide-react";
+import { Mail, Lock,LockKeyholeIcon,KeyIcon } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 export default function Signin() {
-  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [formData, setFormData] = useState({ dsid: "", password: "" });
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-
+  const [email, setEmail] = useState("")
   const handleChange = (e) => {
     const { id, value } = e.target;
     setFormData((prevState) => ({ ...prevState, [id]: value }));
   };
 
   const isFormValid = () => {
-    return formData.email.trim() !== "" && formData.password.trim() !== "";
+    return formData.dsid.trim() !== "" && formData.password.trim() !== "";
   };
 
-  const fetchUserData = async (email) => {
+  const fetchUserData = async (dsid) => {
     try {
-      const response = await axios.get(`/api/user/find-admin-byemail/${email}`);
+      const response = await axios.get(`/api/user/finduserbyid/${dsid}`);
+      setEmail(response.data.email)
       return response.data;
     } catch (error) {
       toast.error("Failed to fetch user data. Please try again.");
@@ -35,39 +36,41 @@ export default function Signin() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+  
     if (!isFormValid()) {
       toast.error("Please fill in all fields.");
       return;
     }
-
+  
     setLoading(true);
-
+  
     try {
-      const userData = await fetchUserData(formData.email);
+      const userData = await fetchUserData(formData.dsid);
       if (!userData) return;
-
+  
+      // Directly use userData.email instead of waiting on setEmail
       const res = await signIn("credentials", {
-        email: formData.email,
+        email: userData.email,
         password: formData.password,
         redirect: false,
       });
-
+  
       if (res.error) {
         toast.error("Invalid Credentials");
-        setLoading(false);
         return;
       }
-
+  
       toast.success("Successfully signed in!");
-
       const userRoutes = { "2": "/superadmin", "1": "/admin", "0": "/user" };
       router.push(userRoutes[userData.usertype] || "/");
+  
     } catch (error) {
       handleSignInError(error);
     } finally {
       setLoading(false);
     }
   };
+  
 
   const handleSignInError = (error) => {
     if (axios.isAxiosError(error) && error.response) {
@@ -86,14 +89,15 @@ export default function Signin() {
         <div className="w-full order-2 md:order-1  md:w-1/2 p-8">
           <h2 className="text-center text-3xl font-semibold text-gray-700">Sign In</h2>
           <form onSubmit={handleSubmit} className="mt-6">
+            
             <div className="relative mb-4">
 
               <Input
-                id="email"
-                type="email"
-                placeholder="Email"
-                icon={<Mail size={15} />}
-                value={formData.email}
+                id="dsid"
+                type="text"
+                placeholder="DSID"
+                icon={<LockKeyholeIcon size={15} />}
+                value={formData.dsid}
                 onChange={handleChange}
                 className="pl-10 w-full"
                 required
@@ -105,7 +109,7 @@ export default function Signin() {
               <Input
                 id="password"
                 type="password"
-                icon={<Lock size={15} />}
+                icon={<KeyIcon size={15} />}
                 placeholder="Password"
                 value={formData.password}
                 onChange={handleChange}

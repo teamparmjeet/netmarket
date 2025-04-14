@@ -120,6 +120,11 @@ export default function UserMetaCard() {
                                         DsId : {data?.dscode}
                                     </h2>
                                 </div>
+                                <div>
+                                    <h2 className="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 font-medium px-3 py-1 rounded text-sm shadow">
+                                        Sponsor DSID : {data?.pdscode}
+                                    </h2>
+                                </div>
                                 <div
                                     className={`px-3 py-1 rounded text-sm font-medium shadow-md ${data?.kycVerification?.isVerified
                                         ? "bg-green-600 text-white"

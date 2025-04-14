@@ -191,9 +191,9 @@ export default function Page() {
                   </td>
                 </tr>
               ) : (
-                filteredData.map((item,index) => (
+                filteredData.map((item, index) => (
                   <tr key={item.id} className="border-t border-gray-300 hover:bg-gray-50">
-                    <td className="px-4 py-2 border-r">{index+1}</td>
+                    <td className="px-4 py-2 border-r">{index + 1}</td>
                     <td className="px-4 py-2 border-r">{item.from}</td>
                     <td className="px-4 py-2 border-r">{item.to}</td>
                     <td className="px-4 py-2 border-r text-green-700 font-semibold">
@@ -217,13 +217,13 @@ export default function Page() {
               <h2 className="text-lg font-semibold text-gray-800 mb-4 border-b pb-2">TDS Summary</h2>
               <div className="space-y-2 text-gray-700 text-sm">
                 <div className="flex justify-between">
-                  <span>First TDS (2%)</span>
+                  <span> TDS (2%)</span>
                   <span className="text-red-500 font-medium">
                     ₹{filteredData.reduce((acc, curr) => acc + curr.amount * 0.02, 0).toFixed(2)}
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span>Second TDS (3%)</span>
+                  <span>Admin Charge (3%)</span>
                   <span className="text-red-500 font-medium">
                     ₹{filteredData.reduce((acc, curr) => acc + curr.amount * 0.03, 0).toFixed(2)}
                   </span>

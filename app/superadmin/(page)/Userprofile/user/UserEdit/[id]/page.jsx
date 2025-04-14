@@ -15,7 +15,9 @@ export default function Page() {
     kycVerified: false,
     levelName: "",
     sao: "",
-    sgo: ""
+    sgo: "",
+    spType: "", // New: SAO or SGO
+    spAmount: "", // New: Amount to add
   });
   const [levels, setLevels] = useState([]);
   const [error, setError] = useState(null);
@@ -27,7 +29,7 @@ export default function Page() {
       setUserData(res.data);
       setFormData((prev) => ({
         ...prev,
-        kycVerified: res.data?.kycVerification?.isVerified || false
+        kycVerified: res.data?.kycVerification?.isVerified || false,
       }));
     } catch (err) {
       setError("Failed to fetch user data.");
@@ -55,65 +57,93 @@ export default function Page() {
       ...formData,
       levelName: value,
       sao: selected?.sao || "",
-      sgo: selected?.sgo || ""
+      sgo: selected?.sgo || "",
     });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const levelExists = userData?.LevelDetails?.some(
-      (lvl) => lvl.levelName === formData.levelName
-    );
-  
-    if (levelExists) {
-      toast.error("This level has already been assigned to the user.");
-      return;
-    }
     try {
       setLoading(true);
 
-      const newLevelEntry = {
-        levelName: formData.levelName,
-        sao: userData?.saosp || "",
-        sgo: userData?.sgosp || ""
-      };
-
-      const updatedLevelDetails = [...(userData.LevelDetails || []), newLevelEntry];
-
-      const selectedLevel = levels.find(lvl => lvl.level_name === formData.levelName);
-      const currentDate = new Date().toLocaleDateString("en-GB");
-
-      const newWalletEntry = {
-        salecommission: "",
-        salesgrowth: selectedLevel?.bonus_income?.toString() || "0",
-        date: currentDate
-      };
-
-      if (userData.activesp == "100") {
-        newWalletEntry.performance = selectedLevel?.performance_income?.toString() || "";
-      }
-
-      const updatedWalletDetails = [...(userData.WalletDetails || []), newWalletEntry];
-
-      const res = await axios.patch("/api/user/update-user/", {
+      const updateData = {
         id: userData._id,
         kycVerification: {
-          isVerified: formData.kycVerified
+          isVerified: formData.kycVerified,
         },
-        LevelDetails: updatedLevelDetails,
-        WalletDetails: updatedWalletDetails,
-        level: formData.levelName
-      });
+      };
+
+      // Only update level-related fields if a level is selected
+      if (formData.levelName) {
+        const levelExists = userData?.LevelDetails?.some(
+          (lvl) => lvl.levelName === formData.levelName
+        );
+
+        if (levelExists) {
+          toast.error("This level has already been assigned to the user.");
+          setLoading(false);
+          return;
+        }
+
+        const selectedLevel = levels.find((lvl) => lvl.level_name === formData.levelName);
+        const currentDate = new Date().toLocaleDateString("en-GB");
+
+        const newLevelEntry = {
+          levelName: formData.levelName,
+          sao: userData?.saosp || "",
+          sgo: userData?.sgosp || "",
+        };
+
+        const updatedLevelDetails = [...(userData.LevelDetails || []), newLevelEntry];
+
+        const newWalletEntry = {
+          salecommission: "",
+          salesgrowth: selectedLevel?.bonus_income?.toString() || "0",
+          date: currentDate,
+        };
+
+        if (userData.activesp === "100") {
+          newWalletEntry.performance = selectedLevel?.performance_income?.toString() || "";
+        }
+
+        const updatedWalletDetails = [...(userData.WalletDetails || []), newWalletEntry];
+
+        updateData.LevelDetails = updatedLevelDetails;
+        updateData.WalletDetails = updatedWalletDetails;
+        updateData.level = formData.levelName;
+      }
+
+      // Update saosp or sgosp if spType and spAmount are provided
+      if (formData.spType && formData.spAmount) {
+        const currentSp = parseFloat(formData.spType === "SAO" ? userData.saosp || 0 : userData.sgosp || 0);
+        const additionalSp = parseFloat(formData.spAmount);
+        if (isNaN(additionalSp) || additionalSp < 0) {
+          toast.error("SP amount must be a valid positive number.");
+          setLoading(false);
+          return;
+        }
+        const newSp = (currentSp + additionalSp).toString(); // Convert to string per schema
+        updateData[formData.spType === "SAO" ? "saosp" : "sgosp"] = newSp;
+      }
+
+      const res = await axios.patch("/api/user/update-user/", updateData);
 
       toast.success("User updated successfully!");
-      fetchUser();
+      fetchUser(); // Refresh user data
+      setFormData((prev) => ({
+        ...prev,
+        levelName: "",
+        sao: "",
+        sgo: "",
+        spType: "",
+        spAmount: "",
+      })); // Reset form fields
     } catch (err) {
       toast.error(err?.response?.data?.message || "Failed to update user.");
     } finally {
       setLoading(false);
     }
   };
-
 
   if (loading) return <p className="p-4">Loading...</p>;
   if (error) return <p className="p-4 text-red-500">{error}</p>;
@@ -126,13 +156,19 @@ export default function Page() {
 
   return (
     <div className="p-4 max-w-xl mx-auto space-y-6">
-      <h2 className="text-2xl font-bold text-center">Update User Level</h2>
+      <h2 className="text-2xl font-bold text-center">Update User</h2>
 
       {/* Current Info Card */}
       <div className="bg-gray-100 p-4 rounded shadow">
-        <p className="font-semibold">Current Level: <span className="text-blue-600">{userData?.level || "N/A"}</span></p>
-        <p>SAO Score: <span className="text-green-600 font-semibold">{userData?.saosp}</span></p>
-        <p>SGO Score: <span className="text-purple-600 font-semibold">{userData?.sgosp}</span></p>
+        <p className="font-semibold">
+          Current Level: <span className="text-blue-600">{userData?.level || "N/A"}</span>
+        </p>
+        <p>
+          SAO Score: <span className="text-green-600 font-semibold">{userData?.saosp || 0}</span>
+        </p>
+        <p>
+          SGO Score: <span className="text-purple-600 font-semibold">{userData?.sgosp || 0}</span>
+        </p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-5 bg-white p-4 rounded shadow">
@@ -151,9 +187,9 @@ export default function Page() {
           </select>
         </div>
 
-        {/* Level Dropdown */}
+        {/* Eligible Levels */}
         <div>
-          <label className="block mb-1 font-medium">Eligible Levels</label>
+          <label className="block mb-1 font-medium">Eligible Levels (Optional)</label>
           <select
             className="w-full p-2 border rounded"
             value={formData.levelName}
@@ -166,6 +202,30 @@ export default function Page() {
               </option>
             ))}
           </select>
+        </div>
+
+        {/* SAO/SGO SP Input */}
+        <div>
+          <label className="block mb-1 font-medium">Add SP (Optional)</label>
+          <div className="flex gap-4">
+            <select
+              className="w-1/2 p-2 border rounded"
+              value={formData.spType}
+              onChange={(e) => setFormData({ ...formData, spType: e.target.value })}
+            >
+              <option value="">Select Type</option>
+              <option value="SAO">SAO</option>
+              <option value="SGO">SGO</option>
+            </select>
+            <input
+              type="number"
+              className="w-1/2 p-2 border rounded"
+              value={formData.spAmount}
+              onChange={(e) => setFormData({ ...formData, spAmount: e.target.value })}
+              placeholder="Enter SP amount"
+              min="0"
+            />
+          </div>
         </div>
 
         {/* Submit Button */}

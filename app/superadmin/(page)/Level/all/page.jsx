@@ -49,6 +49,8 @@ export default function Page() {
                                 <th className="py-3 px-4">Sales Growth </th>
                                 <th className="py-3 px-4">Performance Income</th>
                                 <th className="py-3 px-4">Prize</th>
+                                <th className="py-3 px-4">Tour</th>
+                                <th className="py-3 px-4">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -69,6 +71,8 @@ export default function Page() {
                                             <td className="py-3 text-sm font-medium px-4 border-r">{data.bonus_income} </td>
                                             <td className="py-3 text-sm font-medium px-4 border-r">{data.performance_income} </td>
                                             <td className="py-3 text-sm font-medium px-4 border-r">{data.bonus}</td>
+                                            <td className="py-3 text-sm font-medium px-4 border-r">{data.tour}</td>
+                                            <td className="py-3 text-sm font-medium px-4 border-r"><Link href={`./update/${data._id}`}>Edit</Link></td>
                                         </tr>
                                     ))
                             ) : (

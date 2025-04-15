@@ -51,6 +51,13 @@ const navItems = [
         ],
     },
     {
+        icon: <NotepadText />,
+        name: "Payment",
+        subItems: [
+            { name: "My Payment", path: "/admin/payment", pro: false },
+        ],
+    },
+    {
         icon: <BookOpenText />,
         name: "Order Form",
         subItems: [

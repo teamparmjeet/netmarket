@@ -6,17 +6,38 @@ import {
     Wallet,
     Star,
     TrendingUp,
+    Circle,
 } from "lucide-react";
+import Link from "next/link";
 
 export default function Dashboard4() {
     const { data: session } = useSession();
     const [dsid, setDsid] = useState("");
     const [wallet, setWallet] = useState("");
+    const [userdata, setUserdata] = useState("");
     const [data, setData] = useState(null);
     const [rspData, setRspData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-
+    const [initialLoading, setInitialLoading] = useState(true);
+    const [bonanza, setBonanza] = useState("");
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const res = await fetch('/api/3months/fetch/all');
+                const json = await res.json();
+                if (json.success) {
+                    setBonanza(json.data[0] || null);
+                    console.log(json.data[0])
+                }
+            } catch (err) {
+                console.error('Fetch error:', err);
+            } finally {
+                setInitialLoading(false);
+            }
+        };
+        fetchData();
+    }, []);
     useEffect(() => {
         const fetchUserData = async () => {
             if (!session?.user?.email) return;
@@ -24,6 +45,7 @@ export default function Dashboard4() {
                 const response = await axios.get(`/api/user/find-admin-byemail/${session.user.email}`);
                 setDsid(response.data.dscode);
                 setWallet(response.data.WalletDetails);
+                setUserdata(response.data.usertype);
             } catch (error) {
                 console.error("Failed to fetch user data:", error);
             }
@@ -122,8 +144,49 @@ export default function Dashboard4() {
                     <p className="text-gray-700 dark:text-white font-semibold">Team RSP: {rspData.teamTotalsp}</p>
                 </div>
 
-                <div className="flex justify-center lg:col-span-3 w-full">
-                    <div className="relative p-6 w-full lg:w-1/3 bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden ">
+
+                <div className="relative p-6 w-full  bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden ">
+
+                    {/* Decorative Ribbon */}
+                    <div className="absolute top-0 right-0 w-0 h-0 border-l-[50px] border-l-transparent border-t-[50px] border-t-purple-500"></div>
+
+                    {/* Header */}
+                    <div className="flex items-center gap-3 mb-4">
+                        <div className="p-3 rounded-xl bg-gray-100 dark:bg-gray-700 shadow">
+                            <Wallet className="text-green-500 w-6 h-6" />
+                        </div>
+                        <p className="text-lg font-bold text-gray-800 dark:text-white">Income Overview</p>
+                    </div>
+
+                    {/* Info Rows */}
+                    <div className="space-y-2 text-sm">
+                        <p className="text-gray-600 dark:text-gray-300">
+                            <span className="font-semibold">Sales Commission:</span>
+                            <span className="ml-2 text-gray-800 dark:text-white">{totalCommission}</span>
+                        </p>
+                        <p className="text-gray-600 dark:text-gray-300">
+                            <span className="font-semibold">Sales Growth:</span>
+                            <span className="ml-2 text-gray-800 dark:text-white">{totalGrowth}</span>
+                        </p>
+                        <p className="text-gray-600 dark:text-gray-300">
+                            <span className="font-semibold">Sales Performance:</span>
+                            <span className="ml-2 text-gray-800 dark:text-white">{totalPerformance}</span>
+                        </p>
+                    </div>
+
+                    <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 text-md">
+                        <p className="text-gray-700 dark:text-white font-semibold">
+                            Total Income:
+                            <span className="text-blue-700 dark:text-blue-400 ms-2">{totalIncome}</span>
+                        </p>
+                    </div>
+
+
+
+                </div>
+
+                {userdata !== "2" && (
+                    <div className="relative p-6 w-full  bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden ">
 
                         {/* Decorative Ribbon */}
                         <div className="absolute top-0 right-0 w-0 h-0 border-l-[50px] border-l-transparent border-t-[50px] border-t-purple-500"></div>
@@ -131,38 +194,36 @@ export default function Dashboard4() {
                         {/* Header */}
                         <div className="flex items-center gap-3 mb-4">
                             <div className="p-3 rounded-xl bg-gray-100 dark:bg-gray-700 shadow">
-                                <Wallet className="text-green-500 w-6 h-6" />
+                                <Circle className="text-green-500 w-6 h-6" />
                             </div>
-                            <p className="text-lg font-bold text-gray-800 dark:text-white">Income Overview</p>
+                            <p className="text-lg font-bold text-gray-800 dark:text-white">
+                                Bonanza</p>
                         </div>
 
                         {/* Info Rows */}
                         <div className="space-y-2 text-sm">
-                            <p className="text-gray-600 dark:text-gray-300">
-                                <span className="font-semibold">Sales Commission:</span>
-                                <span className="ml-2 text-gray-800 dark:text-white">{totalCommission}</span>
+                            <p className="text-gray-600 dark:text-gray-300 flex flex-col">
+                                <span className="font-semibold">Bonanza SAO</span>
+                                <span className="ml-2 text-gray-800 dark:text-white">{bonanza?.sao}</span>
                             </p>
-                            <p className="text-gray-600 dark:text-gray-300">
-                                <span className="font-semibold">Sales Growth:</span>
-                                <span className="ml-2 text-gray-800 dark:text-white">{totalGrowth}</span>
+                            <p className="text-gray-600 dark:text-gray-300 flex flex-col">
+                                <span className="font-semibold">Bonanza SGO</span>
+                                <span className="ml-2 text-gray-800 dark:text-white">{bonanza?.sgo}</span>
                             </p>
-                            <p className="text-gray-600 dark:text-gray-300">
-                                <span className="font-semibold">Sales Performance:</span>
-                                <span className="ml-2 text-gray-800 dark:text-white">{totalPerformance}</span>
-                            </p>
-                        </div>
 
+                        </div>
                         <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 text-md">
-                            <p className="text-gray-700 dark:text-white font-semibold">
-                                Total Income:
-                                <span className="text-blue-700 dark:text-blue-400 ms-2">{totalIncome}</span>
-                            </p>
+                            <Link href="./bonanza">
+                                <p className="text-gray-700 dark:text-white font-semibold">
+                                    View
+                                </p>
+                            </Link>
                         </div>
-
-
-                       
                     </div>
-                </div>
+                )}
+
+
+
 
 
 

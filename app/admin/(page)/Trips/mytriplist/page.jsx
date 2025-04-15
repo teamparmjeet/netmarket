@@ -2,12 +2,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useSession } from "next-auth/react";
-import Image from "next/image";
 
 export default function Page() {
   const { data: session } = useSession();
-  const [dscode, setDscode] = useState(null);
-  const [trips, setTrips] = useState([]);
+  const [userdata, setUserData] = useState();
+  const [data, setData] = useState([]);
+  const [levelOrder, setLevelOrder] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -15,7 +15,7 @@ export default function Page() {
       if (!session?.user?.email) return;
       try {
         const response = await axios.get(`/api/user/find-admin-byemail/${session.user.email}`);
-        setDscode(response.data.dscode);
+        setUserData(response.data.level);
       } catch (error) {
         console.error("Failed to fetch user data:", error);
       }
@@ -24,56 +24,73 @@ export default function Page() {
   }, [session?.user?.email]);
 
   useEffect(() => {
-    const fetchTrips = async () => {
-      if (!dscode) return;
+    const fetchData = async () => {
       try {
-        const response = await axios.get(`/api/bonanza/findbyds/${dscode}`);
-        setTrips(response.data.data);
+        const response = await axios.get("/api/level/fetch/level");
+        const sortedData = [...(response.data.data || [])].sort((a, b) => a.sao - b.sao);
+        setData(sortedData);
+        setLevelOrder(sortedData.map((item) => item.level_name));
       } catch (error) {
-        console.error("Failed to fetch trips:", error);
+        console.error("Error fetching data:", error);
       } finally {
         setLoading(false);
       }
     };
-    fetchTrips();
-  }, [dscode]);
+    fetchData();
+  }, []);
+
+  const getStatus = (levelName) => {
+    const userIndex = levelOrder.indexOf(userdata);
+    const levelIndex = levelOrder.indexOf(levelName);
+    if (userIndex === -1 || levelIndex === -1) return "Pending";
+    return levelIndex <= userIndex ? "Achieved" : "Pending";
+  };
+
+  const getStatusClass = (status) => {
+    return status === "Achieved" ? "text-green-600 font-semibold" : "text-red-600 font-semibold";
+  };
 
   return (
-    <div className="lg:p-6 max-w-5xl mx-auto">
-      <h2 className="text-2xl font-bold text-center text-gray-700 dark:text-white mb-6">
-        Trip Achiever List
-      </h2>
+    <div className="p-4 overflow-x-auto">
+      <h2 className="text-xl font-semibold mb-4">My Trip List</h2>
+      {userdata && <p className="mb-2">My Level: <span className="font-bold">{userdata}</span></p>}
 
       {loading ? (
-        <p className="text-center text-gray-600 dark:text-gray-300">Loading...</p>
-      ) : trips.length === 0 ? (
-        <p className="text-center text-gray-600 dark:text-gray-300">No trips found.</p>
+        <div className="text-center py-8 text-gray-500 text-lg animate-pulse">Loading trips...</div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {trips.map((trip) => (
-            <div
-              key={trip._id}
-              className="bg-gray-100 dark:bg-gray-700 shadow-md rounded-lg p-5 border-l-4 border-blue-600 hover:border-blue-700 transition duration-300"
-            >
-              <div className="flex items-center gap-4">
-                <div className="relative w-16 h-16">
-                  <Image
-                    src={trip.image}
-                    alt={trip.title}
-                    layout="fill"
-                    objectFit="cover"
-                    className="rounded-lg"
-                  />
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100">{trip.title}</h3>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">{trip.description}</p>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Achieve Date: {trip.achiversDetails[0]?.date || "N/A"}</p>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
+        <table className="min-w-full border border-gray-300 text-sm text-left">
+          <thead className="bg-gray-100">
+            <tr>
+              <th className="border border-gray-300 px-3 text-center py-2">Sr No.</th>
+              <th className="border border-gray-300 px-3 text-center py-2">Level</th>
+              <th className="border border-gray-300 px-3 text-center py-2">Trip Name</th>
+              <th className="border border-gray-300 px-3 text-center py-2">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {data.length > 0 ? (
+              data.filter(item => item.tour).map((item, index) => {
+                const status = getStatus(item.level_name);
+                return (
+                  <tr key={index}>
+                    <td className="border text-gray-600 text-center border-gray-300 px-3 py-2">{index + 1}</td>
+                    <td className="border text-gray-600 text-center border-gray-300 px-3 py-2">{item.level_name}</td>
+                    <td className="border text-gray-600 text-center border-gray-300 px-3 py-2">{item.tour}</td>
+                    <td className={`border text-center border-gray-300 px-3 py-2 ${getStatusClass(status)}`}>
+                      {status}
+                    </td>
+                  </tr>
+                );
+              })
+            ) : (
+              <tr>
+                <td colSpan="4" className="text-center py-6 text-gray-500 font-medium">
+                  No data found.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
       )}
     </div>
   );

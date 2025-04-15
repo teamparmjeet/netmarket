@@ -27,6 +27,13 @@ const navItems = [
         ],
     },
     {
+        icon: <ListCheck />,
+        name: "Payment",
+        subItems: [
+            { name: "Payment Ledger", path: "/superadmin/Payment", pro: false },
+        ],
+    },
+    {
         icon: <UsersRound />,
         name: "Genealogy",
         subItems: [
@@ -47,6 +54,7 @@ const navItems = [
         icon: <Medal />,
         name: "Bonanza",
         subItems: [
+            { name: "3 Months Bonanza", path: "/superadmin/Bonanza/3MonthsBonanza", pro: false },
             { name: "Add Bonanza", path: "/superadmin/Bonanza/add", pro: false },
             { name: "Bonanza List", path: "/superadmin/Bonanza/all", pro: false },
         ],

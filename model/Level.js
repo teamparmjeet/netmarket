@@ -9,6 +9,7 @@ const LevelsSchema = new Schema(
         bonus_income: { type: String, required: true },
         performance_income: { type: String, },
         bonus: { type: String, },
+        tour: { type: String, },
         achieversdsid: { type: [String], default: [] },
         defaultdata: { type: String, required: true, default: "Level" }
     },
@@ -16,6 +17,6 @@ const LevelsSchema = new Schema(
 );
 
 const LevelsModel =
-    mongoose.models.Levelstest4 || mongoose.model("Levelstest4", LevelsSchema);
+    mongoose.models.Levelstest55 || mongoose.model("Levelstest55", LevelsSchema);
 
 export default LevelsModel;

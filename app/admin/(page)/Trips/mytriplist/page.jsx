@@ -61,7 +61,7 @@ export default function Page() {
         <table className="min-w-full border border-gray-300 text-sm text-left">
           <thead className="bg-gray-100">
             <tr>
-              <th className="border border-gray-300 px-3 text-center py-2">Sr No.</th>
+              <th className="border border-gray-300 px-3 text-center py-2">Rank No.</th>
               <th className="border border-gray-300 px-3 text-center py-2">Level</th>
               <th className="border border-gray-300 px-3 text-center py-2">Trip Name</th>
               <th className="border border-gray-300 px-3 text-center py-2">Status</th>
@@ -69,10 +69,13 @@ export default function Page() {
           </thead>
           <tbody>
             {data.length > 0 ? (
-              data.filter(item => item.tour).map((item, index) => {
+              data.map((item, index) => {
+                if (!item.tour) return null;
+
                 const status = getStatus(item.level_name);
                 return (
                   <tr key={index}>
+                    {/* Show the original data index + 1 here as Level No. */}
                     <td className="border text-gray-600 text-center border-gray-300 px-3 py-2">{index + 1}</td>
                     <td className="border text-gray-600 text-center border-gray-300 px-3 py-2">{item.level_name}</td>
                     <td className="border text-gray-600 text-center border-gray-300 px-3 py-2">{item.tour}</td>
@@ -89,6 +92,8 @@ export default function Page() {
                 </td>
               </tr>
             )}
+
+
           </tbody>
         </table>
       )}

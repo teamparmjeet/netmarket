@@ -41,10 +41,13 @@ export default function OrderDetailsuser({ data }) {
                                     {deliveryStatus ? 'Completed' : 'Pending'}
                                 </span>
                             </p>
-                            <p className="text-sm">
-                                <strong>Delivery Date:</strong>{' '}
-                                {new Date(data.updatedAt).toLocaleDateString("en-GB")}
-                            </p>
+                            {orderStatus && (
+
+                                <p className="text-sm">
+                                    <strong>Delivery Date:</strong>{' '}
+                                    {new Date(data.deliverdate).toLocaleDateString("en-GB")}
+                                </p>
+                            )}
                         </div>
                     </div>
 
@@ -135,7 +138,6 @@ export default function OrderDetailsuser({ data }) {
                 <div className="text-xs text-gray-500 dark:text-gray-400 text-center">
                     <p>Created: {new Date(data.createdAt).toLocaleString('en-GB')}</p>
                     <p>Updated: {new Date(data.updatedAt).toLocaleString('en-GB')}</p>
-                    <p>Default Data: {data.defaultdata}</p>
                 </div>
             </div>
         </div>

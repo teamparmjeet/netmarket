@@ -1,10 +1,15 @@
 "use client";
 import React, { useState } from 'react';
-
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 export default function OrderDetails({ data }) {
     const [orderStatus, setOrderStatus] = useState(data.status);
     const [isLoading, setIsLoading] = useState(false);
     const [deliveryStatus, setDeliveryStatus] = useState(data.deliver);
+    const [newDeliveryDate, setNewDeliveryDate] = useState(
+        data.deliverdate ? new Date(data.deliverdate) : null
+    );
+
     const o = data._id
     const handleStatusUpdate = async (newStatus) => {
         setIsLoading(true);
@@ -60,13 +65,43 @@ export default function OrderDetails({ data }) {
             setIsLoading(false);
         }
     };
+
+    const handleDeliveryDateUpdate = async () => {
+        if (!newDeliveryDate) {
+            return alert('Please select a valid date.');
+        }
+
+        setIsLoading(true);
+        try {
+            const response = await fetch(`/api/order/update/${data._id}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ deliverdate: new Date(newDeliveryDate) }),
+            });
+
+            const result = await response.json();
+            if (result.success) {
+                alert('Delivery date updated successfully!');
+            } else {
+                throw new Error(result.message || 'Failed to update delivery date');
+            }
+        } catch (error) {
+            console.error('Error updating delivery date:', error);
+            alert('Failed to update delivery date. Please try again.');
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     return (
         <div className="lg:p-8  min-h-screen text-gray-800 dark:text-gray-200">
             <div className="max-w-4xl mx-auto">
 
 
                 {/* Order Information Card */}
-                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mb-6 transform hover:scale-[1.02] transition-transform duration-300">
+                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mb-6 ">
                     <h3 className="text-xl font-semibold mb-4 text-gray-700 dark:text-gray-300">Order Information</h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="space-y-2">
@@ -92,13 +127,33 @@ export default function OrderDetails({ data }) {
                                     {deliveryStatus ? 'Completed' : 'Pending'}
                                 </span>
                             </p>
-                            <p className="text-sm">
-                                <strong>Delivery Date:</strong>{' '}
-                                {new Date(data.updatedAt).toLocaleDateString("en-GB")}
-                            </p>
+                            {orderStatus && (
+                                <p className="text-sm">
+                                    <strong>Delivery Date:</strong>{' '}
+                                    <DatePicker
+                                        selected={newDeliveryDate}
+                                        onChange={(date) => setNewDeliveryDate(date)}
+                                        dateFormat="dd/MM/yyyy"
+                                        className=""
+                                        placeholderText="Select a date"
+                                    />
+                                    <button
+                                        onClick={handleDeliveryDateUpdate}
+                                        disabled={isLoading}
+                                        className="text-xs bg-green-600 text-white px-2 rounded"
+                                    >
+                                        {isLoading ? 'Updating...' : 'Update Date'}
+                                    </button>
+                                </p>
+                            )}
+
                         </div>
-                        
+
                     </div>
+
+
+
+
                     {/* Approve/Unapprove Buttons */}
                     <div className="mt-4 flex gap-4">
                         <button
@@ -116,8 +171,8 @@ export default function OrderDetails({ data }) {
                                 onClick={() => handleDeliveryUpdate(true)}
                                 disabled={deliveryStatus || isLoading}
                                 className={`flex-1 py-2 px-4 rounded-lg text-white font-medium transition-colors duration-200 ${deliveryStatus || isLoading
-                                        ? 'bg-gray-400 cursor-not-allowed'
-                                        : 'bg-blue-600 hover:bg-blue-700'
+                                    ? 'bg-gray-400 cursor-not-allowed'
+                                    : 'bg-blue-600 hover:bg-blue-700'
                                     }`}
                             >
                                 {isLoading && !deliveryStatus ? 'Updating...' : 'Mark as Delivered'}
@@ -127,7 +182,7 @@ export default function OrderDetails({ data }) {
                 </div>
 
                 {/* Customer Information Card */}
-                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mb-6 transform hover:scale-[1.02] transition-transform duration-300">
+                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mb-6 ">
                     <h3 className="text-xl font-semibold mb-4 text-gray-700 dark:text-gray-300">Customer Information</h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="space-y-2">
@@ -142,7 +197,7 @@ export default function OrderDetails({ data }) {
                 </div>
 
                 {/* Shipping Information Card */}
-                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mb-6 transform hover:scale-[1.02] transition-transform duration-300">
+                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mb-6 ">
                     <h3 className="text-xl font-semibold mb-4 text-gray-700 dark:text-gray-300">Shipping Details</h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="space-y-2">
@@ -185,7 +240,7 @@ export default function OrderDetails({ data }) {
                 </div>
 
                 {/* Financial Details Card */}
-                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mb-6 transform hover:scale-[1.02] transition-transform duration-300">
+                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mb-6 ">
                     <h3 className="text-xl font-semibold mb-4 text-gray-700 dark:text-gray-300">Financial Summary</h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="space-y-2">
@@ -201,7 +256,7 @@ export default function OrderDetails({ data }) {
 
                 {/* Remarks Card */}
                 {data.remarks && (
-                    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mb-6 transform hover:scale-[1.02] transition-transform duration-300">
+                    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mb-6 ">
                         <h3 className="text-xl font-semibold mb-4 text-gray-700 dark:text-gray-300">Remarks</h3>
                         <p className="text-sm text-gray-600 dark:text-gray-400">{data.remarks}</p>
                     </div>
@@ -211,7 +266,6 @@ export default function OrderDetails({ data }) {
                 <div className="text-xs text-gray-500 dark:text-gray-400 text-center">
                     <p>Created: {new Date(data.createdAt).toLocaleString('en-GB')}</p>
                     <p>Updated: {new Date(data.updatedAt).toLocaleString('en-GB')}</p>
-                    <p>Default Data: {data.defaultdata}</p>
                 </div>
             </div>
         </div>

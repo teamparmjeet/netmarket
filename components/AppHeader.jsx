@@ -5,14 +5,17 @@ import { ThemeToggleButton } from "./ThemeToggleButton";
 import Link from "next/link";
 import { signOut } from 'next-auth/react';
 import { LogOut } from 'lucide-react';
-
+import { useSession } from "next-auth/react";
 import Image from "next/image";
+import axios from "axios";
 
 const AppHeader = () => {
     const [isApplicationMenuOpen, setApplicationMenuOpen] = useState(false);
     const { isMobileOpen, toggleSidebar, toggleMobileSidebar } = useSidebar();
     const inputRef = useRef(null);
-
+    const { data: session, update } = useSession();
+    const [img, setImg] = useState("");
+    const [fetching, setFetching] = useState(false);
     const handleToggle = () => {
         if (window.innerWidth >= 991) {
             toggleSidebar();
@@ -24,6 +27,23 @@ const AppHeader = () => {
     const toggleApplicationMenu = () => {
         setApplicationMenuOpen(!isApplicationMenuOpen);
     };
+    useEffect(() => {
+        const fetchUserData = async () => {
+            if (!session?.user?.email) return;
+            try {
+                const response = await axios.get(`/api/user/find-admin-byemail/${session.user.email}`);
+                if (response.data?.name) {
+                    setImg(response.data.image);
+                }
+            } catch (error) {
+                console.error("Failed to fetch user name:", error);
+            } finally {
+                setFetching(false);
+            }
+        };
+        fetchUserData();
+    }, [session?.user?.email]);
+
 
     useEffect(() => {
         const handleKeyDown = (event) => {
@@ -43,6 +63,14 @@ const AppHeader = () => {
         <header className="sticky top-0 flex w-full bg-white border-gray-200  dark:border-gray-800 dark:bg-gray-900 lg:border-b z-40">
             <div className="flex flex-col items-center justify-between grow lg:flex-row lg:px-6">
                 <div className="flex items-center justify-between w-full gap-2 px-3 py-3 border-b border-gray-200 dark:border-gray-800 sm:gap-4 lg:justify-normal lg:border-b-0 lg:px-0 lg:py-4">
+                    <Link href="/" className="lg:hidden w-12  h-12 overflow-hidden  rounded-full ">
+                        <Image
+                            width={200}
+                            height={200}
+                            src="/images/logo/logo-blank.png"
+                            alt="Logo"
+                        />
+                    </Link>
                     <button
                         className="items-center justify-center w-10 h-10 text-gray-500 border-gray-200 rounded-lg z-99999 dark:border-gray-800 lg:flex dark:text-gray-400 lg:h-11 lg:w-11 lg:border"
                         onClick={handleToggle}
@@ -82,16 +110,21 @@ const AppHeader = () => {
 
                     </button>
 
-                    <Link href="/" className="lg:hidden">
-                        <Image
-                            width={60}
-                            height={60}
-                            src="/images/logo/logo-blank.png"
-                            alt="Logo"
-                        />
-                 
-                    </Link>
 
+
+                    <p className="text-sm font-medium text-gray-900 dark:text-white line-clamp-1">
+                        {session?.user?.name}
+                    </p>
+
+                    <div className="w-12  h-12 overflow-hidden  rounded-full">
+                        <Image
+                            width={200}
+                            height={200}
+                            src={img || "/images/user/icon-5359553_640.webp"}
+                            alt="User"
+                            className="object-cover w-full h-full"
+                        />
+                    </div>
                     <button
                         onClick={toggleApplicationMenu}
                         className="flex items-center justify-center w-10 h-10 text-gray-700 rounded-lg z-99999 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800 lg:hidden"

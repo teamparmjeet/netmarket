@@ -48,28 +48,14 @@ export default function Page() {
               {/* Corporate Office */}
               <div className="bg-white p-6 rounded-lg shadow-lg border-l-4 border-green-500">
                 <h3 className="font-semibold text-xl text-green-700">
-                  Corporate Office
+                Registered Office
                 </h3>
                 <p className="mt-2 text-gray-700">
-                  Your Company Name
-                  <br />
-                  123 Business Park, Tower A, 4th Floor,
-                  <br />
-                  Downtown City, State - 567890
+                Address - Hore Chandra nagar.<br></br> DTR P9 Noel School Gird Gwalior Fort Gwalior 
+                Pin code - 474008
                 </p>
               </div>
 
-              {/* Registered Office */}
-              <div className="bg-white p-6 rounded-lg shadow-lg border-l-4 border-green-500">
-                <h3 className="font-semibold text-xl text-green-700">
-                  Registered Office
-                </h3>
-                <p className="mt-2 text-gray-700">
-                  Suite 205, Grand Plaza,
-                  <br />
-                  Main Road, Metropolis, State - 456789
-                </p>
-              </div>
             </div>
           </div>
 
@@ -80,7 +66,7 @@ export default function Page() {
             </h2>
             <div className="bg-white p-6 rounded-lg shadow-lg border-l-4 border-blue-500">
               <p className="text-gray-700">
-                <strong>Phone:</strong> +91 98765 43210
+                <strong>Phone:</strong> +91 8905895913
                 <br />
                 <strong>Email:</strong>{" "}
                 <a
@@ -104,7 +90,7 @@ export default function Page() {
       </section>
 
       {/* Support Sections */}
-      <section className="container mx-auto px-3 md:px-6 py-4 md:py-10">
+      {/* <section className="container mx-auto px-3 md:px-6 py-4 md:py-10">
         <h2 className="text-3xl font-bold text-gray-900 text-center mb-8">
           Support & Assistance
         </h2>
@@ -162,7 +148,7 @@ export default function Page() {
             </div>
           ))}
         </div>
-      </section>
+      </section> */}
 
       {/* Google Map */}
       <section className="container mx-auto px-3 md:px-6 py-4 md:py-10">
@@ -172,7 +158,7 @@ export default function Page() {
         <div className="w-full h-[400px] rounded-lg overflow-hidden shadow-lg">
           <iframe
             className="w-full h-full"
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7002.561570721569!2d77.0412499122124!3d28.56422908129116!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390d1d08a429c5cd%3A0x4c3a7f7a7c1ae7cc!2sSector%2017%2C%20Dwarka%2C%20New%20Delhi%2C%20Delhi%20110075!5e0!3m2!1sen!2sin!4v1711498509812!5m2!1sen!2sin"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3009.4333146271097!2d78.15578385555166!3d26.23440379237345!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3976c68aabbc82db%3A0x390b90996a17f180!2sNoel%20Public%20School!5e0!3m2!1sen!2sin!4v1744795761143!5m2!1sen!2sin"
             allowFullScreen=""
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"

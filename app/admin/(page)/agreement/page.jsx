@@ -65,14 +65,14 @@ export default function AgreementPage() {
         <p className="font-semibold"> AND </p>
 
         <p className="mb-4">
-          Shri/Smt. <span className="underline">{data.name}</span> aged{" "}
-          <span className="underline">{calculateAge(data.dob)}</span> years, S/o. d/o w/o{" "}
-          <span className="underline">{data.fatherOrHusbandName}</span> Address,{" "}
-          <span className="underline">{data.address.addressLine1}</span>{" "}
-          District, <span className="underline">{data.address.city}</span> State,{" "}
-          <span className="underline">{data.address.state}</span> <span className=" font-semibold">(DIRECT SELLER CODE
+          Shri/Smt. <span className="underline">{data?.name}</span> aged{" "}
+          <span className="underline">{calculateAge(data?.dob)}</span> years, S/o. d/o w/o{" "}
+          <span className="underline">{data?.fatherOrHusbandName}</span> Address,{" "}
+          <span className="underline">{data?.address?.addressLine1}</span>{" "}
+          District, <span className="underline">{data?.address?.city}</span> State,{" "}
+          <span className="underline">{data?.address?.state}</span> <span className=" font-semibold">(DIRECT SELLER CODE
             ISSUED BY THE COMPANY </span>
-          <span className=" inline-block px-4 border-b-2 border-black"> {data.dscode}</span>
+          <span className=" inline-block px-4 border-b-2 border-black"> {data?.dscode}</span>
           ) (hereinafter called as Direct Seller
           which expression shall include my/our heirs, executors and administrators
           estates assigns and effects wherein the context so admits or requires) of the
@@ -1514,7 +1514,7 @@ export default function AgreementPage() {
         <div className="flex justify-between mb-8">
           <div>
             <p className="mb-1">
-              Name: <span className="underline">{data.name}</span>
+              Name: <span className="underline">{data?.name}</span>
             </p>
             <p>
               Signature:{" "}

@@ -17,6 +17,7 @@ export default function Page() {
     sao: "",
     sgo: "",
     usertype: "",
+    status: "",
     spType: "", // New: SAO or SGO
     spAmount: "", // New: Amount to add
   });
@@ -31,7 +32,8 @@ export default function Page() {
       setFormData((prev) => ({
         ...prev,
         kycVerified: res.data?.kycVerification?.isVerified || false,
-        usertype: res.data?.usertype
+        usertype: res.data?.usertype,
+        status: res.data?.status
       }));
     } catch (err) {
       setError("Failed to fetch user data.");
@@ -73,7 +75,8 @@ export default function Page() {
         kycVerification: {
           isVerified: formData.kycVerified,
         },
-        usertype: formData.usertype
+        usertype: formData.usertype,
+        status: formData.status
       };
 
       // Only update level-related fields if a level is selected
@@ -198,6 +201,23 @@ export default function Page() {
             <option value="true">Verified</option>
           </select>
         </div>
+
+
+        <div>
+          <label className="block mb-1 font-medium">Allow User to Edit Self Details</label>
+          <select
+            className="w-full p-2 border rounded"
+            value={formData.status}
+            onChange={(e) =>
+              setFormData({ ...formData, status: e.target.value })
+            }
+          >
+            <option value="0">Don't Allow</option>
+            <option value="1">Allow</option>
+          </select>
+        </div>
+
+
         {userData?.usertype === "0" && (
           <div>
             <label className="block mb-1 font-medium">Active User Without Sp</label>

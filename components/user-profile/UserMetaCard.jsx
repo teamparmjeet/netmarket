@@ -184,24 +184,12 @@ export default function UserMetaCard() {
 
 
                         <h4 className="mb-5 text-2xl font-semibold text-gray-800 dark:text-white text-center">
-                            Edit Personal Information
+                            Upload Profile Image
                         </h4>
 
 
                         <form className="flex flex-col space-y-4" onSubmit={handleUpdate}>
                             <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
-
-                                <div>
-                                    <label className="block text-gray-700 dark:text-gray-300 font-medium">Name</label>
-                                    <input
-                                        className="block w-full px-4 py-3 text-gray-500 bg-white border border-gray-200 rounded-md focus:border-[#161950] focus:outline-none focus:ring-[#161950] sm:text-sm"
-                                        type="text"
-                                        value={name}
-                                        onChange={(e) => setName(e.target.value)}
-                                        required
-                                    />
-                                </div>
-
 
                                 <div>
                                     <label className="block text-gray-700 dark:text-gray-300 font-medium">Upload Image</label>

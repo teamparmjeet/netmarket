@@ -134,12 +134,15 @@ export default function UserAddressCard() {
                     </div>
 
 
-                    <button
-                        onClick={() => setIsModalOpen(true)}
-                        className="flex w-full items-center justify-center gap-2 rounded     border border-gray-300 bg-white px-4 py-1 text-sm font-medium text-gray-700 shadow-sm transition-all hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 lg:w-auto"
-                    >
-                        Edit
-                    </button>
+                    {!loading && data?.status == 1 && (
+                        <button
+                            onClick={() => setIsModalOpen(true)}
+                            className="flex w-full items-center justify-center gap-2 rounded border border-gray-300 bg-white px-4 py-1 text-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200 lg:inline-flex lg:w-auto"
+                        >
+                            Edit
+                        </button>
+                    )}
+
                 </div>
             </div>
 

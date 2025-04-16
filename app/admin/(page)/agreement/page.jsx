@@ -1,6 +1,41 @@
-import React from "react";
+"use client"
+import React, { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
+import axios from "axios";
 
 export default function AgreementPage() {
+  const { data: session } = useSession();
+  const [data, setData] = useState(null);
+  const [fetching, setFetching] = useState(true);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      if (!session?.user?.email) return;
+      try {
+        const response = await axios.get(`/api/user/find-admin-byemail/${session.user.email}`);
+        if (response.data?.name) {
+          setData(response.data);
+        }
+      } catch (error) {
+        console.error("Failed to fetch user name:", error);
+      } finally {
+        setFetching(false);
+      }
+    };
+    fetchUserData();
+  }, [session?.user?.email]);
+  const calculateAge = (dobString) => {
+    if (!dobString) return null;
+    const dob = new Date(dobString);
+    const today = new Date();
+    let age = today.getFullYear() - dob.getFullYear();
+    const m = today.getMonth() - dob.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) {
+      age--;
+    }
+    return age;
+  };
+  if (fetching) return <div>Loading...</div>;
   return (
     <div className="max-w-5xl mx-auto p-6 bg-white shadow-md rounded-md mt-10 text-gray-900">
       <div className="my-8 text-md">
@@ -8,38 +43,41 @@ export default function AgreementPage() {
 
         <p className="mb-4">
           This agreement is signed on the{" "}
-          <span className="underline">02/12/2018</span> by and between
+          <span className="underline">19/02/2025</span> by and between
           <span className="font-semibold">
             {" "}
-            ANAADIPRO WELLNESS PRIVATE LIMITED
+            ANAADIPRO WELLNESS PRIVATE
+            LIMITED
           </span>
           , a company registered under the Companies Act 2013 having its
           Registered office at
           <span className="underline">
             {" "}
-            PLOT NO. 18, POCKET-8, BLOCK-C, NEAR HDFC BANK, SECTOR-17, DWARKA,
-            NEW DELHI INDIA-110075
+            Hore
+            Chandra Nagar. DTR P9 Noel School Gird Gwalior Fort Gwalior, [M.P.] INDIA - 474008
           </span>{" "}
           acting through its Director
-          <span className="underline"> Mr. MAM CHAND RAIPURIYA</span>{" "}
+          <span className="underline"> Director Mr. NARENDRA MEENA</span>{" "}
           hereinafter called Company (which expression shall, unless repugnant
           to the context, include its successors in business, administrators,
           liquidators and assigns or legal representatives) of the FIRST PARTY
-          AND
         </p>
+        <p className="font-semibold"> AND </p>
 
         <p className="mb-4">
-          Shri/Smt. <span className="underline">SHAMBHUDAYAL MEENA</span> aged{" "}
-          <span className="underline">34</span> years, S/o. d/o w/o{" "}
-          <span className="underline">NARAYAN</span> Address,{" "}
-          <span className="underline">GRAM DANTARDA KALAN, SHEOPUR</span>{" "}
-          District, <span className="underline">SHEOPUR</span> State,{" "}
-          <span className="underline">MADHYA PRADESH</span> (DIRECT SELLER CODE
-          ISSUED BY THE COMPANY{" "}
-          <span className="underline inline-block w-40 border-b-2 border-black"></span>
-          ) (hereinafter called as Direct Seller which expression shall include
-          my/our heirs, executors and administrators estates assigns and effects
-          wherein the context so admits or requires) of the second party.
+          Shri/Smt. <span className="underline">{data.name}</span> aged{" "}
+          <span className="underline">{calculateAge(data.dob)}</span> years, S/o. d/o w/o{" "}
+          <span className="underline">{data.fatherOrHusbandName}</span> Address,{" "}
+          <span className="underline">{data.address.addressLine1}</span>{" "}
+          District, <span className="underline">{data.address.city}</span> State,{" "}
+          <span className="underline">{data.address.state}</span> <span className=" font-semibold">(DIRECT SELLER CODE
+            ISSUED BY THE COMPANY </span>
+          <span className=" inline-block px-4 border-b-2 border-black"> {data.dscode}</span>
+          ) (hereinafter called as Direct Seller
+          which expression shall include my/our heirs, executors and administrators
+          estates assigns and effects wherein the context so admits or requires) of the
+          second party.
+
         </p>
 
         <p className="font-semibold mb-2">Definitions:</p>
@@ -48,80 +86,8 @@ export default function AgreementPage() {
           defined here under:
         </p>
 
-        <p className="text-center font-semibold mb-6">
-          IN WITNESS WHEREOF the parties hereto have caused this Agreement to be
-          executed through their respective authorized representatives on the
-          <span className="underline inline-block w-20 mx-2 border-b-2 border-black"></span>{" "}
-          day of
-          <span className="underline inline-block w-20 mx-2 border-b-2 border-black"></span>
-          , 20
-          <span className="underline inline-block w-8 mx-2 border-b-2 border-black"></span>
-        </p>
 
-        <p className="mb-6">
-          Read over by me/ to me and agreed by me on (Date){" "}
-          <span className="underline">02/12/2018</span>
-        </p>
 
-        <div className="flex justify-between mb-8">
-          <div>
-            <p className="mb-1">
-              Name: <span className="underline">SHAMBHUDAYAL MEENA</span>
-            </p>
-            <p>
-              Signature:{" "}
-              <span className="inline-block w-40 border-b-2 border-black"></span>
-            </p>
-          </div>
-          <div className="text-right">
-            <p className="mb-1">For ANAADIPRO WELLNESS PRIVATE LIMITED</p>
-            <p>
-              Signature:{" "}
-              <span className="inline-block w-40 border-b-2 border-black"></span>
-            </p>
-            <p className="mt-1">(Authorized Signatory)</p>
-          </div>
-        </div>
-
-        <div className="flex justify-between mb-10">
-          <div>
-            <p>Sign and seal of the company...</p>
-          </div>
-          <div>
-            <p>.........</p>
-          </div>
-        </div>
-
-        <div className="mb-6">
-          <p className="font-semibold mb-2">Witnesses:</p>
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <p>
-                Name{" "}
-                <span className="inline-block w-40 border-b-2 border-black"></span>
-              </p>
-              <p className="mt-4">
-                Signature{" "}
-                <span className="inline-block w-40 border-b-2 border-black"></span>
-              </p>
-            </div>
-            <div>
-              <p>
-                Name{" "}
-                <span className="inline-block w-40 border-b-2 border-black"></span>
-              </p>
-              <p className="mt-4">
-                Signature{" "}
-                <span className="inline-block w-40 border-b-2 border-black"></span>
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div className="text-xs italic">
-          <p>Signature of applicant on each and every page is mandatory.</p>
-          <p>All Documents must be Self Attested</p>
-        </div>
       </div>
       <div>
         <ul className="list-disc list-inside space-y-2">
@@ -367,10 +333,10 @@ export default function AgreementPage() {
             <p className="mt-1">
               Means the official website of the Company ANAADIPRO
               <a
-                href="http://www.anaadiprowellness.com"
+                href="http:// www.annadiprowellness.com /"
                 className="text-blue-600 hover:underline"
               >
-                http://www.ANAADIPROwellness.com
+                http:// www.annadiprowellness.com /
               </a>
             </p>
           </li>
@@ -380,11 +346,11 @@ export default function AgreementPage() {
         <p className="mt-6 text-justify">
           WHEREAS <strong>M/s ANAADIPRO WELLNESS PRIVATE LIMITED</strong>, a
           Company incorporated under the Companies Act, 2013, having its
-          Registration No. <strong>CIN-U51909DL2014PTC272296</strong>
+          Registration No. <strong>CIN-U47890MP2025PTC074912</strong>
           and Registered Office at{" "}
           <strong>
-            PLOT NO. 18, POCKET-8, BLOCK-C, NEAR HDFC BANK, SECTOR-17, DWARKA,
-            NEW DELHI INDIA-110075
+            Hore Chandra
+            Nagar.DTR P9 Noel School,Gird Gwalior Fort Gwalior [M.P.] INDIA - 474008
           </strong>{" "}
           hereinafter referred to as the Company. "ANAADIPRO WELLNESS".
         </p>
@@ -1542,13 +1508,13 @@ export default function AgreementPage() {
         </p>
 
         <p className="mb-6">
-          Read over by me/ to me and agreed by me on (Date) .02/12/2018......
+          Read over by me/ to me and agreed by me on (Date) .19/02/2025......
         </p>
 
         <div className="flex justify-between mb-8">
           <div>
             <p className="mb-1">
-              Name: <span className="underline">---SHAMBHUDAYAL MEENA---</span>
+              Name: <span className="underline">{data.name}</span>
             </p>
             <p>
               Signature:{" "}

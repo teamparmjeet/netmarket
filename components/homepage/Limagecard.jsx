@@ -26,7 +26,7 @@ const Limagecard = ({
           <Image
             src={image}
             width={600}
-            height={600}
+            height={500}
             className=" object-cover  rounded-l-3xl"
             alt={title}
             priority
@@ -44,14 +44,14 @@ const Limagecard = ({
           {title}
         </h2>
         <p className="mt-4 text-lg text-gray-700">{description}</p>
-        <Link href={viewmore}>
+        {/* <Link href={viewmore}>
           <button className="mt-6 px-7 py-3 text-lg font-semibold text-green-800 bg-white border-2 border-green-800 rounded-full transition-all duration-300 hover:bg-green-800 hover:text-white">
             View {title}
           </button>
-        </Link>
+        </Link> */}
 
         {/* Side Image */}
-        <div className="hidden md:block">
+        {/* <div className="hidden md:block">
           {sideimage && (
             <div className="absolute top-[-10px] right-[-10px] lg:top-[0px] lg:right-[20px] w-36 h-36 lg:w-48 lg:h-48 xl:w-64 xl:h-64 transform -rotate-3 backdrop-blur-lg shadow-xl opacity-80 hover:opacity-100 transition-opacity duration-300 z-0">
               <Image
@@ -64,7 +64,7 @@ const Limagecard = ({
               />
             </div>
           )}
-        </div>
+        </div> */}
       </div>
     </div>
   );

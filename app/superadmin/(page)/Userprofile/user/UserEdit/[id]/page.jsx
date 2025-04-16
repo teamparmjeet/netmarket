@@ -75,10 +75,12 @@ export default function Page() {
         kycVerification: {
           isVerified: formData.kycVerified,
         },
-        usertype: formData.usertype,
+        usertype: formData.usertype === "100sp" ? "1" : formData.usertype,
         status: formData.status
       };
-
+      if (formData.usertype === "100sp") {
+        updateData.activesp = "100";
+      }
       // Only update level-related fields if a level is selected
       if (formData.levelName) {
         const levelExists = userData?.LevelDetails?.some(
@@ -132,7 +134,7 @@ export default function Page() {
         updateData[formData.spType === "SAO" ? "saosp" : "sgosp"] = newSp;
       }
 
-      const res = await axios.patch("/api/user/update-user/", updateData);
+      const res = await axios.patch("/api/user/update/", updateData);
 
       toast.success("User updated successfully!");
       fetchUser(); // Refresh user data
@@ -230,6 +232,7 @@ export default function Page() {
             >
               <option value="">-- Select User Type --</option>
               <option value="1">Activate as 'User Without SP'</option>
+              <option value="100sp">Activate as '100 sp'</option>
             </select>
           </div>
         )}

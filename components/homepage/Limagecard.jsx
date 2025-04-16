@@ -21,13 +21,13 @@ const Limagecard = ({
   return (
     <div className="relative flex flex-col md:flex-row items-center bg-white shadow-xl rounded-3xl overflow-hidden hover:shadow-2xl transition-all duration-300">
       {/* Left Section - Main Image */}
-      <div className="relative w-full md:w-1/2">
+      <div className="relative w-full overflow-hidden md:w-1/2">
         {image ? (
           <Image
             src={image}
             width={600}
             height={600}
-            className="w-full h-full object-cover rounded-l-3xl"
+            className=" object-cover  rounded-l-3xl"
             alt={title}
             priority
           />
@@ -39,7 +39,7 @@ const Limagecard = ({
       </div>
 
       {/* Right Section - Content */}
-      <div className="flex flex-col justify-center items-start p-10 md:p-14 w-full md:w-1/2 bg-gradient-to-br from-gray-50 to-white rounded-r-3xl">
+      <div className="flex flex-col justify-center items-start p-10 md:p-14 w-full md:w-1/2  rounded-r-3xl">
         <h2 className="text-4xl font-extrabold text-gray-900 leading-tight z-20">
           {title}
         </h2>

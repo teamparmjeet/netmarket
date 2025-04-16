@@ -7,7 +7,7 @@ import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 
 export default function Signup() {
-    const [step, setStep] = useState(1);
+    const [step, setStep] = useState(3);
     const [formData, setFormData] = useState({
         email: "",
         otp: "",
@@ -125,6 +125,16 @@ export default function Signup() {
                                 <PhoneInput country="in" disableDropdown={true} value={formData.mobileNo} onChange={(phone) => setFormData({ ...formData, mobileNo: phone })} inputStyle={{ width: "100%", height: "45px", borderColor: "lightgray" }} />
                                 {errors.mobileNo && <p className="text-red-500 text-xs">{errors.mobileNo}</p>}
                             </div>
+
+                            {/* Remove id use otp verify */}
+                            <div>
+                                <label className="text-gray-700 text-sm font-semibold">Email Id</label>
+                                <input type="email" placeholder="example@gmail.com" name="email" value={formData.email} onChange={handleChange} className="block w-full px-4 py-3 text-gray-500 bg-white border border-gray-200 rounded-md appearance-none placeholder:text-gray-400 focus:border-[#161950] focus:outline-none focus:ring-[#161950] sm:text-sm" required />
+                                {errors.email && <p className="text-red-500 text-xs">{errors.email}</p>}
+                            </div>
+                            {/*  */}
+
+
                             <div>
                                 <label className="text-gray-700 text-sm font-semibold">Gender</label>
                                 <select name="gender" value={formData.gender} onChange={handleChange} className="block w-full px-4 py-3 text-gray-500 bg-white border border-gray-200 rounded-md appearance-none placeholder:text-gray-400 focus:border-[#161950] focus:outline-none focus:ring-[#161950] sm:text-sm">

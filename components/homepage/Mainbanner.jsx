@@ -1,89 +1,26 @@
 "use client";
-import React, { useState } from "react";
-import Carousel from "react-multi-carousel";
-import "react-multi-carousel/lib/styles.css";
 import Image from "next/image";
-import Link from "next/link";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export default function Mainbanner() {
-  const imagePath = "/images/homepage/Shiitake-Shake.jpg";
-  const images = Array(4).fill(imagePath);
-  const [hover, setHover] = useState(false);
-  const [activeIndex, setActiveIndex] = useState(0);
-
-  const responsive = {
-    superLargeDesktop: { breakpoint: { max: 4000, min: 3000 }, items: 1 },
-    desktop: { breakpoint: { max: 3000, min: 1024 }, items: 1 },
-    tablet: { breakpoint: { max: 1024, min: 464 }, items: 1 },
-    mobile: { breakpoint: { max: 464, min: 0 }, items: 1 },
-  };
-
-  const CustomLeftArrow = ({ onClick }) => (
-    <button
-      onClick={onClick}
-      className={`absolute left-4 top-1/2 -translate-y-1/2 z-10 text-white bg-black/30 p-2 rounded-full transition-all ${
-        hover ? "opacity-100" : "opacity-0"
-      }`}
-    >
-      <ChevronLeft size={32} />
-    </button>
-  );
-
-  const CustomRightArrow = ({ onClick }) => (
-    <button
-      onClick={onClick}
-      className={`absolute right-4 top-1/2 -translate-y-1/2 z-10 text-white bg-black/30 p-2 rounded-full transition-all ${
-        hover ? "opacity-100" : "opacity-0"
-      }`}
-    >
-      <ChevronRight size={32} />
-    </button>
-  );
+  const imagePath = "/images/homepage/photo-1514733670139-4d87a1941d55.webp";
 
   return (
-    <div
-      className="w-full mx-auto p-0 relative group "
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
-    >
-      <Carousel
-        responsive={responsive}
-        infinite
-        autoPlay
-        autoPlaySpeed={3000}
-        keyBoardControl
-        afterChange={(currentSlide) => setActiveIndex(currentSlide)}
-        removeArrowOnDeviceType={["tablet", "mobile"]}
-        containerClass="carousel-container"
-        customLeftArrow={<CustomLeftArrow />}
-        customRightArrow={<CustomRightArrow />}
-      >
-        {images.map((img, index) => (
-          <div key={index} className="h-full w-full p-0 relative">
-            <Link href={img} target="_blank">
-              <Image
-                src={img}
-                alt={`Image ${index + 1}`}
-                width={800}
-                height={313}
-                className="rounded-lg object-cover w-full min-h-[300px] md:min-h-[450px] lg:min-h-[550px]"
-              />
-            </Link>
-          </div>
-        ))}
-      </Carousel>
+    <div className="relative w-full">
+      {/* Background Image */}
+      <Image
+        src={imagePath}
+        alt="Main banner"
+        width={1920}
+        height={1080}
+        priority
+        className="w-full object-cover rounded-lg h-auto md:h-screen"
+      />
 
-      {/* Dot Indicators */}
-      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-3">
-        {images.map((_, idx) => (
-          <span
-            key={idx}
-            className={`w-4 h-4 rounded-full transition-all duration-300 ${
-              activeIndex % images.length === idx ? "bg-gray-900" : "bg-gray-400"
-            }`}
-          ></span>
-        ))}
+      {/* Stylish Heading Overlay */}
+      <div className="absolute top-10 left-0 z-10 px-4 py-2 rounded-r-full bg-gradient-to-r from-white/80 to-green-100 backdrop-blur-md shadow-lg hidden md:block">
+        <h1 className="text-green-900 text-xl sm:text-2xl md:text-3xl lg:text-5xl font-bold tracking-wide">
+          ANAADIPRO WELLNESS PRIVATE LIMITED
+        </h1>
       </div>
     </div>
   );

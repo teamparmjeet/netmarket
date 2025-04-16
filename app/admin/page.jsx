@@ -66,9 +66,9 @@ export default function Page() {
                 alt={`Featured Image ${currentIndex + 1}`}
                 fill
                 priority={currentIndex === 0}
-                className="object-cover transition-opacity duration-700 ease-in-out"
+                className="object-contain transition-opacity duration-700 ease-in-out"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-70 transition-opacity duration-300 md:hover:opacity-50"></div>
+              <div className="absolute inset-0  opacity-70 transition-opacity duration-300 md:hover:opacity-50"></div>
             </Link>
           </div>
 

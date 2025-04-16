@@ -19,13 +19,13 @@ export default function Home() {
       <Mainbanner />
       <ContentCard
         title="Our Revolutionary Products Range"
-        description="Asclepius Wellness is above all a family company. We lead a diverse global management team that supports Independent Business Owners and their goals. Hone in on your goals with the best product combinations for targeted results."
+        description="ANAADIPRO WELLNESS PRIVATE LIMITED is, above all, a family-driven company. We are guided by a dynamic and diverse global leadership team dedicated to empowering Independent Business Owners in achieving their dreams. Stay focused on your goals with our expertly curated product combinations designed for impactful and targeted results."
       />
       <Limagecard
         title="Hair Care Range"
         description="Our Hair Care Products are produced using scientific formulations, green ingredients and modern manufacturing processes."
         viewmore="/"
-        image="/images/homepage/wel-cat1.jpg"
+        image="/images/homepage/f063399f-23d2-4015-bc54-6e578501d177.webp"
         sideimage="/images/homepage/wel-side1.jpg"
       />
       <Rimagecard

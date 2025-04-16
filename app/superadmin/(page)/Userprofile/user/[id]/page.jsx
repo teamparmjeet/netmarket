@@ -206,7 +206,6 @@ export default function UserProfile() {
 
       <Section title="User Status">
         <div className="grid grid-cols-2 gap-4">
-          <StatusCard label="Status" status={userData.status === "1"} />
           <StatusCard label="User Type" text={getUserType(userData.usertype)} />
         </div>
       </Section>

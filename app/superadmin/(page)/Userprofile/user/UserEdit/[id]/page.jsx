@@ -16,6 +16,7 @@ export default function Page() {
     levelName: "",
     sao: "",
     sgo: "",
+    usertype: "",
     spType: "", // New: SAO or SGO
     spAmount: "", // New: Amount to add
   });
@@ -30,6 +31,7 @@ export default function Page() {
       setFormData((prev) => ({
         ...prev,
         kycVerified: res.data?.kycVerification?.isVerified || false,
+        usertype: res.data?.usertype
       }));
     } catch (err) {
       setError("Failed to fetch user data.");
@@ -71,6 +73,7 @@ export default function Page() {
         kycVerification: {
           isVerified: formData.kycVerified,
         },
+        usertype: formData.usertype
       };
 
       // Only update level-related fields if a level is selected
@@ -195,7 +198,21 @@ export default function Page() {
             <option value="true">Verified</option>
           </select>
         </div>
-
+        {userData?.usertype === "0" && (
+          <div>
+            <label className="block mb-1 font-medium">Active User Without Sp</label>
+            <select
+              className="w-full p-2 border rounded"
+              value={formData.usertype}
+              onChange={(e) =>
+                setFormData({ ...formData, usertype: e.target.value })
+              }
+            >
+              <option value="">-- Select User Type --</option>
+              <option value="1">Activate as 'User Without SP'</option>
+            </select>
+          </div>
+        )}
         {/* Eligible Levels */}
         <div>
           <label className="block mb-1 font-medium">Eligible Levels (Optional)</label>

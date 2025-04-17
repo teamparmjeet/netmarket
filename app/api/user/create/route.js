@@ -29,6 +29,7 @@ export async function POST(req) {
                 { status: 400 }
             );
         }
+        const plainPassword = data.password;
         const hashedPassword = await bcrypt.hash(data.password, 10);
 
         const newUser = new UserModel({
@@ -39,7 +40,10 @@ export async function POST(req) {
         await newUser.save();
 
         return new Response(
-            JSON.stringify({ success: true, message: "User registered successfully" }),
+            JSON.stringify({
+                success: true, message: "User registered successfully", dscode: newUser.dscode,
+                password: plainPassword,
+            }),
             { status: 201 }
         );
 

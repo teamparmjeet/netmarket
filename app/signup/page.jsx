@@ -7,6 +7,8 @@ import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 
 export default function Signup() {
+    const [loginKey, setLoginKey] = useState(null); // holds dscode and password
+    const [showModal, setShowModal] = useState(false);
     const [step, setStep] = useState(3);
     const [formData, setFormData] = useState({
         email: "",
@@ -135,9 +137,11 @@ export default function Signup() {
         try {
             const response = await axios.post("/api/user/create", formData);
             toast.success(response.data.message);
-            setTimeout(() => {
-                window.location.href = "/signin";
-            }, 2000);
+            setLoginKey({
+                dscode: response.data.dscode,
+                password: response.data.password,
+            });
+            setShowModal(true);
         } catch (error) {
             toast.error(error.response?.data?.message || "Something went wrong");
         } finally {
@@ -148,6 +152,56 @@ export default function Signup() {
     return (
         <section className="min-h-screen flex items-center justify-center px-4 bg-gray-100">
             <Toaster />
+            {showModal && (
+                <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/40 backdrop-blur-sm">
+                    <div className="bg-white rounded-3xl shadow-2xl w-full max-w-md p-6 animate-fade-in-up relative overflow-hidden">
+
+                        <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-t-3xl"></div>
+
+                        <div className="text-center mt-4">
+                            <div className="flex justify-center mb-4">
+                                <div className="bg-gradient-to-tr from-blue-100 to-purple-100 p-4 rounded-full shadow-lg">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-blue-600" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                                            d="M13 16h-1v-4h-1m1-4h.01M12 6.253v.01M19.428 15.341a8 8 0 11-14.856 0" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <h2 className="text-2xl font-bold text-gray-800 mb-2">🎉 You're Registered!</h2>
+                            <p className="text-sm text-gray-500 mb-6">Keep these credentials safe — they’re your login keys.</p>
+
+                            {/* DS Code */}
+                            <div className="mb-4">
+                                <p className="text-sm font-medium text-gray-600">DS Code</p>
+                                <div className="inline-block mt-2 px-5 py-2 text-blue-700 bg-blue-100 rounded-full font-semibold shadow-inner tracking-wide">
+                                    {loginKey?.dscode}
+                                </div>
+                            </div>
+
+                            {/* Password */}
+                            <div className="mb-6">
+                                <p className="text-sm font-medium text-gray-600">Password</p>
+                                <div className="inline-block mt-2 px-5 py-2 text-red-700 bg-red-100 rounded-full font-semibold shadow-inner tracking-wide">
+                                    {loginKey?.password}
+                                </div>
+                            </div>
+
+                            <button
+                                onClick={() => {
+                                    setShowModal(false);
+                                    window.location.href = "/signin";
+                                }}
+                                className="mt-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-lg shadow-md hover:shadow-lg hover:scale-105 transition transform duration-200"
+                            >
+                                Go to Login
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+
             <div className="bg-white p-6 rounded-xl shadow-2xl w-full max-w-2xl">
                 <h2 className="text-2xl font-bold text-center text-[#161950] mb-4">
                     {step === 1 ? "Verify Email" : step === 2 ? "Enter OTP" : "Create an Account"}

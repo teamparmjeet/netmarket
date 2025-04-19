@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import axios from "axios";
-
+import Image from "next/image";
 export default function AgreementPage() {
   const { data: session } = useSession();
   const [data, setData] = useState(null);
@@ -43,7 +43,7 @@ export default function AgreementPage() {
 
         <p className="mb-4">
           This agreement is signed on the{" "}
-          <span className="underline">19/02/2025</span> by and between
+          <span className="underline">{new Date(data?.createdAt).toLocaleDateString('en-GB')}</span> by and between
           <span className="font-semibold">
             {" "}
             ANAADIPRO WELLNESS PRIVATE
@@ -1504,11 +1504,11 @@ export default function AgreementPage() {
         <p className="text-center font-semibold mb-6">
           IN WITNESS WHEREOF the parties hereto have caused this Agreement to be
           executed through their respective authorized representatives on the
-          ........day of ........, 20......
+          19/02/2025
         </p>
 
         <p className="mb-6">
-          Read over by me/ to me and agreed by me on (Date) .19/02/2025......
+          Read over by me/ to me and agreed by me on (Date) .{new Date(data?.createdAt).toLocaleDateString('en-GB')}
         </p>
 
         <div className="flex justify-between mb-8">
@@ -1521,10 +1521,7 @@ export default function AgreementPage() {
               <span className="inline-block w-40 border-b-2 border-black"></span>
             </p>
           </div>
-          <div className="text-right">
-            <p className="mb-1">(Signature)</p>
-            <p>(Name of applicant)</p>
-          </div>
+
         </div>
 
         <div className="flex justify-between mb-10">
@@ -1532,7 +1529,12 @@ export default function AgreementPage() {
             <p>Sign and seal of the company...</p>
           </div>
           <div>
-            <p>.........</p>
+            <Image
+              width={150}
+              height={150}
+              alt=''
+              src="/images/homepage/Screenshot 2025-04-19 151921.png"
+            />
           </div>
         </div>
 
